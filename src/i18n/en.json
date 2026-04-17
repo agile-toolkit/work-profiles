@@ -1,0 +1,61 @@
+{
+  "app": { "title": "Work Profiles" },
+  "nav": { "profiles": "Profiles", "matrix": "Skill Matrix", "credits": "Project Credits" },
+  "profiles": {
+    "title": "Work Profiles",
+    "addProfile": "Add Profile",
+    "name": "Name",
+    "namePlaceholder": "Team member name",
+    "role": "Role",
+    "rolePlaceholder": "e.g. Backend Developer",
+    "capacity": "Capacity",
+    "addSkill": "Add Skill",
+    "skillName": "Skill",
+    "skillNamePlaceholder": "e.g. TypeScript",
+    "skillCategory": "Category",
+    "skillCategoryPlaceholder": "e.g. Frontend",
+    "level": "Level",
+    "addInterest": "Add Interest",
+    "interestPlaceholder": "e.g. Machine Learning",
+    "workTypes": "Preferred Work Types",
+    "workTypePlaceholder": "e.g. Architecture, Code Review",
+    "save": "Save",
+    "saved": "Saved ✓",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "noProfiles": "No profiles yet. Add the first team member.",
+    "levels": {
+      "1": "Novice",
+      "2": "Advanced Beginner",
+      "3": "Competent",
+      "4": "Proficient",
+      "5": "Expert"
+    },
+    "dreyfus": "Dreyfus Skill Levels",
+    "dreyfusText": "1-Novice: follows rules, needs supervision. 2-Advanced Beginner: uses guidelines, limited context. 3-Competent: plans ahead, can prioritize. 4-Proficient: sees the big picture, adapts. 5-Expert: intuitive, transcends rules."
+  },
+  "matrix": {
+    "title": "Skill Matrix",
+    "noData": "Add profiles with skills to see the matrix.",
+    "skill": "Skill",
+    "category": "Category"
+  },
+  "credits": {
+    "title": "Project Credits",
+    "addCredit": "Add Credit",
+    "person": "Person",
+    "project": "Project",
+    "projectPlaceholder": "Project or initiative name",
+    "description": "Contribution",
+    "descriptionPlaceholder": "What was contributed?",
+    "points": "Points",
+    "date": "Date",
+    "add": "Add",
+    "cancel": "Cancel",
+    "noCredits": "No credits logged yet.",
+    "leaderboard": "Leaderboard",
+    "explainer": "Project Credits track contributions to projects beyond day-to-day work. They recognize extra effort, cross-team collaboration, and innovation. Keep points simple (1-5) and avoid gaming incentives by tying them to recognition, not salary.",
+    "total": "total pts"
+  },
+  "common": { "language": "RU", "save": "Save", "cancel": "Cancel", "delete": "Delete" }
+}
