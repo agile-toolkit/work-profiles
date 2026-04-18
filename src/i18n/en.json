@@ -3,6 +3,9 @@
   "nav": { "profiles": "Profiles", "matrix": "Skill Matrix", "credits": "Credits", "learn": "Learn" },
   "profiles": {
     "title": "Team Work Profiles",
+    "directory_heading": "Profiles directory",
+    "dreyfus_title": "Dreyfus skill levels",
+    "dreyfus_body": "Levels describe how people progress from rigid rules to intuition. They are for discussion — not labels for ranking people.",
     "add": "New Profile",
     "empty": "No profiles yet. Add one to get started.",
     "edit": "Edit",
