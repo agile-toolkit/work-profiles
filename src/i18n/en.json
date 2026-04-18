@@ -1,0 +1,88 @@
+{
+  "app": { "title": "Work Profiles" },
+  "nav": { "profiles": "Profiles", "matrix": "Skill Matrix", "credits": "Credits", "learn": "Learn" },
+  "profiles": {
+    "title": "Team Work Profiles",
+    "add": "New Profile",
+    "empty": "No profiles yet. Add one to get started.",
+    "edit": "Edit",
+    "delete": "Delete",
+    "delete_confirm": "Delete this profile?",
+    "skills_count": "skills",
+    "capacity": "capacity",
+    "work_types": "Work types"
+  },
+  "profile_form": {
+    "title_new": "New Work Profile",
+    "title_edit": "Edit Profile",
+    "name_label": "Name",
+    "name_placeholder": "Full name",
+    "role_label": "Role / Title",
+    "role_placeholder": "e.g. Senior Developer",
+    "capacity_label": "Capacity (%)",
+    "skills_label": "Skills",
+    "skill_name_placeholder": "Skill name (e.g. TypeScript)",
+    "add_skill": "Add Skill",
+    "interests_label": "Interests / Topics",
+    "interests_placeholder": "e.g. distributed systems, team coaching",
+    "work_types_label": "Preferred Work Types",
+    "save": "Save Profile",
+    "cancel": "Cancel",
+    "proficiency": {
+      "1": "Beginner",
+      "2": "Novice",
+      "3": "Competent",
+      "4": "Proficient",
+      "5": "Expert"
+    },
+    "work_types": {
+      "design": "Design",
+      "development": "Development",
+      "testing": "Testing",
+      "analysis": "Analysis",
+      "facilitation": "Facilitation",
+      "writing": "Writing",
+      "mentoring": "Mentoring",
+      "ops": "Operations"
+    }
+  },
+  "matrix": {
+    "title": "Skill Matrix",
+    "empty": "Add at least 2 profiles with skills to see the matrix.",
+    "all_skills": "All Skills",
+    "filter_skill": "Filter by skill..."
+  },
+  "credits": {
+    "title": "Project Credits",
+    "add": "Log Credit",
+    "empty": "No project credits yet.",
+    "leaderboard": "Leaderboard",
+    "leaderboard_off": "Hide Leaderboard",
+    "project_label": "Project / Task",
+    "project_placeholder": "Project name",
+    "contribution_label": "Contribution",
+    "contribution_placeholder": "What was done?",
+    "points_label": "Credit Points",
+    "date_label": "Date",
+    "person_label": "Person",
+    "save": "Log Credit",
+    "cancel": "Cancel",
+    "total_points": "pts total",
+    "delete": "Delete"
+  },
+  "learn": {
+    "title": "About Work Profiles",
+    "intro": "Work Profiles and Project Credits are Management 3.0 practices for making team skills visible and contributions recognized — enabling better task matching and transparent career growth.",
+    "profiles_title": "What are Work Profiles?",
+    "profiles_body": "A Work Profile is a living document that captures a team member's skills (with proficiency levels), interests, preferred work types, and availability. It helps the team understand who knows what and match work to people better.",
+    "credits_title": "What are Project Credits?",
+    "credits_body": "Project Credits are a lightweight way to recognize contributions without formal performance reviews. Team members log what they contributed and get credit points. This creates a transparent record of who does what.",
+    "dreyfus_title": "Skill Proficiency Scale (Dreyfus Model)",
+    "levels": ["1 — Beginner: follows rules, needs supervision", "2 — Novice: can handle routine tasks with guidance", "3 — Competent: can work independently on standard tasks", "4 — Proficient: sees the big picture, handles exceptions well", "5 — Expert: deep intuition, can teach and improve the field"],
+    "principles_title": "Key Principles",
+    "p1": "Profiles are self-maintained — people own their own data.",
+    "p2": "Skill matrix is team-visible but not used for evaluation.",
+    "p3": "Credits recognize effort, not just outcomes.",
+    "p4": "Leaderboards are opt-in — not every team wants public rankings."
+  }
+}
