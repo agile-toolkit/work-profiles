@@ -32,13 +32,22 @@ export default function SkillMatrix({ profiles }: Props) {
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('matrix.title')}</h1>
 
-      <div className="mb-4">
+      <div className="mb-4 flex items-center gap-2">
         <input
           className="input max-w-xs"
           placeholder={t('matrix.filter_skill')}
           value={filter}
           onChange={e => setFilter(e.target.value)}
         />
+        {filter && (
+          <button
+            type="button"
+            onClick={() => setFilter('')}
+            className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50"
+          >
+            ← {t('matrix.all_skills')}
+          </button>
+        )}
       </div>
 
       <div className="overflow-x-auto">

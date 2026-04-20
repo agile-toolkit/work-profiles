@@ -114,7 +114,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">{t('profiles.directory_heading')}</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{t('profiles.title')}</h2>
         <button type="button" onClick={openAdd} className="btn-primary">
           + {t('profiles.add')}
         </button>
@@ -174,6 +174,16 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
                 {p.interests.map((topic, i) => (
                   <span key={i} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                     ✦ {topic}
+                  </span>
+                ))}
+              </div>
+            )}
+            {p.workTypes.length > 0 && (
+              <div className="mt-2 flex flex-wrap items-center gap-1">
+                <span className="text-xs text-gray-400">{t('profiles.work_types')}:</span>
+                {p.workTypes.map(wt => (
+                  <span key={wt} className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full">
+                    {t(`profile_form.work_types.${wt}`)}
                   </span>
                 ))}
               </div>
