@@ -66,7 +66,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
                 <div className="flex-1">
                   <div className="flex justify-between text-sm mb-0.5">
                     <span className="font-medium">{entry.profile.name}</span>
-                    <span className="text-brand-600 font-bold">{entry.total} pts</span>
+                    <span className="text-brand-600 font-bold">{entry.total} {t('credits.total_points')}</span>
                   </div>
                   <div className="h-1.5 bg-gray-100 rounded-full">
                     <div
@@ -136,7 +136,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
                   <div className="text-sm text-gray-700 font-medium">{credit.project}</div>
                   {credit.contribution && <div className="text-xs text-gray-500">{credit.contribution}</div>}
                 </div>
-                <button onClick={() => onDelete(credit.id)} className="text-gray-200 hover:text-red-400 text-xs">✕</button>
+                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-200 hover:text-red-400 text-xs">✕</button>
               </div>
             )
           })}

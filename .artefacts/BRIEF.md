@@ -9,8 +9,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Profiles directory — add/edit/delete, Dreyfus copy (`ProfilesView.tsx`, `ProfileCard.tsx`)
 - [x] Profile form — skills, capacity, work types via dynamic keys where wired
 - [x] Skill matrix and credits flows (`SkillMatrix.tsx`, `CreditsView.tsx`)
-- [ ] Hub copy — `profiles.title`, `profiles.work_types` may be unused vs `profiles.directory_heading` etc.
-- [ ] Matrix / credits strings — verify `matrix.all_skills`, `credits.total_points`, `credits.delete` (grep `src/`); wire or remove from `en.json` / `ru.json`
+- [x] Wire orphan i18n keys — `profiles.title`, `profiles.work_types`, `matrix.all_skills`, `credits.total_points`, `credits.delete` all wired; `profiles.directory_heading` removed
 
 ## Backlog
 
@@ -19,6 +18,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `` t(`profile_form.proficiency.${n}`) `` / work_types patterns — confirm before deleting nested keys.
 
 ## Agent Log
+
+### 2026-04-20 — feat: wire orphan i18n keys
+- Done: `profiles.title` replaces `directory_heading` as section H2; `profiles.work_types` wired as work-type badge label in profile cards; `matrix.all_skills` wired as filter-clear button in SkillMatrix; `credits.total_points` replaces hardcoded "pts" in leaderboard; `credits.delete` wired as `aria-label` on credit delete button; `profiles.directory_heading` removed from locales
+- All BRIEF features now implemented
+- Next task: check needs-review issues for human feedback; run research cycle for market/integration/UX improvements
 
 ### 2026-04-19 — docs: BRIEF template (AGENT_AUTONOMOUS)
 
