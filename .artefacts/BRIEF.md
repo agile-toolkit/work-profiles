@@ -16,12 +16,20 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#2] Feature: complete ES and BE locale files (language switcher only covers EN/RU)
 - [ ] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics
 - [ ] [#4] Feature: profile search and skill gap analysis
+- [ ] [#5] Feature: export team directory as CSV and printable HTML
+- [ ] [#6] UX: role-based starter templates to reduce blank-page friction
+- [ ] [#7] Technical: PWA support for offline use and device installation
 
 ## Tech notes
 
 - `` t(`profile_form.proficiency.${n}`) `` / work_types patterns — confirm before deleting nested keys.
 
 ## Agent Log
+
+### 2026-04-26 — research: export, role templates, PWA
+- Done: checked issues #2–#4 (all still needs-review, no human feedback yet); created issues #5 (CSV/HTML export), #6 (role starter templates), #7 (PWA offline support)
+- Waiting for human review on all six open issues
+- Next task: check needs-review issues for human feedback (#2 ES/BE locales, #3 suite integration, #4 skill search+gap analysis, #5 export, #6 role templates, #7 PWA)
 
 ### 2026-04-23 — research: locale gaps, suite integration, skill search
 - Done: created issues #2 (ES/BE locales missing), #3 (integration with Planning Poker + Sprint Metrics via shared localStorage), #4 (skill-based profile filter + gap analysis)
