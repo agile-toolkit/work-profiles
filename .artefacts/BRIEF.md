@@ -10,13 +10,13 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Profile form — skills, capacity, work types via dynamic keys where wired
 - [x] Skill matrix and credits flows (`SkillMatrix.tsx`, `CreditsView.tsx`)
 - [x] Wire orphan i18n keys — `profiles.title`, `profiles.work_types`, `matrix.all_skills`, `credits.total_points`, `credits.delete` all wired; `profiles.directory_heading` removed
+- [x] ES + BE locale files — full Spanish and Belarusian translations added; language switcher upgraded to 4-language `<select>` (EN/ES/BE/RU)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
-- [ ] [#2] Feature: complete ES and BE locale files (language switcher only covers EN/RU)
 - [ ] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics
-- [ ] [#4] Feature: profile search and skill gap analysis
-- [ ] [#5] Feature: export team directory as CSV and printable HTML
+- [ ] [#4] Feature: profile search and skill gap analysis (changes-requested — pending revision)
+- [ ] [#5] Feature: export team directory as CSV and printable HTML (changes-requested — pending revision)
 - [ ] [#6] UX: role-based starter templates to reduce blank-page friction
 - [ ] [#7] Technical: PWA support for offline use and device installation
 
@@ -25,6 +25,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `` t(`profile_form.proficiency.${n}`) `` / work_types patterns — confirm before deleting nested keys.
 
 ## Agent Log
+
+### 2026-04-28 — feat: ES + BE locale files and 4-language switcher
+- Done: added `src/i18n/es.json` (Spanish) and `src/i18n/be.json` (Belarusian) with full translations of all keys; registered both locales in `src/i18n/index.ts`; replaced binary EN/RU toggle in `App.tsx` with a `<select>` dropdown covering all four languages (EN/ES/BE/RU); closed issue #2
+- Remaining approved issues: #3 (Planning Poker/Sprint Metrics integration), #6 (role templates), #7 (PWA); changes-requested: #4, #5
+- Next task: implement Integration — link Work Profiles capacity data to Planning Poker and Sprint Metrics (issue #3)
 
 ### 2026-04-26 — research: export, role templates, PWA
 - Done: checked issues #2–#4 (all still needs-review, no human feedback yet); created issues #5 (CSV/HTML export), #6 (role starter templates), #7 (PWA offline support)
