@@ -11,10 +11,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Skill matrix and credits flows (`SkillMatrix.tsx`, `CreditsView.tsx`)
 - [x] Wire orphan i18n keys — `profiles.title`, `profiles.work_types`, `matrix.all_skills`, `credits.total_points`, `credits.delete` all wired; `profiles.directory_heading` removed
 - [x] ES + BE locale files — full Spanish and Belarusian translations added; language switcher upgraded to 4-language `<select>` (EN/ES/BE/RU)
+- [x] Integration export — writes `wp-profiles-export` localStorage key on every profile change and at startup; payload: `{teamCapacity, profiles:[{id,name,role,skills,capacity,workTypes}]}`; Planning Poker and Sprint Metrics can read this key directly (issue #3)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
-- [ ] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics
+- [x] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics — implemented via `wp-profiles-export` localStorage key
 - [ ] [#4] Feature: profile search and skill gap analysis (changes-requested — pending revision)
 - [ ] [#5] Feature: export team directory as CSV and printable HTML (changes-requested — pending revision)
 - [ ] [#6] UX: role-based starter templates to reduce blank-page friction
@@ -23,8 +24,14 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 ## Tech notes
 
 - `` t(`profile_form.proficiency.${n}`) `` / work_types patterns — confirm before deleting nested keys.
+- `wp-profiles-export` localStorage contract: `{ teamCapacity: number, profiles: Array<{ id, name, role, skills: Skill[], capacity: number, workTypes: WorkType[] }> }`. Written by `publishExport()` in `App.tsx` on every `updateProfiles` call and at app startup. Planning Poker and Sprint Metrics read this key directly — do not rename it.
 
 ## Agent Log
+
+### 2026-04-28 — feat: wp-profiles-export localStorage integration (issue #3)
+- Done: added `publishExport()` in `App.tsx` that writes `wp-profiles-export` localStorage key with `{teamCapacity, profiles}` payload on every profile mutation and at app startup; Planning Poker and Sprint Metrics can now read this key without any backend; closed issue #3
+- Remaining backlog: #4 (skill gap analysis, changes-requested), #5 (CSV/HTML export, changes-requested), #6 (role templates), #7 (PWA)
+- Next task: check needs-review issues #4 and #5 for revised human feedback; implement Sprint Metrics side of wp-profiles-export integration (read teamCapacity from wp-profiles-export)
 
 ### 2026-04-28 — feat: ES + BE locale files and 4-language switcher
 - Done: added `src/i18n/es.json` (Spanish) and `src/i18n/be.json` (Belarusian) with full translations of all keys; registered both locales in `src/i18n/index.ts`; replaced binary EN/RU toggle in `App.tsx` with a `<select>` dropdown covering all four languages (EN/ES/BE/RU); closed issue #2

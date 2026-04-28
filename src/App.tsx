@@ -8,6 +8,7 @@ import LearnView from './components/LearnView'
 
 const PROFILES_KEY = 'work-profiles-data'
 const CREDITS_KEY = 'work-profiles-credits'
+const WP_EXPORT_KEY = 'wp-profiles-export'
 
 function load<T>(key: string): T[] {
   try {
@@ -21,15 +22,30 @@ function save<T>(key: string, data: T[]) {
   localStorage.setItem(key, JSON.stringify(data))
 }
 
+function publishExport(profiles: WorkProfile[]) {
+  const payload = {
+    teamCapacity: profiles.reduce((sum, p) => sum + (p.capacity ?? 0), 0),
+    profiles: profiles.map(({ id, name, role, skills, capacity, workTypes }) => ({
+      id, name, role, skills, capacity, workTypes,
+    })),
+  }
+  localStorage.setItem(WP_EXPORT_KEY, JSON.stringify(payload))
+}
+
 export default function App() {
   const { t, i18n } = useTranslation()
   const [screen, setScreen] = useState<Screen>('profiles')
-  const [profiles, setProfiles] = useState<WorkProfile[]>(() => load(PROFILES_KEY))
+  const [profiles, setProfiles] = useState<WorkProfile[]>(() => {
+    const data = load<WorkProfile>(PROFILES_KEY)
+    publishExport(data)
+    return data
+  })
   const [credits, setCredits] = useState<ProjectCredit[]>(() => load(CREDITS_KEY))
 
   const updateProfiles = (next: WorkProfile[]) => {
     setProfiles(next)
     save(PROFILES_KEY, next)
+    publishExport(next)
   }
 
   const updateCredits = (next: ProjectCredit[]) => {
