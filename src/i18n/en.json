@@ -22,6 +22,7 @@
     "role_label": "Role / Title",
     "role_placeholder": "e.g. Senior Developer",
     "capacity_label": "Capacity (%)",
+    "template_label": "Start from a template (optional)",
     "skills_label": "Skills",
     "skill_name_placeholder": "Skill name (e.g. TypeScript)",
     "add_skill": "Add Skill",

@@ -22,6 +22,7 @@
     "role_label": "Роля / Пасада",
     "role_placeholder": "напр. Старэйшы распрацоўшчык",
     "capacity_label": "Загрузка (%)",
+    "template_label": "Пачаць з шаблону (неабавязкова)",
     "skills_label": "Навыкі",
     "skill_name_placeholder": "Назва навыку (напр. TypeScript)",
     "add_skill": "Дадаць навык",
