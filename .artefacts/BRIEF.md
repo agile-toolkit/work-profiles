@@ -12,13 +12,14 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Wire orphan i18n keys — `profiles.title`, `profiles.work_types`, `matrix.all_skills`, `credits.total_points`, `credits.delete` all wired; `profiles.directory_heading` removed
 - [x] ES + BE locale files — full Spanish and Belarusian translations added; language switcher upgraded to 4-language `<select>` (EN/ES/BE/RU)
 - [x] Integration export — writes `wp-profiles-export` localStorage key on every profile change and at startup; payload: `{teamCapacity, profiles:[{id,name,role,skills,capacity,workTypes}]}`; Planning Poker and Sprint Metrics can read this key directly (issue #3)
+- [x] Role-based starter templates — 5 static role pills (Frontend Dev, Backend Dev, Scrum Master, Product Owner, QA Engineer) appear in the New Profile form; selecting one pre-fills role, skills (5 per template at appropriate Dreyfus levels), and preferred work types; only shown for new profiles (issue #6)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
 - [x] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics — implemented via `wp-profiles-export` localStorage key
 - [ ] [#4] Feature: profile search and skill gap analysis (changes-requested — pending revision)
 - [ ] [#5] Feature: export team directory as CSV and printable HTML (changes-requested — pending revision)
-- [ ] [#6] UX: role-based starter templates to reduce blank-page friction
+- [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented
 - [ ] [#7] Technical: PWA support for offline use and device installation
 
 ## Tech notes
@@ -27,6 +28,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `wp-profiles-export` localStorage contract: `{ teamCapacity: number, profiles: Array<{ id, name, role, skills: Skill[], capacity: number, workTypes: WorkType[] }> }`. Written by `publishExport()` in `App.tsx` on every `updateProfiles` call and at app startup. Planning Poker and Sprint Metrics read this key directly — do not rename it.
 
 ## Agent Log
+
+### 2026-05-08 — feat: role-based starter templates (issue #6)
+- Done: added `ROLE_TEMPLATES` constant in `ProfileForm.tsx` with 5 agile roles (Frontend Dev, Backend Dev, Scrum Master, Product Owner, QA Engineer); each template pre-fills role name, 5 skills with Dreyfus-appropriate proficiency levels, and relevant work types; template picker renders as pills above the skills section for new profiles only; active pill highlights in brand colour; added `profile_form.template_label` i18n key to all 4 locale files; questions resolved — role names kept in English (industry standard), 5 roles selected as most common agile team roles, templates are static
+- Remaining backlog: #5 (CSV/HTML export, changes-requested), #7 (PWA, approved)
+- Next task: implement #7 (PWA support using vite-plugin-pwa: npm install -D vite-plugin-pwa, configure in vite.config.ts with registerType autoUpdate and manifest, add placeholder icons in public/; resolve open questions per UX best practices — add reload toast, use placeholder icons initially, pilot on work-profiles first)
 
 ### 2026-04-28 — feat: wp-profiles-export localStorage integration (issue #3)
 - Done: added `publishExport()` in `App.tsx` that writes `wp-profiles-export` localStorage key with `{teamCapacity, profiles}` payload on every profile mutation and at app startup; Planning Poker and Sprint Metrics can now read this key without any backend; closed issue #3

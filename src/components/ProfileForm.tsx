@@ -5,6 +5,68 @@ import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
 const WORK_TYPES: WorkType[] = ['design', 'development', 'testing', 'analysis', 'facilitation', 'writing', 'mentoring', 'ops']
 const PROFICIENCY_LEVELS: ProficiencyLevel[] = [1, 2, 3, 4, 5]
 
+const ROLE_TEMPLATES: Array<{
+  role: string
+  workTypes: WorkType[]
+  skills: Array<{ name: string; proficiency: ProficiencyLevel }>
+}> = [
+  {
+    role: 'Frontend Dev',
+    workTypes: ['development', 'design'],
+    skills: [
+      { name: 'TypeScript', proficiency: 4 },
+      { name: 'React', proficiency: 4 },
+      { name: 'CSS / Tailwind', proficiency: 3 },
+      { name: 'Testing', proficiency: 3 },
+      { name: 'Accessibility', proficiency: 2 },
+    ],
+  },
+  {
+    role: 'Backend Dev',
+    workTypes: ['development', 'ops'],
+    skills: [
+      { name: 'Node.js', proficiency: 4 },
+      { name: 'REST APIs', proficiency: 4 },
+      { name: 'SQL', proficiency: 3 },
+      { name: 'Docker', proficiency: 3 },
+      { name: 'Testing', proficiency: 2 },
+    ],
+  },
+  {
+    role: 'Scrum Master',
+    workTypes: ['facilitation', 'mentoring'],
+    skills: [
+      { name: 'Agile / Scrum', proficiency: 5 },
+      { name: 'Facilitation', proficiency: 4 },
+      { name: 'Coaching', proficiency: 3 },
+      { name: 'Conflict Resolution', proficiency: 3 },
+      { name: 'Metrics', proficiency: 3 },
+    ],
+  },
+  {
+    role: 'Product Owner',
+    workTypes: ['analysis', 'writing'],
+    skills: [
+      { name: 'Backlog Management', proficiency: 4 },
+      { name: 'Stakeholder Comms', proficiency: 4 },
+      { name: 'User Story Writing', proficiency: 4 },
+      { name: 'Prioritisation', proficiency: 3 },
+      { name: 'Data Analysis', proficiency: 2 },
+    ],
+  },
+  {
+    role: 'QA Engineer',
+    workTypes: ['testing', 'analysis'],
+    skills: [
+      { name: 'Test Planning', proficiency: 4 },
+      { name: 'Bug Reporting', proficiency: 4 },
+      { name: 'Automation', proficiency: 3 },
+      { name: 'API Testing', proficiency: 3 },
+      { name: 'Performance Testing', proficiency: 2 },
+    ],
+  },
+]
+
 interface Props {
   initial?: WorkProfile | null
   onSave: (profile: WorkProfile) => void
@@ -21,6 +83,14 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
   const [workTypes, setWorkTypes] = useState<WorkType[]>(initial?.workTypes ?? [])
   const [newSkill, setNewSkill] = useState('')
   const [newSkillLevel, setNewSkillLevel] = useState<ProficiencyLevel>(3)
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+
+  const applyTemplate = (tpl: typeof ROLE_TEMPLATES[0]) => {
+    setSelectedTemplate(tpl.role)
+    setRole(tpl.role)
+    setWorkTypes(tpl.workTypes)
+    setSkills(tpl.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency })))
+  }
 
   const addSkill = () => {
     if (!newSkill.trim()) return
@@ -68,6 +138,29 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
               <input type="number" min={10} max={100} step={10} className="input" value={capacity} onChange={e => setCapacity(Number(e.target.value))} />
             </div>
           </div>
+
+          {/* Role templates — new profiles only */}
+          {!initial && (
+            <div>
+              <label className="label">{t('profile_form.template_label')}</label>
+              <div className="flex flex-wrap gap-2">
+                {ROLE_TEMPLATES.map(tpl => (
+                  <button
+                    key={tpl.role}
+                    type="button"
+                    onClick={() => applyTemplate(tpl)}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                      selectedTemplate === tpl.role
+                        ? 'bg-brand-600 text-white border-brand-600'
+                        : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {tpl.role}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Skills */}
           <div>

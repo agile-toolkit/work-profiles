@@ -22,6 +22,7 @@
     "role_label": "Роль / Должность",
     "role_placeholder": "например, Senior Developer",
     "capacity_label": "Загрузка (%)",
+    "template_label": "Начать с шаблона (необязательно)",
     "skills_label": "Навыки",
     "skill_name_placeholder": "Название навыка (например, TypeScript)",
     "add_skill": "Добавить навык",

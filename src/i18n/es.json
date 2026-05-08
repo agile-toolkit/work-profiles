@@ -22,6 +22,7 @@
     "role_label": "Rol / Título",
     "role_placeholder": "p. ej. Desarrollador Senior",
     "capacity_label": "Capacidad (%)",
+    "template_label": "Comenzar desde una plantilla (opcional)",
     "skills_label": "Habilidades",
     "skill_name_placeholder": "Nombre de la habilidad (p. ej. TypeScript)",
     "add_skill": "Añadir habilidad",
