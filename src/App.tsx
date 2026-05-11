@@ -5,6 +5,7 @@ import ProfilesView from './components/ProfilesView'
 import SkillMatrix from './components/SkillMatrix'
 import CreditsView from './components/CreditsView'
 import LearnView from './components/LearnView'
+import UpdateToast from './components/UpdateToast'
 
 const PROFILES_KEY = 'work-profiles-data'
 const CREDITS_KEY = 'work-profiles-credits'
@@ -128,6 +129,7 @@ export default function App() {
         )}
         {screen === 'learn' && <LearnView />}
       </main>
+      <UpdateToast />
     </div>
   )
 }
