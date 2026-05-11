@@ -20,7 +20,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#4] Feature: profile search and skill gap analysis (changes-requested — pending revision)
 - [ ] [#5] Feature: export team directory as CSV and printable HTML (changes-requested — pending revision)
 - [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented
-- [ ] [#7] Technical: PWA support for offline use and device installation
+- [x] [#7] Technical: PWA support for offline use and device installation — implemented
 
 ## Tech notes
 
@@ -28,6 +28,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `wp-profiles-export` localStorage contract: `{ teamCapacity: number, profiles: Array<{ id, name, role, skills: Skill[], capacity: number, workTypes: WorkType[] }> }`. Written by `publishExport()` in `App.tsx` on every `updateProfiles` call and at app startup. Planning Poker and Sprint Metrics read this key directly — do not rename it.
 
 ## Agent Log
+
+### 2026-05-11 — feat: PWA support (issue #7)
+- Done: installed `vite-plugin-pwa` v1.3.0; configured `vite.config.ts` with `registerType: autoUpdate`, workbox cache glob, manifest block (name, short_name, theme_color #ca8a04, 192×192 and 512×512 placeholder PNG icons); created `src/components/UpdateToast.tsx` using `useRegisterSW` hook showing "Update available / Reload" toast; added `src/pwa.d.ts` triple-slash reference; added `UpdateToast` to `App.tsx`; created placeholder round amber PNG icons in `public/`; build generates `dist/sw.js` and workbox assets
+- Remaining backlog: #4 (skill gap analysis, changes-requested), #5 (CSV/HTML export, changes-requested)
+- Next task: check issues for human feedback
 
 ### 2026-05-08 — feat: role-based starter templates (issue #6)
 - Done: added `ROLE_TEMPLATES` constant in `ProfileForm.tsx` with 5 agile roles (Frontend Dev, Backend Dev, Scrum Master, Product Owner, QA Engineer); each template pre-fills role name, 5 skills with Dreyfus-appropriate proficiency levels, and relevant work types; template picker renders as pills above the skills section for new profiles only; active pill highlights in brand colour; added `profile_form.template_label` i18n key to all 4 locale files; questions resolved — role names kept in English (industry standard), 5 roles selected as most common agile team roles, templates are static
