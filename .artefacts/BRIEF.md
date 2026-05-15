@@ -17,10 +17,13 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
 - [x] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics — implemented via `wp-profiles-export` localStorage key
-- [ ] [#4] Feature: profile search and skill gap analysis (changes-requested — pending revision)
-- [ ] [#5] Feature: export team directory as CSV and printable HTML (changes-requested — pending revision)
-- [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented
-- [x] [#7] Technical: PWA support for offline use and device installation — implemented
+- [ ] [#4] Feature: profile search and skill gap analysis (ready — spec revised: dedicated Gap Analysis screen + both phases)
+- [ ] [#5] Feature: export team directory as CSV and printable HTML (ready — spec revised: header button, CSV only, "Skill: Level – Label" format)
+- [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented, In Review
+- [x] [#7] Technical: PWA support for offline use and device installation — implemented, In Review
+- [ ] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card (needs-review)
+- [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles (needs-review)
+- [ ] [#14] Feature: bulk import team profiles from CSV (needs-review)
 
 ## Tech notes
 
@@ -28,6 +31,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `wp-profiles-export` localStorage contract: `{ teamCapacity: number, profiles: Array<{ id, name, role, skills: Skill[], capacity: number, workTypes: WorkType[] }> }`. Written by `publishExport()` in `App.tsx` on every `updateProfiles` call and at app startup. Planning Poker and Sprint Metrics read this key directly — do not rename it.
 
 ## Agent Log
+
+### 2026-05-15 — research: Dashboard key, Team Identity integration, bulk import
+- Done: set issues #6 and #7 (approved, already implemented) to In Review in project; updated issue #4 spec (dedicated Gap Analysis screen, both Phase 1 filter + Phase 2 screen confirmed); updated issue #5 spec (header button, CSV only, "Skill: Level – Label" format); set #4 and #5 to Ready in project; created #12 (work-profiles:lastSession Dashboard key), #13 (Team Identity member auto-populate from wp-profiles-export), #14 (bulk CSV import companion to export)
+- Waiting for human review on #12, #13, #14
+- Next task: check issues for human feedback; implement first approved item among #4 (skill filter in ProfilesView + Gap Analysis screen with new /gap-analysis route), #5 (Export CSV + Print Directory buttons in ProfilesView header), #12 (lastSession key in App.tsx updateProfiles()), #13 (Team Identity integration — lives in team-identity repo), #14 (CSV import with preview modal)
 
 ### 2026-05-11 — feat: PWA support (issue #7)
 - Done: installed `vite-plugin-pwa` v1.3.0; configured `vite.config.ts` with `registerType: autoUpdate`, workbox cache glob, manifest block (name, short_name, theme_color #ca8a04, 192×192 and 512×512 placeholder PNG icons); created `src/components/UpdateToast.tsx` using `useRegisterSW` hook showing "Update available / Reload" toast; added `src/pwa.d.ts` triple-slash reference; added `UpdateToast` to `App.tsx`; created placeholder round amber PNG icons in `public/`; build generates `dist/sw.js` and workbox assets
