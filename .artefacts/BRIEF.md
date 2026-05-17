@@ -24,6 +24,9 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card (needs-review)
 - [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles (needs-review)
 - [ ] [#14] Feature: bulk import team profiles from CSV (needs-review)
+- [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles (needs-review)
+- [ ] [#16] UX: improve empty state and first-run onboarding for new teams (needs-review)
+- [ ] [#17] Feature: profile archive (soft delete) to preserve history (needs-review)
 
 ## Tech notes
 
@@ -31,6 +34,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `wp-profiles-export` localStorage contract: `{ teamCapacity: number, profiles: Array<{ id, name, role, skills: Skill[], capacity: number, workTypes: WorkType[] }> }`. Written by `publishExport()` in `App.tsx` on every `updateProfiles` call and at app startup. Planning Poker and Sprint Metrics read this key directly — do not rename it.
 
 ## Agent Log
+
+### 2026-05-17 — research: Change Planner integration, onboarding UX, profile archive
+- Done: checked all open issues — #4 and #5 (changes-requested, specs already revised to Ready in last run), #6 and #7 (approved, already implemented), #12/#13/#14 (needs-review, awaiting human); created #15 (Change Planner stakeholder auto-fill from wp-profiles-export), #16 (empty state + first-run onboarding with 3 action cards and step checklist), #17 (profile archive/soft-delete to preserve credits history); set all three to Backlog in project
+- Waiting for human review on #12, #13, #14, #15, #16, #17; waiting for approval on #4 and #5
+- Next task: check issues for human feedback; implement first approved item among #4 (skill filter in ProfilesView + Gap Analysis screen at /gap-analysis route), #5 (Export CSV button in ProfilesView header + Blob download, no library), #12 (work-profiles:lastSession key in App.tsx updateProfiles()), #14 (CSV import with FileReader + preview modal), #16 (empty state in ProfilesView when profiles.length === 0), #17 (archived field in WorkProfile type + Archive button in ProfileCard)
 
 ### 2026-05-15 — research: Dashboard key, Team Identity integration, bulk import
 - Done: set issues #6 and #7 (approved, already implemented) to In Review in project; updated issue #4 spec (dedicated Gap Analysis screen, both Phase 1 filter + Phase 2 screen confirmed); updated issue #5 spec (header button, CSV only, "Skill: Level – Label" format); set #4 and #5 to Ready in project; created #12 (work-profiles:lastSession Dashboard key), #13 (Team Identity member auto-populate from wp-profiles-export), #14 (bulk CSV import companion to export)
