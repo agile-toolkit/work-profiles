@@ -1,6 +1,89 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
+
+interface CsvProfile {
+  name: string
+  role: string
+  capacity: number
+  workTypes: WorkType[]
+  skills: Skill[]
+}
+
+function parseCsvRow(row: string): string[] {
+  const result: string[] = []
+  let field = ''
+  let inQuotes = false
+  for (let i = 0; i < row.length; i++) {
+    if (row[i] === '"') {
+      inQuotes = !inQuotes
+    } else if (row[i] === ',' && !inQuotes) {
+      result.push(field.trim())
+      field = ''
+    } else {
+      field += row[i]
+    }
+  }
+  result.push(field.trim())
+  return result
+}
+
+const VALID_WORK_TYPES: WorkType[] = [
+  'design', 'development', 'testing', 'analysis',
+  'facilitation', 'writing', 'mentoring', 'ops',
+]
+
+function parseSkills(raw: string): Skill[] {
+  if (!raw.trim()) return []
+  return raw.split(';').flatMap(part => {
+    const trimmed = part.trim()
+    if (!trimmed) return []
+    const colonIdx = trimmed.indexOf(':')
+    if (colonIdx === -1) return []
+    const name = trimmed.slice(0, colonIdx).trim()
+    if (!name) return []
+    const rest = trimmed.slice(colonIdx + 1).trim()
+    const dashIdx = rest.search(/[–-]/)
+    const levelStr = dashIdx !== -1 ? rest.slice(0, dashIdx).trim() : rest.trim()
+    const level = parseInt(levelStr, 10)
+    if (isNaN(level) || level < 1 || level > 5) return []
+    return [{ id: crypto.randomUUID(), name, proficiency: level as ProficiencyLevel }]
+  })
+}
+
+function parseWorkTypes(raw: string): WorkType[] {
+  if (!raw.trim()) return []
+  return raw.split(';').flatMap(part => {
+    const wt = part.trim().toLowerCase() as WorkType
+    return VALID_WORK_TYPES.includes(wt) ? [wt] : []
+  })
+}
+
+function parseCsv(text: string): CsvProfile[] {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+  if (lines.length < 2) return []
+  const headers = parseCsvRow(lines[0]).map(h => h.toLowerCase().replace(/\s+/g, ' '))
+  const nameIdx = headers.indexOf('name')
+  if (nameIdx === -1) return []
+  const roleIdx = headers.indexOf('role')
+  const capacityIdx = headers.indexOf('capacity')
+  const workTypesIdx = headers.indexOf('work types')
+  const skillsIdx = headers.indexOf('skills')
+  return lines.slice(1).flatMap(line => {
+    const fields = parseCsvRow(line)
+    const name = (fields[nameIdx] ?? '').trim()
+    if (!name) return []
+    const rawCapacity = parseInt(fields[capacityIdx] ?? '100', 10)
+    const capacity = isNaN(rawCapacity) ? 100 : Math.min(100, Math.max(10, rawCapacity))
+    return [{
+      name,
+      role: roleIdx !== -1 ? (fields[roleIdx] ?? '').trim() : '',
+      capacity,
+      workTypes: workTypesIdx !== -1 ? parseWorkTypes(fields[workTypesIdx] ?? '') : [],
+      skills: skillsIdx !== -1 ? parseSkills(fields[skillsIdx] ?? '') : [],
+    }]
+  })
+}
 
 const FE_TEMPLATE = {
   role: 'Frontend Dev',
@@ -14,16 +97,7 @@ const FE_TEMPLATE = {
   ],
 }
 
-const WORK_TYPES: WorkType[] = [
-  'design',
-  'development',
-  'testing',
-  'analysis',
-  'facilitation',
-  'writing',
-  'mentoring',
-  'ops',
-]
+const WORK_TYPES: WorkType[] = VALID_WORK_TYPES
 
 const LEVEL_COLORS: Record<number, string> = {
   1: 'bg-slate-200 text-slate-700',
@@ -42,6 +116,9 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
   const { t } = useTranslation()
   const [editId, setEditId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
+  const [csvPreview, setCsvPreview] = useState<CsvProfile[] | null>(null)
+  const [csvError, setCsvError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   function makeEmpty(): WorkProfile {
     return {
@@ -131,6 +208,75 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
     }))
   }
 
+  function openImport() {
+    setCsvError(null)
+    fileInputRef.current?.click()
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!fileInputRef.current) return
+    fileInputRef.current.value = ''
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const text = ev.target?.result as string
+      const parsed = parseCsv(text)
+      if (parsed.length === 0) {
+        setCsvError(t('profiles.import_empty'))
+      } else {
+        setCsvError(null)
+        setCsvPreview(parsed)
+      }
+    }
+    reader.onerror = () => setCsvError(t('profiles.import_error'))
+    reader.readAsText(file)
+  }
+
+  function confirmImport() {
+    if (!csvPreview) return
+    const updated = [...profiles]
+    for (const csv of csvPreview) {
+      const existingIdx = updated.findIndex(p => p.name.toLowerCase() === csv.name.toLowerCase())
+      if (existingIdx !== -1) {
+        updated[existingIdx] = {
+          ...updated[existingIdx],
+          role: csv.role || updated[existingIdx].role,
+          capacity: csv.capacity,
+          workTypes: csv.workTypes.length > 0 ? csv.workTypes : updated[existingIdx].workTypes,
+          skills: csv.skills.length > 0 ? csv.skills : updated[existingIdx].skills,
+        }
+      } else {
+        updated.push({
+          id: crypto.randomUUID(),
+          name: csv.name,
+          role: csv.role,
+          capacity: csv.capacity,
+          workTypes: csv.workTypes,
+          skills: csv.skills,
+          interests: [],
+          createdAt: Date.now(),
+        })
+      }
+    }
+    onProfiles(updated)
+    setCsvPreview(null)
+  }
+
+  function countNewProfiles(): number {
+    if (!csvPreview) return 0
+    return csvPreview.filter(
+      csv => !profiles.some(p => p.name.toLowerCase() === csv.name.toLowerCase())
+    ).length
+  }
+
+  function countUpdatedProfiles(): number {
+    if (!csvPreview) return 0
+    return csvPreview.filter(
+      csv => profiles.some(p => p.name.toLowerCase() === csv.name.toLowerCase())
+    ).length
+  }
+
   const showForm = adding || editId !== null
   const levels: ProficiencyLevel[] = [1, 2, 3, 4, 5]
 
@@ -138,10 +284,27 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">{t('profiles.title')}</h2>
-        <button type="button" onClick={openAdd} className="btn-primary">
-          + {t('profiles.add')}
-        </button>
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={openImport} className="btn-secondary text-sm">
+            {t('profiles.import')}
+          </button>
+          <button type="button" onClick={openAdd} className="btn-primary">
+            + {t('profiles.add')}
+          </button>
+        </div>
       </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".csv,text/csv"
+        className="hidden"
+        onChange={handleFileChange}
+      />
+      {csvError && (
+        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">
+          {csvError}
+        </div>
+      )}
 
       <div className="bg-brand-50 border border-brand-200 rounded-xl p-3 text-sm text-brand-900">
         <strong>{t('profiles.dreyfus_title')}:</strong> {t('profiles.dreyfus_body')}
@@ -175,11 +338,15 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
               <p className="text-sm text-brand-600">{t('profiles.onboarding_template_sub')}</p>
             </button>
 
-            <div className="card opacity-50 cursor-not-allowed">
+            <button
+              type="button"
+              onClick={openImport}
+              className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer"
+            >
               <div className="text-2xl mb-2">📥</div>
               <h4 className="font-medium text-gray-900 mb-1">{t('profiles.onboarding_import')}</h4>
               <p className="text-sm text-gray-500">{t('profiles.onboarding_import_sub')}</p>
-            </div>
+            </button>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500">
@@ -399,6 +566,50 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
             >
               {t('profile_form.cancel')}
             </button>
+          </div>
+        </div>
+      )}
+
+      {csvPreview && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900">{t('profiles.import_modal_title')}</h3>
+            <p className="text-gray-600 text-sm">
+              {t('profiles.import_found', { count: csvPreview.length })}
+            </p>
+            <div className="flex gap-4 text-sm">
+              <span className="flex items-center gap-1.5 text-green-700">
+                <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                {t('profiles.import_new', { count: countNewProfiles() })}
+              </span>
+              {countUpdatedProfiles() > 0 && (
+                <span className="flex items-center gap-1.5 text-amber-700">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
+                  {t('profiles.import_update', { count: countUpdatedProfiles() })}
+                </span>
+              )}
+            </div>
+            <div className="max-h-48 overflow-y-auto border border-gray-100 rounded-lg divide-y divide-gray-50">
+              {csvPreview.map((csv, i) => {
+                const isUpdate = profiles.some(p => p.name.toLowerCase() === csv.name.toLowerCase())
+                return (
+                  <div key={i} className="flex items-center justify-between px-3 py-2 text-sm">
+                    <span className="text-gray-800 font-medium">{csv.name}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${isUpdate ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
+                      {isUpdate ? t('profiles.import_tag_update') : t('profiles.import_tag_new')}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button type="button" onClick={confirmImport} className="btn-primary flex-1">
+                {t('profiles.import_confirm')}
+              </button>
+              <button type="button" onClick={() => setCsvPreview(null)} className="btn-secondary flex-1">
+                {t('profiles.import_cancel')}
+              </button>
+            </div>
           </div>
         </div>
       )}

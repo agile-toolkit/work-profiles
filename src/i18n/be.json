@@ -20,10 +20,21 @@
     "onboarding_template": "Пачаць з шаблону",
     "onboarding_template_sub": "Папярэдне запоўнены навыкамі Frontend Dev",
     "onboarding_import": "Імпарт з CSV",
-    "onboarding_import_sub": "Хутка",
+    "onboarding_import_sub": "Загрузіце табліцу, каб дадаць каманду",
     "onboarding_step1": "Дадаць прафілі",
     "onboarding_step2": "Прагледзець матрыцу навыкаў",
-    "onboarding_step3": "Весці крэдыты"
+    "onboarding_step3": "Весці крэдыты",
+    "import": "Імпарт CSV",
+    "import_modal_title": "Імпарт прафіляў з CSV",
+    "import_found": "Знойдзена {{count}} прафіляў",
+    "import_new": "{{count}} новых",
+    "import_update": "{{count}} будуць абноўлены",
+    "import_tag_new": "новы",
+    "import_tag_update": "абнаўленне",
+    "import_confirm": "Імпартаваць усё",
+    "import_cancel": "Адмена",
+    "import_empty": "Валідных прафіляў у файле не знойдзена. Праверце наяўнасць калонкі Name.",
+    "import_error": "Не ўдалося прачытаць файл. Упэўніцеся, што гэта дапушчальны CSV."
   },
   "profile_form": {
     "title_new": "Новы прафіль работніка",
