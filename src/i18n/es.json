@@ -12,7 +12,18 @@
     "delete_confirm": "¿Eliminar este perfil?",
     "skills_count": "habilidades",
     "capacity": "capacidad",
-    "work_types": "Tipos de trabajo"
+    "work_types": "Tipos de trabajo",
+    "onboarding_headline": "El directorio de tu equipo está vacío",
+    "onboarding_subtext": "Añade a cada miembro del equipo una vez — Work Profiles realiza un seguimiento de habilidades, capacidad y preferencias de tipo de trabajo para todo el equipo.",
+    "onboarding_add": "Añadir primer perfil",
+    "onboarding_add_sub": "Comenzar con un perfil en blanco",
+    "onboarding_template": "Comenzar desde una plantilla",
+    "onboarding_template_sub": "Prellenado con habilidades de Frontend Dev",
+    "onboarding_import": "Importar desde CSV",
+    "onboarding_import_sub": "Próximamente",
+    "onboarding_step1": "Añadir perfiles",
+    "onboarding_step2": "Revisar la matriz de habilidades",
+    "onboarding_step3": "Registrar créditos"
   },
   "profile_form": {
     "title_new": "Nuevo perfil de trabajo",

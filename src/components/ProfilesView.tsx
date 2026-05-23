@@ -2,6 +2,18 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
 
+const FE_TEMPLATE = {
+  role: 'Frontend Dev',
+  workTypes: ['development', 'design'] as WorkType[],
+  skills: [
+    { name: 'TypeScript', proficiency: 4 as ProficiencyLevel },
+    { name: 'React', proficiency: 4 as ProficiencyLevel },
+    { name: 'CSS / Tailwind', proficiency: 3 as ProficiencyLevel },
+    { name: 'Testing', proficiency: 3 as ProficiencyLevel },
+    { name: 'Accessibility', proficiency: 2 as ProficiencyLevel },
+  ],
+}
+
 const WORK_TYPES: WorkType[] = [
   'design',
   'development',
@@ -48,6 +60,17 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
 
   function openAdd() {
     setDraft(makeEmpty())
+    setAdding(true)
+    setEditId(null)
+  }
+
+  function openAddWithTemplate() {
+    setDraft({
+      ...makeEmpty(),
+      role: FE_TEMPLATE.role,
+      workTypes: FE_TEMPLATE.workTypes,
+      skills: FE_TEMPLATE.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency })),
+    })
     setAdding(true)
     setEditId(null)
   }
@@ -125,7 +148,57 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
       </div>
 
       {profiles.length === 0 && !showForm && (
-        <p className="text-gray-400 text-sm italic">{t('profiles.empty')}</p>
+        <div className="py-10 space-y-8">
+          <div className="text-center space-y-2">
+            <h3 className="text-xl font-semibold text-gray-900">{t('profiles.onboarding_headline')}</h3>
+            <p className="text-gray-500 max-w-md mx-auto text-sm">{t('profiles.onboarding_subtext')}</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button
+              type="button"
+              onClick={openAdd}
+              className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer"
+            >
+              <div className="text-2xl mb-2">👤</div>
+              <h4 className="font-medium text-gray-900 mb-1">{t('profiles.onboarding_add')}</h4>
+              <p className="text-sm text-gray-500">{t('profiles.onboarding_add_sub')}</p>
+            </button>
+
+            <button
+              type="button"
+              onClick={openAddWithTemplate}
+              className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer border-brand-200 bg-brand-50"
+            >
+              <div className="text-2xl mb-2">⚡</div>
+              <h4 className="font-medium text-brand-700 mb-1">{t('profiles.onboarding_template')}</h4>
+              <p className="text-sm text-brand-600">{t('profiles.onboarding_template_sub')}</p>
+            </button>
+
+            <div className="card opacity-50 cursor-not-allowed">
+              <div className="text-2xl mb-2">📥</div>
+              <h4 className="font-medium text-gray-900 mb-1">{t('profiles.onboarding_import')}</h4>
+              <p className="text-sm text-gray-500">{t('profiles.onboarding_import_sub')}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500">
+            <span className="flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">1</span>
+              {t('profiles.onboarding_step1')}
+            </span>
+            <span className="text-gray-300">→</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-bold">2</span>
+              {t('profiles.onboarding_step2')}
+            </span>
+            <span className="text-gray-300">→</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-bold">3</span>
+              {t('profiles.onboarding_step3')}
+            </span>
+          </div>
+        </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

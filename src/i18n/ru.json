@@ -12,7 +12,18 @@
     "delete_confirm": "Удалить этот профиль?",
     "skills_count": "навыков",
     "capacity": "загрузка",
-    "work_types": "Типы работ"
+    "work_types": "Типы работ",
+    "onboarding_headline": "Директория вашей команды пуста",
+    "onboarding_subtext": "Добавьте каждого члена команды один раз — Work Profiles отслеживает навыки, загрузку и предпочтения типов работ для всей команды.",
+    "onboarding_add": "Добавить первый профиль",
+    "onboarding_add_sub": "Начать с чистого профиля",
+    "onboarding_template": "Начать с шаблона",
+    "onboarding_template_sub": "Заполнено навыками Frontend Dev",
+    "onboarding_import": "Импорт из CSV",
+    "onboarding_import_sub": "Скоро",
+    "onboarding_step1": "Добавить профили",
+    "onboarding_step2": "Проверить матрицу навыков",
+    "onboarding_step3": "Вести кредиты"
   },
   "profile_form": {
     "title_new": "Новый профиль",
