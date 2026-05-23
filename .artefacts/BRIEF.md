@@ -26,7 +26,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles (needs-review)
 - [ ] [#14] Feature: bulk import team profiles from CSV (needs-review)
 - [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles (needs-review)
-- [ ] [#16] UX: improve empty state and first-run onboarding for new teams (needs-review)
+- [x] [#16] UX: improve empty state and first-run onboarding for new teams — implemented
 - [ ] [#17] Feature: profile archive (soft delete) to preserve history (needs-review)
 
 ## localStorage keys
@@ -45,6 +45,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-05-23 — feat: empty state onboarding for new teams (issue #16)
+- Done: replaced bare `<p>` empty state in `ProfilesView.tsx` with structured onboarding block shown when `profiles.length === 0 && !showForm`; includes headline, subtext, three action cards ("Add first profile" → blank form, "Start from a template" → form pre-filled with Frontend Dev skills, "Import from CSV" → disabled/coming soon), and a 3-step visual checklist (Add profiles → Review Skill Matrix → Track Credits); added `FE_TEMPLATE` constant and `openAddWithTemplate()` function; added 11 new i18n keys (`profiles.onboarding_*`) in all 4 locale files (EN/ES/BE/RU); set issue #16 to In Review in project
+- Remaining approved backlog: #14 (CSV bulk import), #17 (profile archive), #18 (AppHeader unification), #19 (dark mode)
+- Next task: implement #14 (CSV bulk import in ProfilesView: hidden file input + FileReader + preview modal showing count + merge-by-name into profiles array, no library needed)
 
 ### 2026-05-23 — feat: work-profiles:lastSession Dashboard key (issue #12)
 - Done: added `publishLastSession()` in `App.tsx`; writes `work-profiles:lastSession` key with `{profileCount, avgCapacity, topSkills[5], lastUpdated}` on every `updateProfiles()` call and at startup; topSkills sorted by frequency (count of profiles having the skill); added `## localStorage keys` section to BRIEF.md documenting all 4 keys
