@@ -20,10 +20,21 @@
     "onboarding_template": "Comenzar desde una plantilla",
     "onboarding_template_sub": "Prellenado con habilidades de Frontend Dev",
     "onboarding_import": "Importar desde CSV",
-    "onboarding_import_sub": "Próximamente",
+    "onboarding_import_sub": "Sube una hoja de cálculo para añadir tu equipo",
     "onboarding_step1": "Añadir perfiles",
     "onboarding_step2": "Revisar la matriz de habilidades",
-    "onboarding_step3": "Registrar créditos"
+    "onboarding_step3": "Registrar créditos",
+    "import": "Importar CSV",
+    "import_modal_title": "Importar perfiles desde CSV",
+    "import_found": "Se encontraron {{count}} perfiles",
+    "import_new": "{{count}} nuevos",
+    "import_update": "{{count}} se actualizarán",
+    "import_tag_new": "nuevo",
+    "import_tag_update": "actualizar",
+    "import_confirm": "Importar todos",
+    "import_cancel": "Cancelar",
+    "import_empty": "No se encontraron perfiles válidos en el archivo. Verifica que tenga una columna Nombre.",
+    "import_error": "No se pudo leer el archivo. Asegúrate de que sea un CSV válido."
   },
   "profile_form": {
     "title_new": "Nuevo perfil de trabajo",

@@ -20,10 +20,21 @@
     "onboarding_template": "Start from a template",
     "onboarding_template_sub": "Pre-filled with Frontend Dev skills",
     "onboarding_import": "Import from CSV",
-    "onboarding_import_sub": "Coming soon",
+    "onboarding_import_sub": "Upload a spreadsheet to add your team",
     "onboarding_step1": "Add profiles",
     "onboarding_step2": "Review Skill Matrix",
-    "onboarding_step3": "Track Credits"
+    "onboarding_step3": "Track Credits",
+    "import": "Import CSV",
+    "import_modal_title": "Import profiles from CSV",
+    "import_found": "Found {{count}} profiles",
+    "import_new": "{{count}} new",
+    "import_update": "{{count}} will update",
+    "import_tag_new": "new",
+    "import_tag_update": "update",
+    "import_confirm": "Import all",
+    "import_cancel": "Cancel",
+    "import_empty": "No valid profiles found in file. Check that the file has a Name column.",
+    "import_error": "Could not read file. Ensure it is a valid CSV."
   },
   "profile_form": {
     "title_new": "New Work Profile",

@@ -14,6 +14,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Integration export — writes `wp-profiles-export` localStorage key on every profile change and at startup; payload: `{teamCapacity, profiles:[{id,name,role,skills,capacity,workTypes}]}`; Planning Poker and Sprint Metrics can read this key directly (issue #3)
 - [x] Role-based starter templates — 5 static role pills (Frontend Dev, Backend Dev, Scrum Master, Product Owner, QA Engineer) appear in the New Profile form; selecting one pre-fills role, skills (5 per template at appropriate Dreyfus levels), and preferred work types; only shown for new profiles (issue #6)
 - [x] Dashboard lastSession key — writes `work-profiles:lastSession` on every profile change and at startup; payload: `{profileCount, avgCapacity, topSkills[5], lastUpdated}`; Dashboard reads this to surface "N members · X% avg capacity · Top skills: …" (issue #12)
+- [x] CSV bulk import — "Import CSV" button in ProfilesView header + hidden file input + FileReader parser; supports columns Name, Role, Capacity, Work Types (semicolon-separated), Skills (semicolon-separated "Skill: Level – Label" pairs); preview modal shows total count, new vs update breakdown per row; merge-by-name: same name = update existing, new name = append; onboarding Import card now clickable; i18n in all 4 locales (issue #14)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
@@ -24,7 +25,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#7] Technical: PWA support for offline use and device installation — implemented, In Review
 - [x] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card — implemented
 - [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles (needs-review)
-- [ ] [#14] Feature: bulk import team profiles from CSV (needs-review)
+- [x] [#14] Feature: bulk import team profiles from CSV — implemented
 - [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles (needs-review)
 - [x] [#16] UX: improve empty state and first-run onboarding for new teams — implemented
 - [ ] [#17] Feature: profile archive (soft delete) to preserve history (needs-review)
@@ -45,6 +46,12 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-05-23 — feat: CSV bulk import (issue #14)
+- Done: added `parseCsv()` + `parseSkills()` + `parseWorkTypes()` helpers in `ProfilesView.tsx`; hidden `<input type="file">` triggered by "Import CSV" header button; `FileReader` reads file, calls `parseCsv()`, sets `csvPreview` state; preview modal shows total count, green "N new" + amber "N will update" summary, scrollable per-row list with new/update tags, Import all + Cancel buttons; `confirmImport()` merges by name (case-insensitive); onboarding Import card now triggers import instead of being disabled; 10 new i18n keys in all 4 locale files
+- Set issue #14 to In Review in project
+- Remaining approved backlog: #17 (profile archive), and any newly approved items
+- Next task: check issues for human feedback; if #17 (profile archive) is approved, implement archived?: boolean in WorkProfile type, Archive button in ProfileCard, Show archived toggle in ProfilesView header
 
 ### 2026-05-23 — feat: empty state onboarding for new teams (issue #16)
 - Done: replaced bare `<p>` empty state in `ProfilesView.tsx` with structured onboarding block shown when `profiles.length === 0 && !showForm`; includes headline, subtext, three action cards ("Add first profile" → blank form, "Start from a template" → form pre-filled with Frontend Dev skills, "Import from CSV" → disabled/coming soon), and a 3-step visual checklist (Add profiles → Review Skill Matrix → Track Credits); added `FE_TEMPLATE` constant and `openAddWithTemplate()` function; added 11 new i18n keys (`profiles.onboarding_*`) in all 4 locale files (EN/ES/BE/RU); set issue #16 to In Review in project

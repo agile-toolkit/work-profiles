@@ -20,10 +20,21 @@
     "onboarding_template": "Начать с шаблона",
     "onboarding_template_sub": "Заполнено навыками Frontend Dev",
     "onboarding_import": "Импорт из CSV",
-    "onboarding_import_sub": "Скоро",
+    "onboarding_import_sub": "Загрузите таблицу, чтобы добавить команду",
     "onboarding_step1": "Добавить профили",
     "onboarding_step2": "Проверить матрицу навыков",
-    "onboarding_step3": "Вести кредиты"
+    "onboarding_step3": "Вести кредиты",
+    "import": "Импорт CSV",
+    "import_modal_title": "Импорт профилей из CSV",
+    "import_found": "Найдено профилей: {{count}}",
+    "import_new": "{{count}} новых",
+    "import_update": "{{count}} будут обновлены",
+    "import_tag_new": "новый",
+    "import_tag_update": "обновить",
+    "import_confirm": "Импортировать всё",
+    "import_cancel": "Отмена",
+    "import_empty": "В файле не найдено допустимых профилей. Убедитесь, что есть колонка Name.",
+    "import_error": "Не удалось прочитать файл. Убедитесь, что это корректный CSV."
   },
   "profile_form": {
     "title_new": "Новый профиль",
