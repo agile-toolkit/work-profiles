@@ -13,6 +13,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] ES + BE locale files — full Spanish and Belarusian translations added; language switcher upgraded to 4-language `<select>` (EN/ES/BE/RU)
 - [x] Integration export — writes `wp-profiles-export` localStorage key on every profile change and at startup; payload: `{teamCapacity, profiles:[{id,name,role,skills,capacity,workTypes}]}`; Planning Poker and Sprint Metrics can read this key directly (issue #3)
 - [x] Role-based starter templates — 5 static role pills (Frontend Dev, Backend Dev, Scrum Master, Product Owner, QA Engineer) appear in the New Profile form; selecting one pre-fills role, skills (5 per template at appropriate Dreyfus levels), and preferred work types; only shown for new profiles (issue #6)
+- [x] Dashboard lastSession key — writes `work-profiles:lastSession` on every profile change and at startup; payload: `{profileCount, avgCapacity, topSkills[5], lastUpdated}`; Dashboard reads this to surface "N members · X% avg capacity · Top skills: …" (issue #12)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
@@ -21,19 +22,34 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#5] Feature: export team directory as CSV and printable HTML (ready — spec revised: header button, CSV only, "Skill: Level – Label" format)
 - [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented, In Review
 - [x] [#7] Technical: PWA support for offline use and device installation — implemented, In Review
-- [ ] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card (needs-review)
+- [x] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card — implemented
 - [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles (needs-review)
 - [ ] [#14] Feature: bulk import team profiles from CSV (needs-review)
 - [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles (needs-review)
 - [ ] [#16] UX: improve empty state and first-run onboarding for new teams (needs-review)
 - [ ] [#17] Feature: profile archive (soft delete) to preserve history (needs-review)
 
+## localStorage keys
+
+| Key | Written by | Schema |
+|-----|-----------|--------|
+| `work-profiles-data` | `App.tsx` `save()` | `WorkProfile[]` — full profile array |
+| `work-profiles-credits` | `App.tsx` `save()` | `ProjectCredit[]` — credit log |
+| `wp-profiles-export` | `App.tsx` `publishExport()` | `{teamCapacity: number, profiles: [{id, name, role, skills, capacity, workTypes}]}` — read by Planning Poker and Sprint Metrics |
+| `work-profiles:lastSession` | `App.tsx` `publishLastSession()` | `{profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string}` — read by Dashboard |
+
 ## Tech notes
 
 - `` t(`profile_form.proficiency.${n}`) `` / work_types patterns — confirm before deleting nested keys.
 - `wp-profiles-export` localStorage contract: `{ teamCapacity: number, profiles: Array<{ id, name, role, skills: Skill[], capacity: number, workTypes: WorkType[] }> }`. Written by `publishExport()` in `App.tsx` on every `updateProfiles` call and at app startup. Planning Poker and Sprint Metrics read this key directly — do not rename it.
+- `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-05-23 — feat: work-profiles:lastSession Dashboard key (issue #12)
+- Done: added `publishLastSession()` in `App.tsx`; writes `work-profiles:lastSession` key with `{profileCount, avgCapacity, topSkills[5], lastUpdated}` on every `updateProfiles()` call and at startup; topSkills sorted by frequency (count of profiles having the skill); added `## localStorage keys` section to BRIEF.md documenting all 4 keys
+- Set issue #12 to In Review in project
+- Next task: implement next approved issue — #13 (Team Identity: auto-populate members from wp-profiles-export, lives in team-identity repo), #14 (CSV bulk import: FileReader + preview modal + merge-by-name), #16 (empty state in ProfilesView when profiles.length===0), #17 (archived?: boolean in WorkProfile + Archive button + Show archived toggle), #18 (AppHeader + LanguagePicker unification), #19 (light/dark theme + ThemeToggle); handle changes-requested issues #4 and #5 (update specs in issue bodies)
 
 ### 2026-05-17 — research: Change Planner integration, onboarding UX, profile archive
 - Done: checked all open issues — #4 and #5 (changes-requested, specs already revised to Ready in last run), #6 and #7 (approved, already implemented), #12/#13/#14 (needs-review, awaiting human); created #15 (Change Planner stakeholder auto-fill from wp-profiles-export), #16 (empty state + first-run onboarding with 3 action cards and step checklist), #17 (profile archive/soft-delete to preserve credits history); set all three to Backlog in project
