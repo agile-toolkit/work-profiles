@@ -10,6 +10,7 @@ import UpdateToast from './components/UpdateToast'
 const PROFILES_KEY = 'work-profiles-data'
 const CREDITS_KEY = 'work-profiles-credits'
 const WP_EXPORT_KEY = 'wp-profiles-export'
+const LAST_SESSION_KEY = 'work-profiles:lastSession'
 
 function load<T>(key: string): T[] {
   try {
@@ -21,6 +22,24 @@ function load<T>(key: string): T[] {
 
 function save<T>(key: string, data: T[]) {
   localStorage.setItem(key, JSON.stringify(data))
+}
+
+function publishLastSession(profiles: WorkProfile[]) {
+  const profileCount = profiles.length
+  const avgCapacity = profileCount > 0
+    ? Math.round(profiles.reduce((sum, p) => sum + (p.capacity ?? 0), 0) / profileCount)
+    : 0
+  const skillFreq = new Map<string, number>()
+  for (const profile of profiles) {
+    for (const skill of profile.skills) {
+      skillFreq.set(skill.name, (skillFreq.get(skill.name) ?? 0) + 1)
+    }
+  }
+  const topSkills = [...skillFreq.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name]) => name)
+  localStorage.setItem(LAST_SESSION_KEY, JSON.stringify({ profileCount, avgCapacity, topSkills, lastUpdated: new Date().toISOString() }))
 }
 
 function publishExport(profiles: WorkProfile[]) {
@@ -39,6 +58,7 @@ export default function App() {
   const [profiles, setProfiles] = useState<WorkProfile[]>(() => {
     const data = load<WorkProfile>(PROFILES_KEY)
     publishExport(data)
+    publishLastSession(data)
     return data
   })
   const [credits, setCredits] = useState<ProjectCredit[]>(() => load(CREDITS_KEY))
@@ -47,6 +67,7 @@ export default function App() {
     setProfiles(next)
     save(PROFILES_KEY, next)
     publishExport(next)
+    publishLastSession(next)
   }
 
   const updateCredits = (next: ProjectCredit[]) => {
