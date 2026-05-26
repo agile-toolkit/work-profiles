@@ -13,7 +13,8 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
   const { t } = useTranslation()
   const [showForm, setShowForm] = useState(false)
   const [showLeaderboard, setShowLeaderboard] = useState(false)
-  const [profileId, setProfileId] = useState(profiles[0]?.id ?? '')
+  const activeProfiles = profiles.filter(p => !p.archived)
+  const [profileId, setProfileId] = useState(activeProfiles[0]?.id ?? '')
   const [project, setProject] = useState('')
   const [contribution, setContribution] = useState('')
   const [points, setPoints] = useState(1)
@@ -88,7 +89,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
             <div>
               <label className="label">{t('credits.person_label')}</label>
               <select className="input" value={profileId} onChange={e => setProfileId(e.target.value)}>
-                {profiles.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                {activeProfiles.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
               </select>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -127,7 +128,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
               <div key={credit.id} className="card flex items-start gap-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-gray-900 text-sm">{person?.name ?? 'Unknown'}</span>
+                    <span className={`font-medium text-sm ${person?.archived ? 'text-gray-400 line-through' : 'text-gray-900'}`}>{person?.name ?? 'Unknown'}</span>
                     <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-semibold">
                       +{credit.points} pts
                     </span>

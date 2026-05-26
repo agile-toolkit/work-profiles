@@ -116,6 +116,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
   const { t } = useTranslation()
   const [editId, setEditId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
+  const [showArchived, setShowArchived] = useState(false)
   const [csvPreview, setCsvPreview] = useState<CsvProfile[] | null>(null)
   const [csvError, setCsvError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -176,6 +177,22 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
 
   function deleteProfile(id: string) {
     if (!confirm(t('profiles.delete_confirm'))) return
+    onProfiles(profiles.filter(p => p.id !== id))
+    if (editId === id) setEditId(null)
+  }
+
+  function archiveProfile(id: string) {
+    if (!confirm(t('profiles.archive_confirm'))) return
+    onProfiles(profiles.map(p => p.id === id ? { ...p, archived: true } : p))
+    if (editId === id) setEditId(null)
+  }
+
+  function restoreProfile(id: string) {
+    onProfiles(profiles.map(p => p.id === id ? { ...p, archived: false } : p))
+  }
+
+  function deletePermanently(id: string) {
+    if (!confirm(t('profiles.delete_permanently_confirm'))) return
     onProfiles(profiles.filter(p => p.id !== id))
     if (editId === id) setEditId(null)
   }
@@ -279,12 +296,20 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
 
   const showForm = adding || editId !== null
   const levels: ProficiencyLevel[] = [1, 2, 3, 4, 5]
+  const archivedCount = profiles.filter(p => p.archived).length
+  const activeProfiles = profiles.filter(p => !p.archived)
+  const visibleProfiles = showArchived ? profiles : activeProfiles
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <h2 className="text-2xl font-bold text-gray-900">{t('profiles.title')}</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {archivedCount > 0 && (
+            <button type="button" onClick={() => setShowArchived(v => !v)} className="btn-secondary text-sm">
+              {showArchived ? t('profiles.hide_archived') : t('profiles.show_archived', { count: archivedCount })}
+            </button>
+          )}
           <button type="button" onClick={openImport} className="btn-secondary text-sm">
             {t('profiles.import')}
           </button>
@@ -310,7 +335,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
         <strong>{t('profiles.dreyfus_title')}:</strong> {t('profiles.dreyfus_body')}
       </div>
 
-      {profiles.length === 0 && !showForm && (
+      {activeProfiles.length === 0 && !showForm && !showArchived && (
         <div className="py-10 space-y-8">
           <div className="text-center space-y-2">
             <h3 className="text-xl font-semibold text-gray-900">{t('profiles.onboarding_headline')}</h3>
@@ -369,40 +394,68 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {profiles.map(p => (
-          <div key={p.id} className="card">
+        {visibleProfiles.map(p => (
+          <div key={p.id} className={`card ${p.archived ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-semibold text-gray-900">{p.name || '—'}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className={`font-semibold ${p.archived ? 'text-gray-400' : 'text-gray-900'}`}>{p.name || '—'}</h3>
+                  {p.archived && (
+                    <span className="text-xs bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full">
+                      {t('profiles.archived_badge')}
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-gray-500">{p.role}</p>
               </div>
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => openEdit(p)}
-                  className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50"
-                >
-                  {t('profiles.edit')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => deleteProfile(p.id)}
-                  className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50"
-                >
-                  {t('profiles.delete')}
-                </button>
+                {p.archived ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => restoreProfile(p.id)}
+                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50"
+                    >
+                      {t('profiles.restore')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => deletePermanently(p.id)}
+                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50"
+                    >
+                      {t('profiles.delete_permanently')}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => openEdit(p)}
+                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50"
+                    >
+                      {t('profiles.edit')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => archiveProfile(p.id)}
+                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50"
+                    >
+                      {t('profiles.archive')}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className="mt-2 flex items-center gap-2 text-sm">
               <span className="text-gray-500">{t('profiles.capacity')}:</span>
-              <span className="font-medium text-brand-600">{p.capacity}%</span>
+              <span className={`font-medium ${p.archived ? 'text-gray-400' : 'text-brand-600'}`}>{p.capacity}%</span>
             </div>
             {p.skills.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-1">
                 {p.skills.map(s => (
                   <span
                     key={s.id}
-                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${LEVEL_COLORS[s.proficiency]}`}
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.archived ? 'bg-gray-100 text-gray-400' : LEVEL_COLORS[s.proficiency]}`}
                   >
                     {s.name || '…'} L{s.proficiency}
                   </span>
@@ -422,7 +475,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
               <div className="mt-2 flex flex-wrap items-center gap-1">
                 <span className="text-xs text-gray-400">{t('profiles.work_types')}:</span>
                 {p.workTypes.map(wt => (
-                  <span key={wt} className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full">
+                  <span key={wt} className={`text-xs px-2 py-0.5 rounded-full ${p.archived ? 'bg-gray-100 text-gray-400' : 'bg-brand-100 text-brand-700'}`}>
                     {t(`profile_form.work_types.${wt}`)}
                   </span>
                 ))}
