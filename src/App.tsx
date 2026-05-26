@@ -25,12 +25,13 @@ function save<T>(key: string, data: T[]) {
 }
 
 function publishLastSession(profiles: WorkProfile[]) {
-  const profileCount = profiles.length
+  const active = profiles.filter(p => !p.archived)
+  const profileCount = active.length
   const avgCapacity = profileCount > 0
-    ? Math.round(profiles.reduce((sum, p) => sum + (p.capacity ?? 0), 0) / profileCount)
+    ? Math.round(active.reduce((sum, p) => sum + (p.capacity ?? 0), 0) / profileCount)
     : 0
   const skillFreq = new Map<string, number>()
-  for (const profile of profiles) {
+  for (const profile of active) {
     for (const skill of profile.skills) {
       skillFreq.set(skill.name, (skillFreq.get(skill.name) ?? 0) + 1)
     }
@@ -43,9 +44,10 @@ function publishLastSession(profiles: WorkProfile[]) {
 }
 
 function publishExport(profiles: WorkProfile[]) {
+  const active = profiles.filter(p => !p.archived)
   const payload = {
-    teamCapacity: profiles.reduce((sum, p) => sum + (p.capacity ?? 0), 0),
-    profiles: profiles.map(({ id, name, role, skills, capacity, workTypes }) => ({
+    teamCapacity: active.reduce((sum, p) => sum + (p.capacity ?? 0), 0),
+    profiles: active.map(({ id, name, role, skills, capacity, workTypes }) => ({
       id, name, role, skills, capacity, workTypes,
     })),
   }
@@ -139,7 +141,7 @@ export default function App() {
         {screen === 'profiles' && (
           <ProfilesView profiles={profiles} onProfiles={updateProfiles} />
         )}
-        {screen === 'matrix' && <SkillMatrix profiles={profiles} />}
+        {screen === 'matrix' && <SkillMatrix profiles={profiles.filter(p => !p.archived)} />}
         {screen === 'credits' && (
           <CreditsView
             credits={credits}

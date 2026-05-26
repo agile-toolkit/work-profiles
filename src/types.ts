@@ -17,6 +17,7 @@ export interface WorkProfile {
   workTypes: WorkType[]
   capacity: number
   createdAt: number
+  archived?: boolean
 }
 
 export interface ProjectCredit {

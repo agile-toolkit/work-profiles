@@ -15,6 +15,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Role-based starter templates — 5 static role pills (Frontend Dev, Backend Dev, Scrum Master, Product Owner, QA Engineer) appear in the New Profile form; selecting one pre-fills role, skills (5 per template at appropriate Dreyfus levels), and preferred work types; only shown for new profiles (issue #6)
 - [x] Dashboard lastSession key — writes `work-profiles:lastSession` on every profile change and at startup; payload: `{profileCount, avgCapacity, topSkills[5], lastUpdated}`; Dashboard reads this to surface "N members · X% avg capacity · Top skills: …" (issue #12)
 - [x] CSV bulk import — "Import CSV" button in ProfilesView header + hidden file input + FileReader parser; supports columns Name, Role, Capacity, Work Types (semicolon-separated), Skills (semicolon-separated "Skill: Level – Label" pairs); preview modal shows total count, new vs update breakdown per row; merge-by-name: same name = update existing, new name = append; onboarding Import card now clickable; i18n in all 4 locales (issue #14)
+- [x] Profile archive (soft delete) — `archived?: boolean` field on `WorkProfile`; Archive button replaces Delete for active profiles; archived profiles hidden by default with "Show archived (N)" toggle in header; archived cards greyed with "Archived" badge + Restore / Delete permanently actions; CreditsView shows archived names greyed/strikethrough in list + leaderboard, excludes archived from "Person" dropdown; Skill Matrix and published exports (wp-profiles-export, lastSession) use active-only profiles; i18n in all 4 locales (issue #17)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
@@ -28,7 +29,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#14] Feature: bulk import team profiles from CSV — implemented
 - [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles (needs-review)
 - [x] [#16] UX: improve empty state and first-run onboarding for new teams — implemented
-- [ ] [#17] Feature: profile archive (soft delete) to preserve history (needs-review)
+- [x] [#17] Feature: profile archive (soft delete) to preserve history — implemented, In Review
 
 ## localStorage keys
 
@@ -46,6 +47,12 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-05-26 — feat: profile archive / soft delete (issue #17)
+- Done: `archived?: boolean` added to `WorkProfile` type; `archiveProfile()`, `restoreProfile()`, `deletePermanently()` functions in ProfilesView; Archive button replaces Delete for active profiles; archived profiles hidden by default; "Show archived (N)" toggle in header; archived cards greyed with "Archived" badge + Restore / Delete permanently buttons; CreditsView shows archived names greyed+strikethrough, excludes archived from Person dropdown; Skill Matrix filtered to active profiles; `publishExport` and `publishLastSession` use active-only profiles; 8 new i18n keys per locale (EN/ES/BE/RU)
+- Set issue #17 to In Review in project
+- Remaining approved backlog: #18 (AppHeader unification), #19 (light/dark theme)
+- Next task: implement #18 (AppHeader unification: copy AppHeader.tsx + LanguagePicker.tsx from agile-toolkit.github.io/design-system/components/ into src/components/, replace inline header block in App.tsx with standard AppHeader component + LanguagePicker child)
 
 ### 2026-05-23 — feat: CSV bulk import (issue #14)
 - Done: added `parseCsv()` + `parseSkills()` + `parseWorkTypes()` helpers in `ProfilesView.tsx`; hidden `<input type="file">` triggered by "Import CSV" header button; `FileReader` reads file, calls `parseCsv()`, sets `csvPreview` state; preview modal shows total count, green "N new" + amber "N will update" summary, scrollable per-row list with new/update tags, Import all + Cancel buttons; `confirmImport()` merges by name (case-insensitive); onboarding Import card now triggers import instead of being disabled; 10 new i18n keys in all 4 locale files
