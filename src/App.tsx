@@ -6,6 +6,8 @@ import SkillMatrix from './components/SkillMatrix'
 import CreditsView from './components/CreditsView'
 import LearnView from './components/LearnView'
 import UpdateToast from './components/UpdateToast'
+import AppHeader from './components/AppHeader'
+import LanguagePicker from './components/LanguagePicker'
 
 const PROFILES_KEY = 'work-profiles-data'
 const CREDITS_KEY = 'work-profiles-credits'
@@ -55,7 +57,7 @@ function publishExport(profiles: WorkProfile[]) {
 }
 
 export default function App() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [screen, setScreen] = useState<Screen>('profiles')
   const [profiles, setProfiles] = useState<WorkProfile[]>(() => {
     const data = load<WorkProfile>(PROFILES_KEY)
@@ -86,56 +88,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <a
-              href="https://agile-toolkit.github.io/"
-              title="Agile Toolkit"
-              className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                <rect x="1" y="1" width="6" height="6" rx="1"/>
-                <rect x="9" y="1" width="6" height="6" rx="1"/>
-                <rect x="1" y="9" width="6" height="6" rx="1"/>
-                <rect x="9" y="9" width="6" height="6" rx="1"/>
-              </svg>
-            </a>
-            <button
-              type="button"
-              onClick={() => setScreen('profiles')}
-              className="font-semibold text-brand-600 hover:text-brand-700"
-            >
-              {t('app.title')}
-            </button>
-          </div>
-          <div className="flex items-center gap-1">
-            {navItems.map(item => (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => setScreen(item.key)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  screen === item.key ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-            <select
-              value={i18n.language.slice(0, 2)}
-              onChange={e => i18n.changeLanguage(e.target.value)}
-              className="ml-2 text-sm text-gray-500 hover:text-gray-700 px-2 py-1 rounded hover:bg-gray-100 bg-transparent cursor-pointer border-0 outline-none"
-              aria-label="Language"
-            >
-              <option value="en">EN</option>
-              <option value="es">ES</option>
-              <option value="be">BE</option>
-              <option value="ru">RU</option>
-            </select>
-          </div>
-        </div>
-      </header>
+      <AppHeader
+        title={t('app.title')}
+        onTitleClick={() => setScreen('profiles')}
+        navItems={navItems.map(item => ({
+          key: item.key,
+          label: item.label,
+          active: screen === item.key,
+          onClick: () => setScreen(item.key),
+        }))}
+      >
+        <LanguagePicker />
+      </AppHeader>
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {screen === 'profiles' && (
