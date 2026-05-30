@@ -17,6 +17,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] CSV bulk import — "Import CSV" button in ProfilesView header + hidden file input + FileReader parser; supports columns Name, Role, Capacity, Work Types (semicolon-separated), Skills (semicolon-separated "Skill: Level – Label" pairs); preview modal shows total count, new vs update breakdown per row; merge-by-name: same name = update existing, new name = append; onboarding Import card now clickable; i18n in all 4 locales (issue #14)
 - [x] Profile archive (soft delete) — `archived?: boolean` field on `WorkProfile`; Archive button replaces Delete for active profiles; archived profiles hidden by default with "Show archived (N)" toggle in header; archived cards greyed with "Archived" badge + Restore / Delete permanently actions; CreditsView shows archived names greyed/strikethrough in list + leaderboard, excludes archived from "Person" dropdown; Skill Matrix and published exports (wp-profiles-export, lastSession) use active-only profiles; i18n in all 4 locales (issue #17)
 - [x] AppHeader unification — copied `AppHeader.tsx` + `LanguagePicker.tsx` from design system into `src/components/`; replaced inline `<header>` block in `App.tsx` with `<AppHeader title navItems onTitleClick><LanguagePicker /></AppHeader>`; white sticky header, nav pills, accessible dropdown language picker (issue #18)
+- [x] Light/dark theme — `darkMode: 'class'` in tailwind.config.js; anti-flash script in index.html; `ThemeToggle.tsx` copied from design system into `src/components/`; `<ThemeToggle />` added inside AppHeader children slot; `dark:` variants added to all Tailwind color classes in index.css (.card, .btn-secondary, .btn-ghost, .label, .input, body), AppHeader, ProfilesView, SkillMatrix, CreditsView, LearnView, ProfileCard; persists to localStorage('theme'); respects prefers-color-scheme (issue #19)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
@@ -32,6 +33,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#16] UX: improve empty state and first-run onboarding for new teams — implemented
 - [x] [#17] Feature: profile archive (soft delete) to preserve history — implemented, In Review
 - [x] [#18] Unify header: AppHeader component + LanguagePicker — implemented, In Review
+- [x] [#19] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants) — implemented, In Review
 
 ## localStorage keys
 
@@ -49,6 +51,12 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-05-30 — feat: light/dark theme (issue #19)
+- Done: `darkMode: 'class'` added to tailwind.config.js; anti-flash script added to index.html `<head>`; `ThemeToggle.tsx` copied from design-system into `src/components/`; `<ThemeToggle />` added as AppHeader child in App.tsx; `dark:` Tailwind variants added to body/card/btn-secondary/btn-ghost/label/input in index.css; AppHeader header/nav/dashboard-link updated; all views (ProfilesView, SkillMatrix, CreditsView, LearnView, ProfileCard) updated with `dark:` variants per tokens.css token map
+- Set issue #19 to In Review in project
+- Remaining approved backlog: none of the main features; check for new approved items
+- Next task: check issues for human feedback
 
 ### 2026-05-30 — feat: AppHeader unification (issue #18)
 - Done: copied `AppHeader.tsx` + `LanguagePicker.tsx` from design system into `src/components/`; replaced inline `<header>` block in `App.tsx` with `<AppHeader title={t('app.title')} onTitleClick={() => setScreen('profiles')} navItems={[...]}><LanguagePicker /></AppHeader>`; removed native `<select>` language switcher; build passes

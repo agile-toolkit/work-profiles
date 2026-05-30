@@ -45,7 +45,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
   return (
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">{t('credits.title')}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{t('credits.title')}</h1>
         <div className="flex gap-2">
           <button onClick={() => setShowLeaderboard(v => !v)} className="btn-secondary text-sm">
             {showLeaderboard ? t('credits.leaderboard_off') : t('credits.leaderboard')}
@@ -59,17 +59,17 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
       {/* Leaderboard */}
       {showLeaderboard && totals.length > 0 && (
         <div className="card mb-6">
-          <h2 className="font-semibold text-gray-900 mb-3">{t('credits.leaderboard')}</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">{t('credits.leaderboard')}</h2>
           <div className="space-y-2">
             {totals.filter(t => t.total > 0).map((entry, i) => (
               <div key={entry.profile.id} className="flex items-center gap-3">
-                <span className="text-sm font-bold text-gray-400 w-5">{i + 1}</span>
+                <span className="text-sm font-bold text-gray-400 dark:text-gray-500 w-5">{i + 1}</span>
                 <div className="flex-1">
                   <div className="flex justify-between text-sm mb-0.5">
                     <span className="font-medium">{entry.profile.name}</span>
                     <span className="text-brand-600 font-bold">{entry.total} {t('credits.total_points')}</span>
                   </div>
-                  <div className="h-1.5 bg-gray-100 rounded-full">
+                  <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full">
                     <div
                       className="h-1.5 bg-brand-500 rounded-full"
                       style={{ width: `${totals[0].total > 0 ? (entry.total / totals[0].total) * 100 : 0}%` }}
@@ -84,7 +84,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
 
       {/* Add form */}
       {showForm && (
-        <div className="card mb-4 bg-gray-50">
+        <div className="card mb-4 bg-gray-50 dark:bg-gray-800">
           <div className="space-y-3">
             <div>
               <label className="label">{t('credits.person_label')}</label>
@@ -119,7 +119,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
       )}
 
       {credits.length === 0 ? (
-        <div className="card text-center py-10 text-gray-400">{t('credits.empty')}</div>
+        <div className="card text-center py-10 text-gray-400 dark:text-gray-500">{t('credits.empty')}</div>
       ) : (
         <div className="space-y-3">
           {[...credits].reverse().map(credit => {
@@ -128,16 +128,16 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
               <div key={credit.id} className="card flex items-start gap-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`font-medium text-sm ${person?.archived ? 'text-gray-400 line-through' : 'text-gray-900'}`}>{person?.name ?? 'Unknown'}</span>
+                    <span className={`font-medium text-sm ${person?.archived ? 'text-gray-400 dark:text-gray-600 line-through' : 'text-gray-900 dark:text-gray-50'}`}>{person?.name ?? 'Unknown'}</span>
                     <span className="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-semibold">
                       +{credit.points} pts
                     </span>
-                    <span className="text-xs text-gray-400">{credit.date}</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">{credit.date}</span>
                   </div>
-                  <div className="text-sm text-gray-700 font-medium">{credit.project}</div>
-                  {credit.contribution && <div className="text-xs text-gray-500">{credit.contribution}</div>}
+                  <div className="text-sm text-gray-700 dark:text-gray-300 font-medium">{credit.project}</div>
+                  {credit.contribution && <div className="text-xs text-gray-500 dark:text-gray-400">{credit.contribution}</div>}
                 </div>
-                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-200 hover:text-red-400 text-xs">✕</button>
+                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-200 dark:text-gray-700 hover:text-red-400 text-xs">✕</button>
               </div>
             )
           })}
