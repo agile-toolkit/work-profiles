@@ -303,7 +303,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h2 className="text-2xl font-bold text-gray-900">{t('profiles.title')}</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{t('profiles.title')}</h2>
         <div className="flex items-center gap-2 flex-wrap">
           {archivedCount > 0 && (
             <button type="button" onClick={() => setShowArchived(v => !v)} className="btn-secondary text-sm">
@@ -326,20 +326,20 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
         onChange={handleFileChange}
       />
       {csvError && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-700">
+        <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {csvError}
         </div>
       )}
 
-      <div className="bg-brand-50 border border-brand-200 rounded-xl p-3 text-sm text-brand-900">
+      <div className="bg-brand-50 dark:bg-gray-800 border border-brand-200 dark:border-gray-700 rounded-xl p-3 text-sm text-brand-900 dark:text-brand-400">
         <strong>{t('profiles.dreyfus_title')}:</strong> {t('profiles.dreyfus_body')}
       </div>
 
       {activeProfiles.length === 0 && !showForm && !showArchived && (
         <div className="py-10 space-y-8">
           <div className="text-center space-y-2">
-            <h3 className="text-xl font-semibold text-gray-900">{t('profiles.onboarding_headline')}</h3>
-            <p className="text-gray-500 max-w-md mx-auto text-sm">{t('profiles.onboarding_subtext')}</p>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-50">{t('profiles.onboarding_headline')}</h3>
+            <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto text-sm">{t('profiles.onboarding_subtext')}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -349,18 +349,18 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
               className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer"
             >
               <div className="text-2xl mb-2">👤</div>
-              <h4 className="font-medium text-gray-900 mb-1">{t('profiles.onboarding_add')}</h4>
-              <p className="text-sm text-gray-500">{t('profiles.onboarding_add_sub')}</p>
+              <h4 className="font-medium text-gray-900 dark:text-gray-50 mb-1">{t('profiles.onboarding_add')}</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('profiles.onboarding_add_sub')}</p>
             </button>
 
             <button
               type="button"
               onClick={openAddWithTemplate}
-              className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer border-brand-200 bg-brand-50"
+              className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer border-brand-200 bg-brand-50 dark:bg-gray-800 dark:border-gray-600"
             >
               <div className="text-2xl mb-2">⚡</div>
-              <h4 className="font-medium text-brand-700 mb-1">{t('profiles.onboarding_template')}</h4>
-              <p className="text-sm text-brand-600">{t('profiles.onboarding_template_sub')}</p>
+              <h4 className="font-medium text-brand-700 dark:text-brand-400 mb-1">{t('profiles.onboarding_template')}</h4>
+              <p className="text-sm text-brand-600 dark:text-brand-400">{t('profiles.onboarding_template_sub')}</p>
             </button>
 
             <button
@@ -369,24 +369,24 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
               className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer"
             >
               <div className="text-2xl mb-2">📥</div>
-              <h4 className="font-medium text-gray-900 mb-1">{t('profiles.onboarding_import')}</h4>
-              <p className="text-sm text-gray-500">{t('profiles.onboarding_import_sub')}</p>
+              <h4 className="font-medium text-gray-900 dark:text-gray-50 mb-1">{t('profiles.onboarding_import')}</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{t('profiles.onboarding_import_sub')}</p>
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-500 dark:text-gray-400">
             <span className="flex items-center gap-1.5">
               <span className="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">1</span>
               {t('profiles.onboarding_step1')}
             </span>
-            <span className="text-gray-300">→</span>
+            <span className="text-gray-300 dark:text-gray-600">→</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-5 h-5 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-bold">2</span>
+              <span className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">2</span>
               {t('profiles.onboarding_step2')}
             </span>
-            <span className="text-gray-300">→</span>
+            <span className="text-gray-300 dark:text-gray-600">→</span>
             <span className="flex items-center gap-1.5">
-              <span className="w-5 h-5 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-bold">3</span>
+              <span className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">3</span>
               {t('profiles.onboarding_step3')}
             </span>
           </div>
@@ -399,14 +399,14 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className={`font-semibold ${p.archived ? 'text-gray-400' : 'text-gray-900'}`}>{p.name || '—'}</h3>
+                  <h3 className={`font-semibold ${p.archived ? 'text-gray-400 dark:text-gray-600' : 'text-gray-900 dark:text-gray-50'}`}>{p.name || '—'}</h3>
                   {p.archived && (
-                    <span className="text-xs bg-gray-200 text-gray-500 px-2 py-0.5 rounded-full">
+                    <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full">
                       {t('profiles.archived_badge')}
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-500">{p.role}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{p.role}</p>
               </div>
               <div className="flex gap-2">
                 {p.archived ? (
@@ -414,14 +414,14 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
                     <button
                       type="button"
                       onClick={() => restoreProfile(p.id)}
-                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50"
+                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
                     >
                       {t('profiles.restore')}
                     </button>
                     <button
                       type="button"
                       onClick={() => deletePermanently(p.id)}
-                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50"
+                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950"
                     >
                       {t('profiles.delete_permanently')}
                     </button>
@@ -431,14 +431,14 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
                     <button
                       type="button"
                       onClick={() => openEdit(p)}
-                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50"
+                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
                     >
                       {t('profiles.edit')}
                     </button>
                     <button
                       type="button"
                       onClick={() => archiveProfile(p.id)}
-                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50"
+                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950"
                     >
                       {t('profiles.archive')}
                     </button>
@@ -447,8 +447,8 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
               </div>
             </div>
             <div className="mt-2 flex items-center gap-2 text-sm">
-              <span className="text-gray-500">{t('profiles.capacity')}:</span>
-              <span className={`font-medium ${p.archived ? 'text-gray-400' : 'text-brand-600'}`}>{p.capacity}%</span>
+              <span className="text-gray-500 dark:text-gray-400">{t('profiles.capacity')}:</span>
+              <span className={`font-medium ${p.archived ? 'text-gray-400 dark:text-gray-600' : 'text-brand-600'}`}>{p.capacity}%</span>
             </div>
             {p.skills.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-1">
@@ -465,7 +465,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
             {p.interests.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {p.interests.map((topic, i) => (
-                  <span key={i} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                  <span key={i} className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
                     ✦ {topic}
                   </span>
                 ))}
@@ -473,9 +473,9 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
             )}
             {p.workTypes.length > 0 && (
               <div className="mt-2 flex flex-wrap items-center gap-1">
-                <span className="text-xs text-gray-400">{t('profiles.work_types')}:</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">{t('profiles.work_types')}:</span>
                 {p.workTypes.map(wt => (
-                  <span key={wt} className={`text-xs px-2 py-0.5 rounded-full ${p.archived ? 'bg-gray-100 text-gray-400' : 'bg-brand-100 text-brand-700'}`}>
+                  <span key={wt} className={`text-xs px-2 py-0.5 rounded-full ${p.archived ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600' : 'bg-brand-100 text-brand-700'}`}>
                     {t(`profile_form.work_types.${wt}`)}
                   </span>
                 ))}
@@ -487,7 +487,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
 
       {showForm && (
         <div className="card space-y-4">
-          <h3 className="font-semibold text-gray-900">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-50">
             {editId ? t('profile_form.title_edit') : t('profile_form.title_new')}
           </h3>
 
@@ -530,7 +530,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="label">{t('profile_form.skills_label')}</label>
-              <button type="button" onClick={addSkill} className="text-xs text-brand-600 hover:text-brand-800">
+              <button type="button" onClick={addSkill} className="text-xs text-brand-600 hover:text-brand-800 dark:text-brand-400 dark:hover:text-brand-300">
                 + {t('profile_form.add_skill')}
               </button>
             </div>
@@ -558,7 +558,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
                 <button
                   type="button"
                   onClick={() => removeSkill(s.id)}
-                  className="text-gray-300 hover:text-red-400"
+                  className="text-gray-300 dark:text-gray-600 hover:text-red-400"
                 >
                   ×
                 </button>
@@ -596,7 +596,7 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
                   className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
                     draft.workTypes.includes(wt)
                       ? 'bg-brand-600 text-white border-brand-600'
-                      : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                      : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                   }`}
                 >
                   {t(`profile_form.work_types.${wt}`)}
@@ -625,9 +625,9 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
 
       {csvPreview && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">{t('profiles.import_modal_title')}</h3>
-            <p className="text-gray-600 text-sm">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">{t('profiles.import_modal_title')}</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
               {t('profiles.import_found', { count: csvPreview.length })}
             </p>
             <div className="flex gap-4 text-sm">
@@ -642,12 +642,12 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
                 </span>
               )}
             </div>
-            <div className="max-h-48 overflow-y-auto border border-gray-100 rounded-lg divide-y divide-gray-50">
+            <div className="max-h-48 overflow-y-auto border border-gray-100 dark:border-gray-700 rounded-lg divide-y divide-gray-50 dark:divide-gray-700">
               {csvPreview.map((csv, i) => {
                 const isUpdate = profiles.some(p => p.name.toLowerCase() === csv.name.toLowerCase())
                 return (
                   <div key={i} className="flex items-center justify-between px-3 py-2 text-sm">
-                    <span className="text-gray-800 font-medium">{csv.name}</span>
+                    <span className="text-gray-800 dark:text-gray-100 font-medium">{csv.name}</span>
                     <span className={`text-xs px-2 py-0.5 rounded-full ${isUpdate ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}>
                       {isUpdate ? t('profiles.import_tag_update') : t('profiles.import_tag_new')}
                     </span>

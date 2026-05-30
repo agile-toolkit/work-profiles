@@ -8,6 +8,7 @@ import LearnView from './components/LearnView'
 import UpdateToast from './components/UpdateToast'
 import AppHeader from './components/AppHeader'
 import LanguagePicker from './components/LanguagePicker'
+import ThemeToggle from './components/ThemeToggle'
 
 const PROFILES_KEY = 'work-profiles-data'
 const CREDITS_KEY = 'work-profiles-credits'
@@ -87,7 +88,7 @@ export default function App() {
   ]
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       <AppHeader
         title={t('app.title')}
         onTitleClick={() => setScreen('profiles')}
@@ -99,6 +100,7 @@ export default function App() {
         }))}
       >
         <LanguagePicker />
+        <ThemeToggle />
       </AppHeader>
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
