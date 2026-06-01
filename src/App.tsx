@@ -88,7 +88,7 @@ export default function App() {
   ]
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-50">
+    <div data-accent="amber" className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       <AppHeader
         title={t('app.title')}
         onTitleClick={() => setScreen('profiles')}
