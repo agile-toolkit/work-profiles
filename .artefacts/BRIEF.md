@@ -27,13 +27,16 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented, In Review
 - [x] [#7] Technical: PWA support for offline use and device installation — implemented, In Review
 - [x] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card — implemented
-- [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles (needs-review)
+- [ ] [#13] Integration: Team Identity can auto-populate members from Work Profiles — In Review (work-profiles side complete; implementation in team-identity repo)
 - [x] [#14] Feature: bulk import team profiles from CSV — implemented
-- [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles (needs-review)
+- [ ] [#15] Integration: Change Planner — auto-populate stakeholders from Work Profiles — In Review (work-profiles side complete; implementation in change-planner repo)
 - [x] [#16] UX: improve empty state and first-run onboarding for new teams — implemented
 - [x] [#17] Feature: profile archive (soft delete) to preserve history — implemented, In Review
 - [x] [#18] Unify header: AppHeader component + LanguagePicker — implemented, In Review
 - [x] [#19] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants) — implemented, In Review
+- [ ] [#27] Feature: profile comparison view — select 2–4 profiles, side-by-side skill table with coverage colour coding (needs-review)
+- [ ] [#28] Feature: skill progression history — track proficiency changes over time, delta column in SkillMatrix (needs-review)
+- [ ] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (needs-review)
 
 ## localStorage keys
 
@@ -51,6 +54,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-04 — research: comparison view, skill history, availability/timezone
+- Done: commented on cross-repo approved issues #13 and #15 (work-profiles side complete — wp-profiles-export contract documented; implementation lives in team-identity and change-planner repos respectively); set both to In Review in project; created issues #27 (profile comparison view), #28 (skill progression history), #29 (availability windows + timezone per profile); added all three to project Backlog
+- Remaining: #4 (skill gap analysis) and #5 (CSV export) await human approval before implementation
+- Next task: check issues for human feedback; if #4 or #5 approved, implement; if any of #27–#29 approved, implement
 
 ### 2026-05-30 — feat: light/dark theme (issue #19)
 - Done: `darkMode: 'class'` added to tailwind.config.js; anti-flash script added to index.html `<head>`; `ThemeToggle.tsx` copied from design-system into `src/components/`; `<ThemeToggle />` added as AppHeader child in App.tsx; `dark:` Tailwind variants added to body/card/btn-secondary/btn-ghost/label/input in index.css; AppHeader header/nav/dashboard-link updated; all views (ProfilesView, SkillMatrix, CreditsView, LearnView, ProfileCard) updated with `dark:` variants per tokens.css token map
