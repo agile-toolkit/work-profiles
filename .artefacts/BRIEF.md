@@ -37,6 +37,9 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#27] Feature: profile comparison view — select 2–4 profiles, side-by-side skill table with coverage colour coding (needs-review)
 - [ ] [#28] Feature: skill progression history — track proficiency changes over time, delta column in SkillMatrix (needs-review)
 - [ ] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (needs-review)
+- [ ] [#30] Research: keyboard accessibility and ARIA audit — scope/aria-label on matrix headers/buttons, focus trap on import modal, aria-live save/delete announcements (needs-review)
+- [ ] [#31] Integration: Improvement Board — show open improvement item titles on profile card (read-only from improvement-board-items + improvement-board-members localStorage keys) (needs-review)
+- [ ] [#32] Feature: peer skill endorsement — optional endorsedBy[] on Skill type; +1 button on profile card; endorsement count badge; SkillMatrix tooltip (needs-review)
 
 ## localStorage keys
 
@@ -54,6 +57,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-08 — research: a11y audit, Improvement Board integration, peer endorsement
+- Done: verified #4 and #5 specs already revised (no new comments); #27/#28/#29 needs-review < 7 days (no auto-approve); created #30 (ARIA audit), #31 (Improvement Board integration on profile cards), #32 (peer skill endorsement); added all three to project Backlog
+- Remaining: #4 (skill gap analysis), #5 (CSV export) await human approval; #27–#29 await 7-day auto-approve
+- Next task: check issues for human feedback; if #4 or #5 approved, implement #4 first (Gap Analysis screen + Phase 1 filter); if none approved, auto-approve #27–#29 after 2026-06-11
 
 ### 2026-06-04 — research: comparison view, skill history, availability/timezone
 - Done: commented on cross-repo approved issues #13 and #15 (work-profiles side complete — wp-profiles-export contract documented; implementation lives in team-identity and change-planner repos respectively); set both to In Review in project; created issues #27 (profile comparison view), #28 (skill progression history), #29 (availability windows + timezone per profile); added all three to project Backlog
