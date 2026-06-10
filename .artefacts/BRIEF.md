@@ -37,6 +37,9 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#27] Feature: profile comparison view — select 2–4 profiles, side-by-side skill table with coverage colour coding (needs-review)
 - [ ] [#28] Feature: skill progression history — track proficiency changes over time, delta column in SkillMatrix (needs-review)
 - [ ] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (needs-review)
+- [ ] [pending] Feature: skill category tagging — add `category?: string` to `Skill` interface; predefined list (Frontend/Backend/DevOps/Design/Testing/Soft Skills/Data & AI/Other); "Group by category" toggle in SkillMatrix; category pill filter row; expose in wp-profiles-export
+- [ ] [pending] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key to pre-fill team member names and roles; no work-profiles code changes needed
+- [ ] [pending] Feature: print-optimized individual profile card — "Print Profile" icon button in ProfileCard; hidden `#print-target` div populated on click + `window.print()`; `@media print` CSS in index.css hides everything except `#print-target`; A4 layout with name/role, capacity bar, skill pills, work-type badges; i18n key `profile_card.print_button`
 
 ## localStorage keys
 
@@ -54,6 +57,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-10 — research: skill categories, Salary Formula integration, print profile card
+- Done: checked open issues — #4/#5 (changes-requested, specs already revised in prior run); #27–#29 (needs-review, created 2026-06-04, 6 days old — auto-approve threshold 2026-06-11); no approved items remaining for work-profiles; researched 3 new backlog items and added to BRIEF Backlog (pending issue creation — PAT write permissions blocked issue creation this run; test issues #33 and #34 were created accidentally with body="test")
+- Remaining: close test issues #33/#34; create research issues for 3 pending backlog items; add to project Backlog; auto-approve #27–#29 (threshold reached 2026-06-11)
+- Next task: close issues #33 and #34 (test artifacts); create issues for (1) skill category tagging on Skill interface + SkillMatrix grouped view (category?: string, GroupByCategory toggle, category pill filter, expose in wp-profiles-export), (2) Salary Formula integration reading wp-profiles-export to pre-fill team members, (3) print-optimized profile card (Print button in ProfileCard, #print-target div, @media print CSS); add all 3 to project Backlog; auto-approve #27–#29 (7-day threshold reached)
 
 ### 2026-06-04 — research: comparison view, skill history, availability/timezone
 - Done: commented on cross-repo approved issues #13 and #15 (work-profiles side complete — wp-profiles-export contract documented; implementation lives in team-identity and change-planner repos respectively); set both to In Review in project; created issues #27 (profile comparison view), #28 (skill progression history), #29 (availability windows + timezone per profile); added all three to project Backlog
