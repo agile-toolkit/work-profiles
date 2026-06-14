@@ -5,6 +5,7 @@ import ProfilesView from './components/ProfilesView'
 import SkillMatrix from './components/SkillMatrix'
 import CreditsView from './components/CreditsView'
 import LearnView from './components/LearnView'
+import CompareView from './components/CompareView'
 import UpdateToast from './components/UpdateToast'
 import AppHeader from './components/AppHeader'
 import LanguagePicker from './components/LanguagePicker'
@@ -60,6 +61,7 @@ function publishExport(profiles: WorkProfile[]) {
 export default function App() {
   const { t } = useTranslation()
   const [screen, setScreen] = useState<Screen>('profiles')
+  const [compareIds, setCompareIds] = useState<string[]>([])
   const [profiles, setProfiles] = useState<WorkProfile[]>(() => {
     const data = load<WorkProfile>(PROFILES_KEY)
     publishExport(data)
@@ -105,7 +107,17 @@ export default function App() {
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {screen === 'profiles' && (
-          <ProfilesView profiles={profiles} onProfiles={updateProfiles} />
+          <ProfilesView
+            profiles={profiles}
+            onProfiles={updateProfiles}
+            onCompare={ids => { setCompareIds(ids); setScreen('compare') }}
+          />
+        )}
+        {screen === 'compare' && (
+          <CompareView
+            profiles={compareIds.map(id => profiles.find(p => p.id === id)).filter((p): p is WorkProfile => p !== undefined)}
+            onBack={() => setScreen('profiles')}
+          />
         )}
         {screen === 'matrix' && <SkillMatrix profiles={profiles.filter(p => !p.archived)} />}
         {screen === 'credits' && (
