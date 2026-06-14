@@ -66,6 +66,8 @@
     "work_types_label": "Preferred Work Types",
     "save": "Save Profile",
     "cancel": "Cancel",
+    "record_change": "Change level (records history)",
+    "history_entries": "changes",
     "proficiency": {
       "1": "Beginner",
       "2": "Novice",
@@ -88,7 +90,8 @@
     "title": "Skill Matrix",
     "empty": "Add at least 2 profiles with skills to see the matrix.",
     "all_skills": "All Skills",
-    "filter_skill": "Filter by skill..."
+    "filter_skill": "Filter by skill...",
+    "delta_tooltip": "Changed by {{delta}} since last record"
   },
   "credits": {
     "title": "Project Credits",

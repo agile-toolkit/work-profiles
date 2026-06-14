@@ -66,6 +66,8 @@
     "work_types_label": "Tipos de trabajo preferidos",
     "save": "Guardar perfil",
     "cancel": "Cancelar",
+    "record_change": "Cambiar nivel (guarda historial)",
+    "history_entries": "cambios",
     "proficiency": {
       "1": "Principiante",
       "2": "Novato",
@@ -88,7 +90,8 @@
     "title": "Matriz de habilidades",
     "empty": "Añade al menos 2 perfiles con habilidades para ver la matriz.",
     "all_skills": "Todas las habilidades",
-    "filter_skill": "Filtrar por habilidad..."
+    "filter_skill": "Filtrar por habilidad...",
+    "delta_tooltip": "Cambió {{delta}} desde el último registro"
   },
   "credits": {
     "title": "Créditos de proyecto",
