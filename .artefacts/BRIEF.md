@@ -34,12 +34,12 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#17] Feature: profile archive (soft delete) to preserve history — implemented, In Review
 - [x] [#18] Unify header: AppHeader component + LanguagePicker — implemented, In Review
 - [x] [#19] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants) — implemented, In Review
-- [ ] [#27] Feature: profile comparison view — select 2–4 profiles, side-by-side skill table with coverage colour coding (needs-review)
-- [ ] [#28] Feature: skill progression history — track proficiency changes over time, delta column in SkillMatrix (needs-review)
-- [ ] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (needs-review)
-- [ ] [pending] Feature: skill category tagging — add `category?: string` to `Skill` interface; predefined list (Frontend/Backend/DevOps/Design/Testing/Soft Skills/Data & AI/Other); "Group by category" toggle in SkillMatrix; category pill filter row; expose in wp-profiles-export
-- [ ] [pending] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key to pre-fill team member names and roles; no work-profiles code changes needed
-- [ ] [pending] Feature: print-optimized individual profile card — "Print Profile" icon button in ProfileCard; hidden `#print-target` div populated on click + `window.print()`; `@media print` CSS in index.css hides everything except `#print-target`; A4 layout with name/role, capacity bar, skill pills, work-type badges; i18n key `profile_card.print_button`
+- [ ] [#27] Feature: profile comparison view — select 2–4 profiles, side-by-side skill table with coverage colour coding (approved — in progress)
+- [ ] [#28] Feature: skill progression history — track proficiency changes over time, delta column in SkillMatrix (approved — in progress)
+- [ ] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (approved — in progress)
+- [ ] [#35] Feature: skill category tagging — add `category?: string` to `Skill` interface; predefined list (Frontend/Backend/DevOps/Design/Testing/Soft Skills/Data & AI/Other); "Group by category" toggle in SkillMatrix; category pill filter row; expose in wp-profiles-export (needs-review)
+- [ ] [#36] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key to pre-fill team member names and roles; no work-profiles code changes needed (needs-review)
+- [ ] [#37] Feature: print-optimized individual profile card — "Print Profile" icon button in ProfileCard; hidden `#print-target` div populated on click + `window.print()`; `@media print` CSS in index.css hides everything except `#print-target`; A4 layout with name/role, capacity bar, skill pills, work-type badges; i18n key `profile_card.print_button` (needs-review)
 
 ## localStorage keys
 
@@ -57,6 +57,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-14 — research: closed test issues, auto-approved #27–#29, created #35–#37
+- Done: closed test issues #33 and #34 (created accidentally); auto-approved #27 (profile comparison view), #28 (skill progression history), #29 (availability windows + timezone) — all 10 days old, threshold 7 days, features from agreed BRIEF scope; set all three to In Progress in project; created issues #35 (skill category tagging on Skill interface), #36 (Salary Formula integration via wp-profiles-export), #37 (print-optimized profile card); added #35–#37 to project Backlog; updated BRIEF backlog entries
+- Remaining: implement #27 (first auto-approved feature)
+- Next task: implement #27 — profile comparison view: ProfilesView gets multi-select checkboxes (max 4); "Compare" button appears when 2+ selected; CompareView.tsx shows side-by-side table (columns = profiles, rows = skill names); cells show proficiency number + Dreyfus label, colour-coded (green ≥ 4, amber 2–3, red ≤ 1, grey = not present); skills union across selected profiles; i18n key `profiles.compare_button`, `compare.title`, `compare.not_present` in all 4 locales
 
 ### 2026-06-10 — research: skill categories, Salary Formula integration, print profile card
 - Done: checked open issues — #4/#5 (changes-requested, specs already revised in prior run); #27–#29 (needs-review, created 2026-06-04, 6 days old — auto-approve threshold 2026-06-11); no approved items remaining for work-profiles; researched 3 new backlog items and added to BRIEF Backlog (pending issue creation — PAT write permissions blocked issue creation this run; test issues #33 and #34 were created accidentally with body="test")
