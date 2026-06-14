@@ -110,15 +110,17 @@ const LEVEL_COLORS: Record<number, string> = {
 interface Props {
   profiles: WorkProfile[]
   onProfiles: (p: WorkProfile[]) => void
+  onCompare: (ids: string[]) => void
 }
 
-export default function ProfilesView({ profiles, onProfiles }: Props) {
+export default function ProfilesView({ profiles, onProfiles, onCompare }: Props) {
   const { t } = useTranslation()
   const [editId, setEditId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
   const [showArchived, setShowArchived] = useState(false)
   const [csvPreview, setCsvPreview] = useState<CsvProfile[] | null>(null)
   const [csvError, setCsvError] = useState<string | null>(null)
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   function makeEmpty(): WorkProfile {
@@ -225,6 +227,14 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
     }))
   }
 
+  function toggleSelect(id: string) {
+    setSelectedIds(prev => {
+      if (prev.includes(id)) return prev.filter(x => x !== id)
+      if (prev.length >= 4) return prev
+      return [...prev, id]
+    })
+  }
+
   function openImport() {
     setCsvError(null)
     fileInputRef.current?.click()
@@ -308,6 +318,15 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
           {archivedCount > 0 && (
             <button type="button" onClick={() => setShowArchived(v => !v)} className="btn-secondary text-sm">
               {showArchived ? t('profiles.hide_archived') : t('profiles.show_archived', { count: archivedCount })}
+            </button>
+          )}
+          {selectedIds.length >= 2 && (
+            <button
+              type="button"
+              onClick={() => onCompare(selectedIds)}
+              className="btn-primary text-sm"
+            >
+              {t('profiles.compare_button', { count: selectedIds.length })}
             </button>
           )}
           <button type="button" onClick={openImport} className="btn-secondary text-sm">
@@ -394,21 +413,39 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {visibleProfiles.map(p => (
-          <div key={p.id} className={`card ${p.archived ? 'opacity-60' : ''}`}>
+        {visibleProfiles.map(p => {
+          const isSelected = selectedIds.includes(p.id)
+          const maxReached = selectedIds.length >= 4 && !isSelected
+          return (
+          <div
+            key={p.id}
+            className={`card ${p.archived ? 'opacity-60' : ''} ${isSelected ? 'ring-2 ring-brand-500 border-brand-400' : ''}`}
+          >
             <div className="flex items-start justify-between gap-2">
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className={`font-semibold ${p.archived ? 'text-gray-400 dark:text-gray-600' : 'text-gray-900 dark:text-gray-50'}`}>{p.name || '—'}</h3>
-                  {p.archived && (
-                    <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full">
-                      {t('profiles.archived_badge')}
-                    </span>
-                  )}
+              <div className="flex items-start gap-2 min-w-0">
+                {!p.archived && (
+                  <input
+                    type="checkbox"
+                    aria-label={t('profiles.compare_button', { count: 0 }).replace(/\s*\(.*\)/, '') + ' ' + p.name}
+                    checked={isSelected}
+                    disabled={maxReached}
+                    onChange={() => toggleSelect(p.id)}
+                    className="mt-1 h-4 w-4 shrink-0 accent-brand-600 cursor-pointer disabled:cursor-not-allowed"
+                  />
+                )}
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className={`font-semibold ${p.archived ? 'text-gray-400 dark:text-gray-600' : 'text-gray-900 dark:text-gray-50'}`}>{p.name || '—'}</h3>
+                    {p.archived && (
+                      <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-2 py-0.5 rounded-full">
+                        {t('profiles.archived_badge')}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{p.role}</p>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{p.role}</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 shrink-0">
                 {p.archived ? (
                   <>
                     <button
@@ -482,7 +519,8 @@ export default function ProfilesView({ profiles, onProfiles }: Props) {
               </div>
             )}
           </div>
-        ))}
+        )
+        })}
       </div>
 
       {showForm && (

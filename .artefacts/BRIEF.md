@@ -18,6 +18,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] Profile archive (soft delete) — `archived?: boolean` field on `WorkProfile`; Archive button replaces Delete for active profiles; archived profiles hidden by default with "Show archived (N)" toggle in header; archived cards greyed with "Archived" badge + Restore / Delete permanently actions; CreditsView shows archived names greyed/strikethrough in list + leaderboard, excludes archived from "Person" dropdown; Skill Matrix and published exports (wp-profiles-export, lastSession) use active-only profiles; i18n in all 4 locales (issue #17)
 - [x] AppHeader unification — copied `AppHeader.tsx` + `LanguagePicker.tsx` from design system into `src/components/`; replaced inline `<header>` block in `App.tsx` with `<AppHeader title navItems onTitleClick><LanguagePicker /></AppHeader>`; white sticky header, nav pills, accessible dropdown language picker (issue #18)
 - [x] Light/dark theme — `darkMode: 'class'` in tailwind.config.js; anti-flash script in index.html; `ThemeToggle.tsx` copied from design system into `src/components/`; `<ThemeToggle />` added inside AppHeader children slot; `dark:` variants added to all Tailwind color classes in index.css (.card, .btn-secondary, .btn-ghost, .label, .input, body), AppHeader, ProfilesView, SkillMatrix, CreditsView, LearnView, ProfileCard; persists to localStorage('theme'); respects prefers-color-scheme (issue #19)
+- [x] Profile comparison view — multi-select checkboxes on active profile cards (max 4); "Compare (N)" button appears in header when 2+ selected; `CompareView.tsx` shows side-by-side table (columns = profiles, rows = union of all skill names sorted A–Z); cells show proficiency level + Dreyfus label colour-coded (green ≥ 4, amber 2–3, red ≤ 1, grey = not present); `profiles.compare_button`, `compare.title`, `compare.not_present` keys in EN/ES/BE/RU (issue #27)
 
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
@@ -34,7 +35,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#17] Feature: profile archive (soft delete) to preserve history — implemented, In Review
 - [x] [#18] Unify header: AppHeader component + LanguagePicker — implemented, In Review
 - [x] [#19] Feature: light/dark theme support (ThemeToggle + dark: Tailwind variants) — implemented, In Review
-- [ ] [#27] Feature: profile comparison view — select 2–4 profiles, side-by-side skill table with coverage colour coding (approved — in progress)
+- [x] [#27] Feature: profile comparison view — implemented (issue #27, In Review)
 - [ ] [#28] Feature: skill progression history — track proficiency changes over time, delta column in SkillMatrix (approved — in progress)
 - [ ] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (approved — in progress)
 - [ ] [#35] Feature: skill category tagging — add `category?: string` to `Skill` interface; predefined list (Frontend/Backend/DevOps/Design/Testing/Soft Skills/Data & AI/Other); "Group by category" toggle in SkillMatrix; category pill filter row; expose in wp-profiles-export (needs-review)
@@ -57,6 +58,12 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-14 — feat: profile comparison view (issue #27)
+- Done: `CompareView.tsx` created — side-by-side table (columns = selected profiles, rows = union of skill names sorted A–Z); cells show proficiency number + Dreyfus label, colour-coded (green ≥ 4, amber 2–3, red ≤ 1, grey = not present); `ProfilesView.tsx` updated with multi-select checkboxes (max 4) on active profile cards + "Compare (N)" button in header when ≥ 2 selected; `App.tsx` wired with `compareIds` state + `onCompare` callback → `screen='compare'`; `compare` Screen type added to `types.ts`; `profiles.compare_button`, `compare.title`, `compare.not_present` keys added to EN/ES/BE/RU locales
+- Set issue #27 to In Review in project
+- Remaining approved: #28 (skill progression history), #29 (availability windows + timezone)
+- Next task: check issues for human feedback; implement #28 (skill progression history — `Skill` interface gets optional `history: {date: string, proficiency: ProficiencyLevel}[]`; edit form shows "Record change" link; SkillMatrix gets delta column showing last change arrow + Δ level)
 
 ### 2026-06-14 — research: closed test issues, auto-approved #27–#29, created #35–#37
 - Done: closed test issues #33 and #34 (created accidentally); auto-approved #27 (profile comparison view), #28 (skill progression history), #29 (availability windows + timezone) — all 10 days old, threshold 7 days, features from agreed BRIEF scope; set all three to In Progress in project; created issues #35 (skill category tagging on Skill interface), #36 (Salary Formula integration via wp-profiles-export), #37 (print-optimized profile card); added #35–#37 to project Backlog; updated BRIEF backlog entries

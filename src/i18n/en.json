@@ -42,7 +42,12 @@
     "import_confirm": "Import all",
     "import_cancel": "Cancel",
     "import_empty": "No valid profiles found in file. Check that the file has a Name column.",
-    "import_error": "Could not read file. Ensure it is a valid CSV."
+    "import_error": "Could not read file. Ensure it is a valid CSV.",
+    "compare_button": "Compare ({{count}})"
+  },
+  "compare": {
+    "title": "Profile Comparison",
+    "not_present": "—"
   },
   "profile_form": {
     "title_new": "New Work Profile",
