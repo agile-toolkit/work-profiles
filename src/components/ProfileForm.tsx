@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
 
+function today(): string {
+  return new Date().toISOString().slice(0, 10)
+}
+
 const WORK_TYPES: WorkType[] = ['design', 'development', 'testing', 'analysis', 'facilitation', 'writing', 'mentoring', 'ops']
 const PROFICIENCY_LEVELS: ProficiencyLevel[] = [1, 2, 3, 4, 5]
 
@@ -94,8 +98,16 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
 
   const addSkill = () => {
     if (!newSkill.trim()) return
-    setSkills(s => [...s, { id: crypto.randomUUID(), name: newSkill.trim(), proficiency: newSkillLevel }])
+    setSkills(s => [...s, { id: crypto.randomUUID(), name: newSkill.trim(), proficiency: newSkillLevel, history: [] }])
     setNewSkill('')
+  }
+
+  const recordSkillChange = (skillId: string, newLevel: ProficiencyLevel) => {
+    setSkills(sk => sk.map(s => {
+      if (s.id !== skillId) return s
+      const entry = { date: today(), proficiency: s.proficiency }
+      return { ...s, proficiency: newLevel, history: [...(s.history ?? []), entry] }
+    }))
   }
 
   const toggleWorkType = (wt: WorkType) => {
@@ -113,6 +125,7 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
       interests: interests.split(',').map(s => s.trim()).filter(Boolean),
       workTypes,
       createdAt: initial?.createdAt ?? Date.now(),
+      archived: initial?.archived,
     })
   }
 
@@ -184,11 +197,33 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
               </select>
               <button onClick={addSkill} disabled={!newSkill.trim()} className="btn-primary text-sm px-3">+</button>
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-col gap-1.5">
               {skills.map(s => (
-                <div key={s.id} className="flex items-center gap-1 bg-gray-100 rounded-lg px-2 py-1 text-xs">
-                  <span>{s.name} ({s.proficiency})</span>
-                  <button onClick={() => setSkills(sk => sk.filter(x => x.id !== s.id))} className="text-gray-400 hover:text-red-400 ml-1">✕</button>
+                <div key={s.id} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 py-1 text-xs">
+                  <span className="flex-1 font-medium text-gray-800 dark:text-gray-200">{s.name}</span>
+                  {initial ? (
+                    <select
+                      className="input !py-0.5 !px-1 text-xs w-auto"
+                      value={s.proficiency}
+                      onChange={e => recordSkillChange(s.id, Number(e.target.value) as ProficiencyLevel)}
+                      title={t('profile_form.record_change')}
+                    >
+                      {PROFICIENCY_LEVELS.map(l => (
+                        <option key={l} value={l}>{l} – {t(`profile_form.proficiency.${l}`)}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span className="text-gray-500">({s.proficiency})</span>
+                  )}
+                  {(s.history?.length ?? 0) > 0 && (
+                    <span
+                      className="text-brand-600 dark:text-brand-400 cursor-default"
+                      title={`${s.history!.length} ${t('profile_form.history_entries')}: ${s.history!.map(h => `${h.date}: ${h.proficiency}`).join(', ')}`}
+                    >
+                      📈{s.history!.length}
+                    </span>
+                  )}
+                  <button onClick={() => setSkills(sk => sk.filter(x => x.id !== s.id))} className="text-gray-400 hover:text-red-400">✕</button>
                 </div>
               ))}
             </div>
