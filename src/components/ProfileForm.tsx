@@ -1,6 +1,14 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
+
+const ALL_TIMEZONES: string[] = (() => {
+  try {
+    return (Intl as { supportedValuesOf?: (key: string) => string[] }).supportedValuesOf?.('timeZone') ?? []
+  } catch {
+    return []
+  }
+})()
 
 function today(): string {
   return new Date().toISOString().slice(0, 10)
@@ -88,6 +96,18 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
   const [newSkill, setNewSkill] = useState('')
   const [newSkillLevel, setNewSkillLevel] = useState<ProficiencyLevel>(3)
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
+  const [timezone, setTimezone] = useState(initial?.timezone ?? '')
+  const [hoursStart, setHoursStart] = useState(initial?.workingHours?.start ?? '')
+  const [hoursEnd, setHoursEnd] = useState(initial?.workingHours?.end ?? '')
+  const [oooUntil, setOooUntil] = useState(initial?.oooUntil ?? '')
+
+  const [tzFilter, setTzFilter] = useState('')
+  const filteredTimezones = useMemo(
+    () => tzFilter
+      ? ALL_TIMEZONES.filter(tz => tz.toLowerCase().includes(tzFilter.toLowerCase()))
+      : ALL_TIMEZONES,
+    [tzFilter]
+  )
 
   const applyTemplate = (tpl: typeof ROLE_TEMPLATES[0]) => {
     setSelectedTemplate(tpl.role)
@@ -126,6 +146,9 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
       workTypes,
       createdAt: initial?.createdAt ?? Date.now(),
       archived: initial?.archived,
+      timezone: timezone || undefined,
+      workingHours: hoursStart && hoursEnd ? { start: hoursStart, end: hoursEnd } : undefined,
+      oooUntil: oooUntil || undefined,
     })
   }
 
@@ -253,6 +276,83 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
           <div>
             <label className="label">{t('profile_form.interests_label')}</label>
             <input className="input" placeholder={t('profile_form.interests_placeholder')} value={interests} onChange={e => setInterests(e.target.value)} />
+          </div>
+
+          {/* Availability */}
+          <div className="border-t border-gray-100 dark:border-gray-700 pt-4 space-y-3">
+            <p className="label text-gray-500 dark:text-gray-400 uppercase tracking-wide text-[10px]">{t('profile_form.availability_section')}</p>
+
+            {/* Timezone */}
+            <div>
+              <label className="label">{t('profile_form.timezone_label')}</label>
+              {ALL_TIMEZONES.length > 0 ? (
+                <div className="space-y-1">
+                  <input
+                    className="input text-xs"
+                    placeholder={t('profile_form.timezone_search')}
+                    value={tzFilter}
+                    onChange={e => setTzFilter(e.target.value)}
+                  />
+                  <select
+                    className="input"
+                    value={timezone}
+                    onChange={e => setTimezone(e.target.value)}
+                  >
+                    <option value="">{t('profile_form.timezone_none')}</option>
+                    {filteredTimezones.map(tz => (
+                      <option key={tz} value={tz}>{tz.replace(/_/g, ' ')}</option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <input
+                  className="input"
+                  placeholder="e.g. Europe/Warsaw"
+                  value={timezone}
+                  onChange={e => setTimezone(e.target.value)}
+                />
+              )}
+            </div>
+
+            {/* Working hours */}
+            <div>
+              <label className="label">{t('profile_form.working_hours_label')}</label>
+              <div className="flex gap-2 items-center">
+                <input
+                  type="time"
+                  className="input w-auto"
+                  value={hoursStart}
+                  onChange={e => setHoursStart(e.target.value)}
+                />
+                <span className="text-gray-400 text-sm">–</span>
+                <input
+                  type="time"
+                  className="input w-auto"
+                  value={hoursEnd}
+                  onChange={e => setHoursEnd(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* OOO date */}
+            <div>
+              <label className="label">{t('profile_form.ooo_until_label')}</label>
+              <input
+                type="date"
+                className="input w-auto"
+                value={oooUntil}
+                onChange={e => setOooUntil(e.target.value)}
+              />
+              {oooUntil && (
+                <button
+                  type="button"
+                  onClick={() => setOooUntil('')}
+                  className="ml-2 text-xs text-gray-400 hover:text-red-400"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
         </div>
 

@@ -43,7 +43,9 @@
     "import_cancel": "Отмена",
     "import_empty": "В файле не найдено допустимых профилей. Убедитесь, что есть колонка Name.",
     "import_error": "Не удалось прочитать файл. Убедитесь, что это корректный CSV.",
-    "compare_button": "Сравнить ({{count}})"
+    "compare_button": "Сравнить ({{count}})",
+    "ooo_badge": "ВОФ",
+    "ooo_until": "до {{date}}"
   },
   "compare": {
     "title": "Сравнение профилей",
@@ -68,6 +70,12 @@
     "cancel": "Отмена",
     "record_change": "Изменить уровень (записывает историю)",
     "history_entries": "изменений",
+    "availability_section": "Доступность",
+    "timezone_label": "Часовой пояс",
+    "timezone_search": "Поиск часовых поясов…",
+    "timezone_none": "Часовой пояс не указан",
+    "working_hours_label": "Рабочие часы (местное время)",
+    "ooo_until_label": "Вне офиса до",
     "proficiency": {
       "1": "Начинающий",
       "2": "Новичок",
@@ -91,7 +99,8 @@
     "empty": "Добавьте минимум 2 профиля с навыками для отображения матрицы.",
     "all_skills": "Все навыки",
     "filter_skill": "Фильтр по навыку...",
-    "delta_tooltip": "Изменилось на {{delta}} с последней записи"
+    "delta_tooltip": "Изменилось на {{delta}} с последней записи",
+    "timezone_col": "ЧП"
   },
   "credits": {
     "title": "Кредиты проектов",

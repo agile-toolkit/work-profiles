@@ -51,8 +51,8 @@ function publishExport(profiles: WorkProfile[]) {
   const active = profiles.filter(p => !p.archived)
   const payload = {
     teamCapacity: active.reduce((sum, p) => sum + (p.capacity ?? 0), 0),
-    profiles: active.map(({ id, name, role, skills, capacity, workTypes }) => ({
-      id, name, role, skills, capacity, workTypes,
+    profiles: active.map(({ id, name, role, skills, capacity, workTypes, timezone, workingHours, oooUntil }) => ({
+      id, name, role, skills, capacity, workTypes, timezone, workingHours, oooUntil,
     })),
   }
   localStorage.setItem(WP_EXPORT_KEY, JSON.stringify(payload))

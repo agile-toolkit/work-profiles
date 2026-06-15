@@ -43,7 +43,9 @@
     "import_cancel": "Cancel",
     "import_empty": "No valid profiles found in file. Check that the file has a Name column.",
     "import_error": "Could not read file. Ensure it is a valid CSV.",
-    "compare_button": "Compare ({{count}})"
+    "compare_button": "Compare ({{count}})",
+    "ooo_badge": "OOO",
+    "ooo_until": "until {{date}}"
   },
   "compare": {
     "title": "Profile Comparison",
@@ -68,6 +70,12 @@
     "cancel": "Cancel",
     "record_change": "Change level (records history)",
     "history_entries": "changes",
+    "availability_section": "Availability",
+    "timezone_label": "Timezone",
+    "timezone_search": "Search timezones…",
+    "timezone_none": "No timezone set",
+    "working_hours_label": "Working hours (local time)",
+    "ooo_until_label": "Out of office until",
     "proficiency": {
       "1": "Beginner",
       "2": "Novice",
@@ -91,7 +99,8 @@
     "empty": "Add at least 2 profiles with skills to see the matrix.",
     "all_skills": "All Skills",
     "filter_skill": "Filter by skill...",
-    "delta_tooltip": "Changed by {{delta}} since last record"
+    "delta_tooltip": "Changed by {{delta}} since last record",
+    "timezone_col": "TZ"
   },
   "credits": {
     "title": "Project Credits",
