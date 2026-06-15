@@ -5,6 +5,16 @@ import type { WorkProfile, ProficiencyLevel } from '../types'
 const LEVEL_COLORS = ['', 'bg-red-200', 'bg-orange-200', 'bg-yellow-200', 'bg-lime-300', 'bg-green-400']
 const LEVEL_TEXT = ['', '1', '2', '3', '4', '5']
 
+function getTzAbbr(tz: string): string {
+  try {
+    const parts = Intl.DateTimeFormat('en', { timeZone: tz, timeZoneName: 'short' })
+      .formatToParts(new Date())
+    return parts.find(p => p.type === 'timeZoneName')?.value ?? tz.split('/').pop()!.replace(/_/g, ' ')
+  } catch {
+    return tz
+  }
+}
+
 function getSkillDelta(proficiency: ProficiencyLevel, history?: { date: string; proficiency: ProficiencyLevel }[]): number | null {
   if (!history || history.length === 0) return null
   return proficiency - history[history.length - 1].proficiency
@@ -62,6 +72,9 @@ export default function SkillMatrix({ profiles }: Props) {
               <th className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
                 Name
               </th>
+              <th className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
+                {t('matrix.timezone_col')}
+              </th>
               {allSkills.map(skill => (
                 <th key={skill} className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap max-w-[80px]">
                   <div className="max-w-[72px] truncate" title={skill}>{skill}</div>
@@ -75,6 +88,18 @@ export default function SkillMatrix({ profiles }: Props) {
                 <td className="px-3 py-2 border border-gray-200 dark:border-gray-700">
                   <div className="font-medium text-gray-900 dark:text-gray-50">{profile.name}</div>
                   <div className="text-xs text-gray-400 dark:text-gray-500">{profile.role}</div>
+                </td>
+                <td className="px-2 py-2 border border-gray-200 dark:border-gray-700 text-center">
+                  {profile.timezone ? (
+                    <span
+                      className="text-xs text-gray-600 dark:text-gray-400 font-mono"
+                      title={profile.timezone}
+                    >
+                      {getTzAbbr(profile.timezone)}
+                    </span>
+                  ) : (
+                    <span className="text-gray-200 dark:text-gray-700">—</span>
+                  )}
                 </td>
                 {allSkills.map(skill => {
                   const s = profile.skills.find(sk => sk.name === skill)

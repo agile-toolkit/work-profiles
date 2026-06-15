@@ -14,6 +14,11 @@ export interface Skill {
   history?: SkillHistoryEntry[]
 }
 
+export interface WorkingHours {
+  start: string
+  end: string
+}
+
 export interface WorkProfile {
   id: string
   name: string
@@ -24,6 +29,9 @@ export interface WorkProfile {
   capacity: number
   createdAt: number
   archived?: boolean
+  timezone?: string
+  workingHours?: WorkingHours
+  oooUntil?: string
 }
 
 export interface ProjectCredit {

@@ -43,7 +43,9 @@
     "import_cancel": "Cancelar",
     "import_empty": "No se encontraron perfiles válidos en el archivo. Verifica que tenga una columna Nombre.",
     "import_error": "No se pudo leer el archivo. Asegúrate de que sea un CSV válido.",
-    "compare_button": "Comparar ({{count}})"
+    "compare_button": "Comparar ({{count}})",
+    "ooo_badge": "FUO",
+    "ooo_until": "hasta {{date}}"
   },
   "compare": {
     "title": "Comparación de perfiles",
@@ -68,6 +70,12 @@
     "cancel": "Cancelar",
     "record_change": "Cambiar nivel (guarda historial)",
     "history_entries": "cambios",
+    "availability_section": "Disponibilidad",
+    "timezone_label": "Zona horaria",
+    "timezone_search": "Buscar zonas horarias…",
+    "timezone_none": "Sin zona horaria",
+    "working_hours_label": "Horario laboral (hora local)",
+    "ooo_until_label": "Fuera de oficina hasta",
     "proficiency": {
       "1": "Principiante",
       "2": "Novato",
@@ -91,7 +99,8 @@
     "empty": "Añade al menos 2 perfiles con habilidades para ver la matriz.",
     "all_skills": "Todas las habilidades",
     "filter_skill": "Filtrar por habilidad...",
-    "delta_tooltip": "Cambió {{delta}} desde el último registro"
+    "delta_tooltip": "Cambió {{delta}} desde el último registro",
+    "timezone_col": "ZH"
   },
   "credits": {
     "title": "Créditos de proyecto",

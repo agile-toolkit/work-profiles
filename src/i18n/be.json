@@ -43,7 +43,9 @@
     "import_cancel": "Адмена",
     "import_empty": "Валідных прафіляў у файле не знойдзена. Праверце наяўнасць калонкі Name.",
     "import_error": "Не ўдалося прачытаць файл. Упэўніцеся, што гэта дапушчальны CSV.",
-    "compare_button": "Параўнаць ({{count}})"
+    "compare_button": "Параўнаць ({{count}})",
+    "ooo_badge": "ПАД",
+    "ooo_until": "да {{date}}"
   },
   "compare": {
     "title": "Параўнанне прафіляў",
@@ -68,6 +70,12 @@
     "cancel": "Адмена",
     "record_change": "Змяніць узровень (запісаць гісторыю)",
     "history_entries": "змен",
+    "availability_section": "Даступнасць",
+    "timezone_label": "Часавы пояс",
+    "timezone_search": "Пошук часавых паясоў…",
+    "timezone_none": "Часавы пояс не ўказаны",
+    "working_hours_label": "Рабочыя гадзіны (мясцовы час)",
+    "ooo_until_label": "Па-за офісам да",
     "proficiency": {
       "1": "Пачатковец",
       "2": "Навічок",
@@ -91,7 +99,8 @@
     "empty": "Дадайце мінімум 2 прафілі з навыкамі для адлюстравання матрыцы.",
     "all_skills": "Усе навыкі",
     "filter_skill": "Фільтр па навыку...",
-    "delta_tooltip": "Змянілася на {{delta}} з апошняга запісу"
+    "delta_tooltip": "Змянілася на {{delta}} з апошняга запісу",
+    "timezone_col": "ЧП"
   },
   "credits": {
     "title": "Крэдыты праектаў",
