@@ -8,7 +8,6 @@ import LearnView from './components/LearnView'
 import CompareView from './components/CompareView'
 import UpdateToast from './components/UpdateToast'
 import AppHeader from './components/AppHeader'
-import LanguagePicker from './components/LanguagePicker'
 import ThemeToggle from './components/ThemeToggle'
 
 const PROFILES_KEY = 'work-profiles-data'
@@ -101,7 +100,6 @@ export default function App() {
           onClick: () => setScreen(item.key),
         }))}
       >
-        <LanguagePicker />
         <ThemeToggle />
       </AppHeader>
 
