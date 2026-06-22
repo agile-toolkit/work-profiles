@@ -45,7 +45,9 @@
     "import_error": "Не удалось прочитать файл. Убедитесь, что это корректный CSV.",
     "compare_button": "Сравнить ({{count}})",
     "ooo_badge": "ВОФ",
-    "ooo_until": "до {{date}}"
+    "ooo_until": "до {{date}}",
+    "endorse_button": "Подтвердить навык",
+    "endorse_as": "Подтвердить как…"
   },
   "compare": {
     "title": "Сравнение профилей",
@@ -100,7 +102,8 @@
     "all_skills": "Все навыки",
     "filter_skill": "Фильтр по навыку...",
     "delta_tooltip": "Изменилось на {{delta}} с последней записи",
-    "timezone_col": "ЧП"
+    "timezone_col": "ЧП",
+    "endorsed_tooltip": "{{count}} подтверждение(й): {{names}}"
   },
   "credits": {
     "title": "Кредиты проектов",

@@ -45,7 +45,9 @@
     "import_error": "Could not read file. Ensure it is a valid CSV.",
     "compare_button": "Compare ({{count}})",
     "ooo_badge": "OOO",
-    "ooo_until": "until {{date}}"
+    "ooo_until": "until {{date}}",
+    "endorse_button": "Endorse this skill",
+    "endorse_as": "Endorse as…"
   },
   "compare": {
     "title": "Profile Comparison",
@@ -100,7 +102,8 @@
     "all_skills": "All Skills",
     "filter_skill": "Filter by skill...",
     "delta_tooltip": "Changed by {{delta}} since last record",
-    "timezone_col": "TZ"
+    "timezone_col": "TZ",
+    "endorsed_tooltip": "{{count}} endorsement(s): {{names}}"
   },
   "credits": {
     "title": "Project Credits",

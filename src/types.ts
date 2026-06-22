@@ -12,6 +12,7 @@ export interface Skill {
   name: string
   proficiency: ProficiencyLevel
   history?: SkillHistoryEntry[]
+  endorsedBy?: string[]
 }
 
 export interface WorkingHours {

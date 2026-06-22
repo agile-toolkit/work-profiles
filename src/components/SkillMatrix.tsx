@@ -108,7 +108,10 @@ export default function SkillMatrix({ profiles }: Props) {
                     <td key={skill} className="px-2 py-2 border border-gray-200 dark:border-gray-700 text-center">
                       {s ? (
                         <div className="inline-flex flex-col items-center gap-0.5">
-                          <div className={`inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-semibold text-gray-800 dark:text-gray-900 ${LEVEL_COLORS[s.proficiency]}`}>
+                          <div
+                            className={`inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-semibold text-gray-800 dark:text-gray-900 ${LEVEL_COLORS[s.proficiency]}`}
+                            title={s.endorsedBy && s.endorsedBy.length > 0 ? t('matrix.endorsed_tooltip', { count: s.endorsedBy.length, names: s.endorsedBy.join(', ') }) : undefined}
+                          >
                             {LEVEL_TEXT[s.proficiency]}
                           </div>
                           {delta !== null && (
@@ -117,6 +120,11 @@ export default function SkillMatrix({ profiles }: Props) {
                               title={t('matrix.delta_tooltip', { delta: delta > 0 ? `+${delta}` : String(delta) })}
                             >
                               {delta > 0 ? `↑${delta}` : delta < 0 ? `↓${Math.abs(delta)}` : '='}
+                            </span>
+                          )}
+                          {s.endorsedBy && s.endorsedBy.length > 0 && (
+                            <span className="text-[10px] leading-none text-green-600 dark:text-green-400 font-medium">
+                              ✓{s.endorsedBy.length}
                             </span>
                           )}
                         </div>

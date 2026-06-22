@@ -121,6 +121,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
   const [csvPreview, setCsvPreview] = useState<CsvProfile[] | null>(null)
   const [csvError, setCsvError] = useState<string | null>(null)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [endorsingSkill, setEndorsingSkill] = useState<{ profileId: string; skillId: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   function makeEmpty(): WorkProfile {
@@ -197,6 +198,18 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
     if (!confirm(t('profiles.delete_permanently_confirm'))) return
     onProfiles(profiles.filter(p => p.id !== id))
     if (editId === id) setEditId(null)
+  }
+
+  function endorseSkill(profileId: string, skillId: string, endorserName: string) {
+    onProfiles(profiles.map(p =>
+      p.id !== profileId ? p : {
+        ...p,
+        skills: p.skills.map(s =>
+          s.id !== skillId ? s : { ...s, endorsedBy: [...(s.endorsedBy ?? []), endorserName] }
+        ),
+      }
+    ))
+    setEndorsingSkill(null)
   }
 
   function addSkill() {
@@ -488,15 +501,55 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
               <span className={`font-medium ${p.archived ? 'text-gray-400 dark:text-gray-600' : 'text-brand-600'}`}>{p.capacity}%</span>
             </div>
             {p.skills.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-1">
-                {p.skills.map(s => (
-                  <span
-                    key={s.id}
-                    className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.archived ? 'bg-gray-100 text-gray-400' : LEVEL_COLORS[s.proficiency]}`}
-                  >
-                    {s.name || '…'} L{s.proficiency}
-                  </span>
-                ))}
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {p.skills.map(s => {
+                  const endorsements = s.endorsedBy ?? []
+                  const isOpen = endorsingSkill?.profileId === p.id && endorsingSkill?.skillId === s.id
+                  const eligibleEndorsers = activeProfiles.filter(q =>
+                    q.id !== p.id && !endorsements.includes(q.name)
+                  )
+                  return (
+                    <div key={s.id} className="flex flex-col gap-0.5">
+                      <div className="flex items-center gap-1">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.archived ? 'bg-gray-100 text-gray-400' : LEVEL_COLORS[s.proficiency]}`}>
+                          {s.name || '…'} L{s.proficiency}
+                        </span>
+                        {!p.archived && eligibleEndorsers.length > 0 && (
+                          <button
+                            type="button"
+                            title={t('profiles.endorse_button')}
+                            onClick={() => setEndorsingSkill(isOpen ? null : { profileId: p.id, skillId: s.id })}
+                            className="text-[10px] leading-none text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                          >
+                            +1
+                          </button>
+                        )}
+                        {endorsements.length > 0 && (
+                          <span
+                            title={endorsements.join(', ')}
+                            className="text-[10px] leading-none text-green-600 dark:text-green-400 font-medium"
+                          >
+                            ✓{endorsements.length}
+                          </span>
+                        )}
+                      </div>
+                      {isOpen && (
+                        <select
+                          className="text-xs input py-0.5 mt-0.5 max-w-[140px]"
+                          defaultValue=""
+                          onChange={e => {
+                            if (e.target.value) endorseSkill(p.id, s.id, e.target.value)
+                          }}
+                        >
+                          <option value="">{t('profiles.endorse_as')}</option>
+                          {eligibleEndorsers.map(q => (
+                            <option key={q.id} value={q.name}>{q.name}</option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             )}
             {p.interests.length > 0 && (
