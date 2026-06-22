@@ -45,7 +45,9 @@
     "import_error": "Не ўдалося прачытаць файл. Упэўніцеся, што гэта дапушчальны CSV.",
     "compare_button": "Параўнаць ({{count}})",
     "ooo_badge": "ПАД",
-    "ooo_until": "да {{date}}"
+    "ooo_until": "да {{date}}",
+    "endorse_button": "Пацвердзіць навык",
+    "endorse_as": "Пацвердзіць як…"
   },
   "compare": {
     "title": "Параўнанне прафіляў",
@@ -100,7 +102,8 @@
     "all_skills": "Усе навыкі",
     "filter_skill": "Фільтр па навыку...",
     "delta_tooltip": "Змянілася на {{delta}} з апошняга запісу",
-    "timezone_col": "ЧП"
+    "timezone_col": "ЧП",
+    "endorsed_tooltip": "{{count}} пацвярджэнне(яў): {{names}}"
   },
   "credits": {
     "title": "Крэдыты праектаў",

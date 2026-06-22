@@ -45,7 +45,9 @@
     "import_error": "No se pudo leer el archivo. Asegúrate de que sea un CSV válido.",
     "compare_button": "Comparar ({{count}})",
     "ooo_badge": "FUO",
-    "ooo_until": "hasta {{date}}"
+    "ooo_until": "hasta {{date}}",
+    "endorse_button": "Avalar esta habilidad",
+    "endorse_as": "Avalar como…"
   },
   "compare": {
     "title": "Comparación de perfiles",
@@ -100,7 +102,8 @@
     "all_skills": "Todas las habilidades",
     "filter_skill": "Filtrar por habilidad...",
     "delta_tooltip": "Cambió {{delta}} desde el último registro",
-    "timezone_col": "ZH"
+    "timezone_col": "ZH",
+    "endorsed_tooltip": "{{count}} aval(es): {{names}}"
   },
   "credits": {
     "title": "Créditos de proyecto",
