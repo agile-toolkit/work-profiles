@@ -54,7 +54,12 @@
     "ooo_badge": "ВОФ",
     "ooo_until": "до {{date}}",
     "endorse_button": "Подтвердить навык",
-    "endorse_as": "Подтвердить как…"
+    "endorse_as": "Подтвердить как…",
+    "announce_saved": "Профиль сохранён: {{name}}",
+    "announce_updated": "Профиль обновлён: {{name}}",
+    "announce_archived": "Профиль архивирован: {{name}}",
+    "announce_restored": "Профиль восстановлен: {{name}}",
+    "announce_deleted": "Профиль удалён: {{name}}"
   },
   "compare": {
     "title": "Сравнение профилей",

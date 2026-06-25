@@ -154,15 +154,16 @@ export default function SkillMatrix({ profiles }: Props) {
           <thead>
             {groupByCategory && (
               <tr>
-                <th rowSpan={2} className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
+                <th rowSpan={2} scope="col" className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
                   Name
                 </th>
-                <th rowSpan={2} className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
+                <th rowSpan={2} scope="col" className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
                   {t('matrix.timezone_col')}
                 </th>
                 {skillGroups.map(g => (
                   <th
                     key={g.category}
+                    scope="colgroup"
                     colSpan={g.skills.length}
                     className="px-2 py-1 bg-brand-50 dark:bg-brand-950 border border-gray-200 dark:border-gray-700 font-semibold text-brand-700 dark:text-brand-300 text-xs text-center"
                   >
@@ -174,16 +175,16 @@ export default function SkillMatrix({ profiles }: Props) {
             <tr>
               {!groupByCategory && (
                 <>
-                  <th className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
+                  <th scope="col" className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
                     Name
                   </th>
-                  <th className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
+                  <th scope="col" className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
                     {t('matrix.timezone_col')}
                   </th>
                 </>
               )}
               {sortedSkills.map(skill => (
-                <th key={skill} className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap max-w-[80px]">
+                <th key={skill} scope="col" className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap max-w-[80px]">
                   <div className="max-w-[72px] truncate" title={skill}>{skill}</div>
                 </th>
               ))}
@@ -192,10 +193,10 @@ export default function SkillMatrix({ profiles }: Props) {
           <tbody>
             {profiles.map(profile => (
               <tr key={profile.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                <td className="px-3 py-2 border border-gray-200 dark:border-gray-700">
+                <th scope="row" className="px-3 py-2 border border-gray-200 dark:border-gray-700 text-left font-normal">
                   <div className="font-medium text-gray-900 dark:text-gray-50">{profile.name}</div>
                   <div className="text-xs text-gray-400 dark:text-gray-500">{profile.role}</div>
-                </td>
+                </th>
                 <td className="px-2 py-2 border border-gray-200 dark:border-gray-700 text-center">
                   {profile.timezone ? (
                     <span

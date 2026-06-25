@@ -54,7 +54,12 @@
     "ooo_badge": "ПАД",
     "ooo_until": "да {{date}}",
     "endorse_button": "Пацвердзіць навык",
-    "endorse_as": "Пацвердзіць як…"
+    "endorse_as": "Пацвердзіць як…",
+    "announce_saved": "Профіль захаваны: {{name}}",
+    "announce_updated": "Профіль абноўлены: {{name}}",
+    "announce_archived": "Профіль заархіваваны: {{name}}",
+    "announce_restored": "Профіль адноўлены: {{name}}",
+    "announce_deleted": "Профіль выдалены: {{name}}"
   },
   "compare": {
     "title": "Параўнанне прафіляў",

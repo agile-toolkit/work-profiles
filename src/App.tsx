@@ -61,6 +61,7 @@ export default function App() {
   const { t } = useTranslation()
   const [screen, setScreen] = useState<Screen>('profiles')
   const [compareIds, setCompareIds] = useState<string[]>([])
+  const [announcement, setAnnouncement] = useState('')
   const [profiles, setProfiles] = useState<WorkProfile[]>(() => {
     const data = load<WorkProfile>(PROFILES_KEY)
     publishExport(data)
@@ -103,12 +104,14 @@ export default function App() {
         <ThemeToggle />
       </AppHeader>
 
+      <div aria-live="polite" aria-atomic="true" className="sr-only">{announcement}</div>
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         {screen === 'profiles' && (
           <ProfilesView
             profiles={profiles}
             onProfiles={updateProfiles}
             onCompare={ids => { setCompareIds(ids); setScreen('compare') }}
+            onAnnounce={msg => { setAnnouncement(''); requestAnimationFrame(() => setAnnouncement(msg)) }}
           />
         )}
         {screen === 'compare' && (

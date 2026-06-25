@@ -54,7 +54,12 @@
     "ooo_badge": "OOO",
     "ooo_until": "until {{date}}",
     "endorse_button": "Endorse this skill",
-    "endorse_as": "Endorse as…"
+    "endorse_as": "Endorse as…",
+    "announce_saved": "Profile saved: {{name}}",
+    "announce_updated": "Profile updated: {{name}}",
+    "announce_archived": "Profile archived: {{name}}",
+    "announce_restored": "Profile restored: {{name}}",
+    "announce_deleted": "Profile deleted: {{name}}"
   },
   "compare": {
     "title": "Profile Comparison",
