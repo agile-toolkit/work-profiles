@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
@@ -112,9 +112,10 @@ interface Props {
   profiles: WorkProfile[]
   onProfiles: (p: WorkProfile[]) => void
   onCompare: (ids: string[]) => void
+  onAnnounce?: (msg: string) => void
 }
 
-export default function ProfilesView({ profiles, onProfiles, onCompare }: Props) {
+export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnounce }: Props) {
   const { t } = useTranslation()
   const [editId, setEditId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
@@ -125,6 +126,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
   const [endorsingSkill, setEndorsingSkill] = useState<{ profileId: string; skillId: string } | null>(null)
   const [printingProfile, setPrintingProfile] = useState<WorkProfile | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const importModalRef = useRef<HTMLDivElement>(null)
 
   function makeEmpty(): WorkProfile {
     return {
@@ -173,8 +175,10 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
     }
     if (editId) {
       onProfiles(profiles.map(p => (p.id === editId ? updated : p)))
+      onAnnounce?.(t('profiles.announce_updated', { name: updated.name }))
     } else {
       onProfiles([...profiles, updated])
+      onAnnounce?.(t('profiles.announce_saved', { name: updated.name }))
     }
     setAdding(false)
     setEditId(null)
@@ -182,24 +186,32 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
 
   function deleteProfile(id: string) {
     if (!confirm(t('profiles.delete_confirm'))) return
+    const name = profiles.find(p => p.id === id)?.name ?? ''
     onProfiles(profiles.filter(p => p.id !== id))
     if (editId === id) setEditId(null)
+    onAnnounce?.(t('profiles.announce_deleted', { name }))
   }
 
   function archiveProfile(id: string) {
     if (!confirm(t('profiles.archive_confirm'))) return
+    const name = profiles.find(p => p.id === id)?.name ?? ''
     onProfiles(profiles.map(p => p.id === id ? { ...p, archived: true } : p))
     if (editId === id) setEditId(null)
+    onAnnounce?.(t('profiles.announce_archived', { name }))
   }
 
   function restoreProfile(id: string) {
+    const name = profiles.find(p => p.id === id)?.name ?? ''
     onProfiles(profiles.map(p => p.id === id ? { ...p, archived: false } : p))
+    onAnnounce?.(t('profiles.announce_restored', { name }))
   }
 
   function deletePermanently(id: string) {
     if (!confirm(t('profiles.delete_permanently_confirm'))) return
+    const name = profiles.find(p => p.id === id)?.name ?? ''
     onProfiles(profiles.filter(p => p.id !== id))
     if (editId === id) setEditId(null)
+    onAnnounce?.(t('profiles.announce_deleted', { name }))
   }
 
   function handlePrint(profile: WorkProfile) {
@@ -328,6 +340,29 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
       csv => profiles.some(p => p.name.toLowerCase() === csv.name.toLowerCase())
     ).length
   }
+
+  useEffect(() => {
+    if (!csvPreview || !importModalRef.current) return
+    const modal = importModalRef.current
+    const focusable = modal.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    first?.focus()
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') { setCsvPreview(null); return }
+      if (e.key !== 'Tab') return
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [csvPreview])
 
   const showForm = adding || editId !== null
   const levels: ProficiencyLevel[] = [1, 2, 3, 4, 5]
@@ -475,15 +510,17 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
                   <>
                     <button
                       type="button"
+                      aria-label={`${t('profiles.restore')} ${p.name}`}
                       onClick={() => restoreProfile(p.id)}
-                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
+                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1"
                     >
                       {t('profiles.restore')}
                     </button>
                     <button
                       type="button"
+                      aria-label={`${t('profiles.delete_permanently')} ${p.name}`}
                       onClick={() => deletePermanently(p.id)}
-                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950"
+                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-1"
                     >
                       {t('profiles.delete_permanently')}
                     </button>
@@ -492,8 +529,9 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
                   <>
                     <button
                       type="button"
+                      aria-label={`${t('profiles.edit')} ${p.name}`}
                       onClick={() => openEdit(p)}
-                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
+                      className="text-xs text-brand-600 hover:text-brand-800 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1"
                     >
                       {t('profiles.edit')}
                     </button>
@@ -502,7 +540,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
                       aria-label={`${t('profile_card.print_button')} ${p.name}`}
                       title={t('profile_card.print_button')}
                       onClick={() => handlePrint(p)}
-                      className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                      className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1"
                     >
                       <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                         <path d="M4 5V2h8v3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -513,8 +551,9 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
                     </button>
                     <button
                       type="button"
+                      aria-label={`${t('profiles.archive')} ${p.name}`}
                       onClick={() => archiveProfile(p.id)}
-                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950"
+                      className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-1"
                     >
                       {t('profiles.archive')}
                     </button>
@@ -543,9 +582,11 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
                         {!p.archived && eligibleEndorsers.length > 0 && (
                           <button
                             type="button"
+                            aria-label={`${t('profiles.endorse_button')}: ${s.name}`}
+                            aria-expanded={isOpen}
                             title={t('profiles.endorse_button')}
                             onClick={() => setEndorsingSkill(isOpen ? null : { profileId: p.id, skillId: s.id })}
-                            className="text-[10px] leading-none text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+                            className="text-[10px] leading-none text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1 rounded"
                           >
                             +1
                           </button>
@@ -741,9 +782,16 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
       )}
 
       {csvPreview && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">{t('profiles.import_modal_title')}</h3>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" aria-hidden="true" onClick={() => setCsvPreview(null)}>
+          <div
+            ref={importModalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="import-modal-title"
+            className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl max-w-md w-full p-6 space-y-4"
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 id="import-modal-title" className="text-lg font-semibold text-gray-900 dark:text-gray-50">{t('profiles.import_modal_title')}</h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               {t('profiles.import_found', { count: csvPreview.length })}
             </p>

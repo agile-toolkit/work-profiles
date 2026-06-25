@@ -54,7 +54,12 @@
     "ooo_badge": "FUO",
     "ooo_until": "hasta {{date}}",
     "endorse_button": "Avalar esta habilidad",
-    "endorse_as": "Avalar como…"
+    "endorse_as": "Avalar como…",
+    "announce_saved": "Perfil guardado: {{name}}",
+    "announce_updated": "Perfil actualizado: {{name}}",
+    "announce_archived": "Perfil archivado: {{name}}",
+    "announce_restored": "Perfil restaurado: {{name}}",
+    "announce_deleted": "Perfil eliminado: {{name}}"
   },
   "compare": {
     "title": "Comparación de perfiles",
