@@ -1,6 +1,13 @@
 {
-  "app": { "title": "Perfiles de Trabajo" },
-  "nav": { "profiles": "Perfiles", "matrix": "Matriz de habilidades", "credits": "Créditos", "learn": "Aprender" },
+  "app": {
+    "title": "Perfiles de Trabajo"
+  },
+  "nav": {
+    "profiles": "Perfiles",
+    "matrix": "Matriz de habilidades",
+    "credits": "Créditos",
+    "learn": "Aprender"
+  },
   "profiles": {
     "title": "Perfiles del equipo",
     "dreyfus_title": "Niveles de habilidad de Dreyfus",
@@ -134,11 +141,20 @@
     "credits_title": "¿Qué son los créditos de proyecto?",
     "credits_body": "Los créditos de proyecto son una forma ligera de reconocer contribuciones sin revisiones formales de desempeño. Los miembros del equipo registran lo que contribuyeron y obtienen puntos de crédito. Esto crea un registro transparente de quién hace qué.",
     "dreyfus_title": "Escala de dominio de habilidades (Modelo Dreyfus)",
-    "levels": ["1 — Principiante: sigue reglas, necesita supervisión", "2 — Novato: puede manejar tareas rutinarias con orientación", "3 — Competente: puede trabajar de forma independiente en tareas estándar", "4 — Experto: ve el panorama general, maneja bien las excepciones", "5 — Maestro: intuición profunda, puede enseñar y mejorar el campo"],
+    "levels": [
+      "1 — Principiante: sigue reglas, necesita supervisión",
+      "2 — Novato: puede manejar tareas rutinarias con orientación",
+      "3 — Competente: puede trabajar de forma independiente en tareas estándar",
+      "4 — Experto: ve el panorama general, maneja bien las excepciones",
+      "5 — Maestro: intuición profunda, puede enseñar y mejorar el campo"
+    ],
     "principles_title": "Principios clave",
     "p1": "Los perfiles son mantenidos por los propios empleados — cada persona es dueña de sus datos.",
     "p2": "La matriz de habilidades es visible para el equipo pero no se usa para evaluaciones.",
     "p3": "Los créditos reconocen el esfuerzo, no solo los resultados.",
     "p4": "Las clasificaciones son opcionales — no todos los equipos quieren rankings públicos."
+  },
+  "profile_card": {
+    "print_button": "Imprimir perfil"
   }
 }
