@@ -27,8 +27,8 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 ## Backlog
 <!-- Issues awaiting human review; agent appends here during research runs -->
 - [x] [#3] Integration: link Work Profiles capacity data to Planning Poker and Sprint Metrics — implemented via `wp-profiles-export` localStorage key
-- [ ] [#4] Feature: profile search and skill gap analysis (ready — spec revised: dedicated Gap Analysis screen + both phases)
-- [ ] [#5] Feature: export team directory as CSV and printable HTML (ready — spec revised: header button, CSV only, "Skill: Level – Label" format)
+- [ ] [#4] Feature: profile search and skill gap analysis (ready — spec revised: dedicated Gap Analysis screen + both phases; confirmed 2026-06-25, ready for human approval)
+- [ ] [#5] Feature: export team directory as CSV and printable HTML (ready — spec revised: header button, CSV only, "Skill: Level – Label" format; confirmed 2026-06-25, ready for human approval)
 - [x] [#6] UX: role-based starter templates to reduce blank-page friction — implemented, In Review
 - [x] [#7] Technical: PWA support for offline use and device installation — implemented, In Review
 - [x] [#12] Integration: work-profiles:lastSession localStorage key for Dashboard card — implemented
@@ -42,9 +42,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#27] Feature: profile comparison view — implemented (issue #27, In Review)
 - [x] [#28] Feature: skill progression history — implemented (issue #28, In Review)
 - [x] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (implemented, In Review)
-- [ ] [#35] Feature: skill category tagging — add `category?: string` to `Skill` interface; predefined list (Frontend/Backend/DevOps/Design/Testing/Soft Skills/Data & AI/Other); "Group by category" toggle in SkillMatrix; category pill filter row; expose in wp-profiles-export (needs-review)
-- [ ] [#36] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key to pre-fill team member names and roles; no work-profiles code changes needed (needs-review)
-- [ ] [#37] Feature: print-optimized individual profile card — "Print Profile" icon button in ProfileCard; hidden `#print-target` div populated on click + `window.print()`; `@media print` CSS in index.css hides everything except `#print-target`; A4 layout with name/role, capacity bar, skill pills, work-type badges; i18n key `profile_card.print_button` (needs-review)
+- [ ] [#30] Research: keyboard accessibility and ARIA audit — `scope` on SkillMatrix headers, `aria-label` on action buttons, focus trap on import modal, `focus-visible:ring-2`, `aria-live` announcement region in App.tsx (approved 2026-06-25)
+- [ ] [#31] Integration: Improvement Board — read `improvement-board-items`/`improvement-board-members` at startup; show open items on matching profile cards in collapsible `🔧` section (default collapsed); no writes needed (approved 2026-06-25 — spec+plan in issue comment)
+- [ ] [#35] Feature: skill category tagging — add `category?: string` to `Skill` interface; predefined list (Frontend/Backend/DevOps/Design/Testing/Soft Skills/Data & AI/Other); "Group by category" toggle in SkillMatrix; category pill filter row; expose in wp-profiles-export; i18n key `matrix.group_by_category` (approved 2026-06-25)
+- [ ] [#36] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key; no work-profiles code changes needed; implementation in salary-formula repo (approved 2026-06-25)
+- [ ] [#37] Feature: print-optimized individual profile card — "Print Profile" icon button in ProfileCard; hidden `#print-target` div populated on click + `window.print()`; `@media print` CSS in index.css hides everything except `#print-target`; A4 layout with name/role, capacity bar, skill pills sorted by proficiency desc; i18n key `profile_card.print_button` (approved 2026-06-25)
 
 ## localStorage keys
 
@@ -62,6 +64,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-25 — research: auto-approved #30, #31, #35, #36, #37; confirmed #4 and #5 specs
+- Done: confirmed revised specs for #4 (gap analysis) and #5 (CSV export) — both already have "Resolved questions" sections in issue body, commented confirming ready for human approval; auto-approved 5 stale `needs-review` issues: #35 (skill categories, 11 days, Feature from BRIEF), #37 (print profile, 11 days, Feature from BRIEF), #30 (accessibility audit, 17 days, Research), #31 (Improvement Board integration, 17 days, External integration — wrote spec+plan in comment), #36 (Salary Formula import, 11 days, External integration — no WP code changes, implementation in salary-formula repo); added `approved` label to all five; added #30 and #31 to BRIEF backlog
+- Remaining: implement first approved feature in work-profiles
+- Next task: implement #35 (skill category tagging — add `category?: string` to `Skill` in `types.ts`; `SKILL_CATEGORIES` const ['Frontend','Backend','DevOps','Design','Testing','Soft Skills','Data & AI','Other']; category dropdown in `ProfileForm.tsx` skill editor; "Group by category" toggle + category pill filter row in `SkillMatrix.tsx`; include `category` in `publishExport()` in `App.tsx`; i18n key `matrix.group_by_category` in EN/ES/BE/RU; predefined categories only, not user-editable; role starter templates updated to pre-fill categories)
 
 ### 2026-06-22 — feat: peer skill endorsement (issue #32)
 - Done: `endorsedBy?: string[]` added to `Skill` interface in `types.ts`; `endorseSkill()` function added to `ProfilesView.tsx` — persists via `onProfiles`/`updateProfiles` (no new localStorage key); `+1` button rendered next to each skill chip for non-archived profiles when eligible endorsers exist (active profiles excluding card owner and anyone who already endorsed); clicking opens inline `<select>` of eligible profiles; selecting endorser appends their name to `endorsedBy` and closes picker; `✓N` badge shown on chip when endorsements exist (tooltip lists endorser names, self-endorsement structurally impossible); `SkillMatrix.tsx` shows `✓N` count below proficiency level cell with tooltip listing endorser names; 4 new i18n keys (`profiles.endorse_button`, `profiles.endorse_as`, `matrix.endorsed_tooltip`) in EN/ES/BE/RU; set issue #32 to In Review in project
