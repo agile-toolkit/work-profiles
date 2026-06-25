@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
 
@@ -122,6 +123,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
   const [csvError, setCsvError] = useState<string | null>(null)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [endorsingSkill, setEndorsingSkill] = useState<{ profileId: string; skillId: string } | null>(null)
+  const [printingProfile, setPrintingProfile] = useState<WorkProfile | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   function makeEmpty(): WorkProfile {
@@ -198,6 +200,16 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
     if (!confirm(t('profiles.delete_permanently_confirm'))) return
     onProfiles(profiles.filter(p => p.id !== id))
     if (editId === id) setEditId(null)
+  }
+
+  function handlePrint(profile: WorkProfile) {
+    setPrintingProfile(profile)
+    const after = () => {
+      setPrintingProfile(null)
+      window.removeEventListener('afterprint', after)
+    }
+    window.addEventListener('afterprint', after)
+    requestAnimationFrame(() => requestAnimationFrame(() => window.print()))
   }
 
   function endorseSkill(profileId: string, skillId: string, endorserName: string) {
@@ -487,6 +499,20 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
                     </button>
                     <button
                       type="button"
+                      aria-label={`${t('profile_card.print_button')} ${p.name}`}
+                      title={t('profile_card.print_button')}
+                      onClick={() => handlePrint(p)}
+                      className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+                    >
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                        <path d="M4 5V2h8v3" strokeLinecap="round" strokeLinejoin="round"/>
+                        <rect x="1" y="5" width="14" height="7" rx="1.5"/>
+                        <path d="M4 10h8" strokeLinecap="round"/>
+                        <path d="M4 10v4h8v-4" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => archiveProfile(p.id)}
                       className="text-xs text-red-400 hover:text-red-600 px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-950"
                     >
@@ -756,6 +782,60 @@ export default function ProfilesView({ profiles, onProfiles, onCompare }: Props)
             </div>
           </div>
         </div>
+      )}
+
+      {printingProfile && createPortal(
+        <div id="print-target">
+          <div style={{ padding: '2cm', fontFamily: 'Helvetica, Arial, sans-serif', maxWidth: '800px', margin: '0 auto', color: '#111827' }}>
+            <div style={{ borderBottom: '2px solid #f59e0b', paddingBottom: '12px', marginBottom: '20px' }}>
+              <h1 style={{ fontSize: '22px', fontWeight: '700', margin: '0 0 4px', color: '#111827' }}>{printingProfile.name}</h1>
+              <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 12px' }}>{printingProfile.role}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '12px', color: '#6b7280', flexShrink: 0 }}>Capacity: {printingProfile.capacity}%</span>
+                <div style={{ flex: 1, height: '6px', backgroundColor: '#e5e7eb', borderRadius: '3px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${printingProfile.capacity}%`, backgroundColor: '#f59e0b', borderRadius: '3px' }} />
+                </div>
+              </div>
+            </div>
+
+            {printingProfile.skills.length > 0 && (
+              <div style={{ marginBottom: '20px' }}>
+                <h2 style={{ fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#9ca3af', marginBottom: '10px' }}>
+                  Skills
+                </h2>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {printingProfile.skills.map(s => (
+                    <span key={s.id} style={{ fontSize: '12px', padding: '3px 10px', border: '1px solid #d1d5db', borderRadius: '999px', backgroundColor: '#f9fafb', color: '#374151' }}>
+                      {s.name}
+                      <span style={{ color: '#9ca3af', marginLeft: '4px' }}>
+                        · {t(`profile_form.proficiency.${s.proficiency}`)}
+                      </span>
+                      {(s.endorsedBy ?? []).length > 0 && (
+                        <span style={{ color: '#16a34a', marginLeft: '4px' }}>✓{s.endorsedBy!.length}</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {printingProfile.workTypes.length > 0 && (
+              <div>
+                <h2 style={{ fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#9ca3af', marginBottom: '10px' }}>
+                  Work Types
+                </h2>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {printingProfile.workTypes.map(wt => (
+                    <span key={wt} style={{ fontSize: '12px', padding: '3px 10px', backgroundColor: '#fef3c7', color: '#92400e', borderRadius: '999px' }}>
+                      {t(`profile_form.work_types.${wt}`)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   )
