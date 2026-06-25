@@ -72,6 +72,8 @@
     "cancel": "Cancel",
     "record_change": "Change level (records history)",
     "history_entries": "changes",
+    "category_label": "Category",
+    "category_none": "No category",
     "availability_section": "Availability",
     "timezone_label": "Timezone",
     "timezone_search": "Search timezones…",
@@ -103,7 +105,8 @@
     "filter_skill": "Filter by skill...",
     "delta_tooltip": "Changed by {{delta}} since last record",
     "timezone_col": "TZ",
-    "endorsed_tooltip": "{{count}} endorsement(s): {{names}}"
+    "endorsed_tooltip": "{{count}} endorsement(s): {{names}}",
+    "group_by_category": "Group by category"
   },
   "credits": {
     "title": "Project Credits",

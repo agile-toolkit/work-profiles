@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, ProficiencyLevel } from '../types'
+import { SKILL_CATEGORIES } from '../types'
 
 const LEVEL_COLORS = ['', 'bg-red-200', 'bg-orange-200', 'bg-yellow-200', 'bg-lime-300', 'bg-green-400']
 const LEVEL_TEXT = ['', '1', '2', '3', '4', '5']
@@ -27,6 +28,8 @@ interface Props {
 export default function SkillMatrix({ profiles }: Props) {
   const { t } = useTranslation()
   const [filter, setFilter] = useState('')
+  const [groupByCategory, setGroupByCategory] = useState(false)
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
 
   if (profiles.length < 1) {
     return (
@@ -37,17 +40,58 @@ export default function SkillMatrix({ profiles }: Props) {
     )
   }
 
-  // Collect all unique skills
-  const allSkills = Array.from(
+  // Build skill→category map (first profile that has a category for that skill wins)
+  const skillCategoryMap = new Map<string, string>()
+  for (const p of profiles) {
+    for (const s of p.skills) {
+      if (!skillCategoryMap.has(s.name) && s.category) {
+        skillCategoryMap.set(s.name, s.category)
+      }
+    }
+  }
+
+  // Collect all unique skills, apply text filter + category pill filter
+  const allSkillNames = Array.from(
+    new Set(profiles.flatMap(p => p.skills.map(s => s.name)))
+  )
+    .filter(s => !filter || s.toLowerCase().includes(filter.toLowerCase()))
+    .filter(s => !categoryFilter || (skillCategoryMap.get(s) ?? 'Other') === categoryFilter)
+    .sort()
+
+  // Categories that actually appear in the (unfiltered by category) skill set
+  const allSkillNamesUnfiltered = Array.from(
     new Set(profiles.flatMap(p => p.skills.map(s => s.name)))
   ).filter(s => !filter || s.toLowerCase().includes(filter.toLowerCase()))
-  .sort()
+  const presentCategories = Array.from(
+    new Set(allSkillNamesUnfiltered.map(s => skillCategoryMap.get(s) ?? 'Other'))
+  )
+
+  // When grouped, sort skills by canonical category order then name
+  const getCategory = (name: string) => skillCategoryMap.get(name) ?? 'Other'
+  const categoryOrder = [...SKILL_CATEGORIES, 'Other']
+
+  const sortedSkills = groupByCategory
+    ? [...allSkillNames].sort((a, b) => {
+        const catA = categoryOrder.indexOf(getCategory(a))
+        const catB = categoryOrder.indexOf(getCategory(b))
+        return catA !== catB ? catA - catB : a.localeCompare(b)
+      })
+    : allSkillNames
+
+  // Group structure for header rendering
+  type SkillGroup = { category: string; skills: string[] }
+  const skillGroups: SkillGroup[] = groupByCategory
+    ? categoryOrder
+        .map(cat => ({ category: cat, skills: sortedSkills.filter(s => getCategory(s) === cat) }))
+        .filter(g => g.skills.length > 0)
+    : [{ category: '', skills: sortedSkills }]
 
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-4">{t('matrix.title')}</h1>
 
-      <div className="mb-4 flex items-center gap-2">
+      {/* Controls row */}
+      <div className="mb-3 flex items-center gap-2 flex-wrap">
         <input
           className="input max-w-xs"
           placeholder={t('matrix.filter_skill')}
@@ -63,19 +107,82 @@ export default function SkillMatrix({ profiles }: Props) {
             ← {t('matrix.all_skills')}
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => { setGroupByCategory(g => !g); setCategoryFilter(null) }}
+          className={`ml-auto text-xs px-3 py-1.5 rounded-lg border font-medium transition-colors ${
+            groupByCategory
+              ? 'bg-brand-600 text-white border-brand-600'
+              : 'border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800'
+          }`}
+        >
+          {t('matrix.group_by_category')}
+        </button>
       </div>
+
+      {/* Category pill filter row — only shown when NOT grouped */}
+      {!groupByCategory && presentCategories.length > 0 && (
+        <div className="mb-3 flex gap-1.5 flex-wrap">
+          {presentCategories.map(cat => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setCategoryFilter(categoryFilter === cat ? null : cat)}
+              className={`text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${
+                categoryFilter === cat
+                  ? 'bg-brand-600 text-white border-brand-600'
+                  : 'border-gray-200 text-gray-500 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+          {categoryFilter && (
+            <button
+              type="button"
+              onClick={() => setCategoryFilter(null)}
+              className="text-xs text-brand-600 hover:text-brand-800 dark:text-brand-400 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+      )}
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-collapse">
           <thead>
+            {groupByCategory && (
+              <tr>
+                <th rowSpan={2} className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
+                  Name
+                </th>
+                <th rowSpan={2} className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
+                  {t('matrix.timezone_col')}
+                </th>
+                {skillGroups.map(g => (
+                  <th
+                    key={g.category}
+                    colSpan={g.skills.length}
+                    className="px-2 py-1 bg-brand-50 dark:bg-brand-950 border border-gray-200 dark:border-gray-700 font-semibold text-brand-700 dark:text-brand-300 text-xs text-center"
+                  >
+                    {g.category}
+                  </th>
+                ))}
+              </tr>
+            )}
             <tr>
-              <th className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
-                Name
-              </th>
-              <th className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
-                {t('matrix.timezone_col')}
-              </th>
-              {allSkills.map(skill => (
+              {!groupByCategory && (
+                <>
+                  <th className="text-left px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 min-w-[140px]">
+                    Name
+                  </th>
+                  <th className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap">
+                    {t('matrix.timezone_col')}
+                  </th>
+                </>
+              )}
+              {sortedSkills.map(skill => (
                 <th key={skill} className="px-2 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 font-medium text-gray-600 dark:text-gray-400 text-xs whitespace-nowrap max-w-[80px]">
                   <div className="max-w-[72px] truncate" title={skill}>{skill}</div>
                 </th>
@@ -101,7 +208,7 @@ export default function SkillMatrix({ profiles }: Props) {
                     <span className="text-gray-200 dark:text-gray-700">—</span>
                   )}
                 </td>
-                {allSkills.map(skill => {
+                {sortedSkills.map(skill => {
                   const s = profile.skills.find(sk => sk.name === skill)
                   const delta = s ? getSkillDelta(s.proficiency, s.history) : null
                   return (

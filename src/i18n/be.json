@@ -72,6 +72,8 @@
     "cancel": "Адмена",
     "record_change": "Змяніць узровень (запісаць гісторыю)",
     "history_entries": "змен",
+    "category_label": "Катэгорыя",
+    "category_none": "Без катэгорыі",
     "availability_section": "Даступнасць",
     "timezone_label": "Часавы пояс",
     "timezone_search": "Пошук часавых паясоў…",
@@ -103,7 +105,8 @@
     "filter_skill": "Фільтр па навыку...",
     "delta_tooltip": "Змянілася на {{delta}} з апошняга запісу",
     "timezone_col": "ЧП",
-    "endorsed_tooltip": "{{count}} пацвярджэнне(яў): {{names}}"
+    "endorsed_tooltip": "{{count}} пацвярджэнне(яў): {{names}}",
+    "group_by_category": "Групаваць па катэгорыях"
   },
   "credits": {
     "title": "Крэдыты праектаў",

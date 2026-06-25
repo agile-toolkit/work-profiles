@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
+import { SKILL_CATEGORIES } from '../types'
 
 const ALL_TIMEZONES: string[] = (() => {
   try {
@@ -20,61 +21,61 @@ const PROFICIENCY_LEVELS: ProficiencyLevel[] = [1, 2, 3, 4, 5]
 const ROLE_TEMPLATES: Array<{
   role: string
   workTypes: WorkType[]
-  skills: Array<{ name: string; proficiency: ProficiencyLevel }>
+  skills: Array<{ name: string; proficiency: ProficiencyLevel; category?: string }>
 }> = [
   {
     role: 'Frontend Dev',
     workTypes: ['development', 'design'],
     skills: [
-      { name: 'TypeScript', proficiency: 4 },
-      { name: 'React', proficiency: 4 },
-      { name: 'CSS / Tailwind', proficiency: 3 },
-      { name: 'Testing', proficiency: 3 },
-      { name: 'Accessibility', proficiency: 2 },
+      { name: 'TypeScript', proficiency: 4, category: 'Frontend' },
+      { name: 'React', proficiency: 4, category: 'Frontend' },
+      { name: 'CSS / Tailwind', proficiency: 3, category: 'Design' },
+      { name: 'Testing', proficiency: 3, category: 'Testing' },
+      { name: 'Accessibility', proficiency: 2, category: 'Design' },
     ],
   },
   {
     role: 'Backend Dev',
     workTypes: ['development', 'ops'],
     skills: [
-      { name: 'Node.js', proficiency: 4 },
-      { name: 'REST APIs', proficiency: 4 },
-      { name: 'SQL', proficiency: 3 },
-      { name: 'Docker', proficiency: 3 },
-      { name: 'Testing', proficiency: 2 },
+      { name: 'Node.js', proficiency: 4, category: 'Backend' },
+      { name: 'REST APIs', proficiency: 4, category: 'Backend' },
+      { name: 'SQL', proficiency: 3, category: 'Backend' },
+      { name: 'Docker', proficiency: 3, category: 'DevOps' },
+      { name: 'Testing', proficiency: 2, category: 'Testing' },
     ],
   },
   {
     role: 'Scrum Master',
     workTypes: ['facilitation', 'mentoring'],
     skills: [
-      { name: 'Agile / Scrum', proficiency: 5 },
-      { name: 'Facilitation', proficiency: 4 },
-      { name: 'Coaching', proficiency: 3 },
-      { name: 'Conflict Resolution', proficiency: 3 },
-      { name: 'Metrics', proficiency: 3 },
+      { name: 'Agile / Scrum', proficiency: 5, category: 'Soft Skills' },
+      { name: 'Facilitation', proficiency: 4, category: 'Soft Skills' },
+      { name: 'Coaching', proficiency: 3, category: 'Soft Skills' },
+      { name: 'Conflict Resolution', proficiency: 3, category: 'Soft Skills' },
+      { name: 'Metrics', proficiency: 3, category: 'Data & AI' },
     ],
   },
   {
     role: 'Product Owner',
     workTypes: ['analysis', 'writing'],
     skills: [
-      { name: 'Backlog Management', proficiency: 4 },
-      { name: 'Stakeholder Comms', proficiency: 4 },
-      { name: 'User Story Writing', proficiency: 4 },
-      { name: 'Prioritisation', proficiency: 3 },
-      { name: 'Data Analysis', proficiency: 2 },
+      { name: 'Backlog Management', proficiency: 4, category: 'Soft Skills' },
+      { name: 'Stakeholder Comms', proficiency: 4, category: 'Soft Skills' },
+      { name: 'User Story Writing', proficiency: 4, category: 'Soft Skills' },
+      { name: 'Prioritisation', proficiency: 3, category: 'Soft Skills' },
+      { name: 'Data Analysis', proficiency: 2, category: 'Data & AI' },
     ],
   },
   {
     role: 'QA Engineer',
     workTypes: ['testing', 'analysis'],
     skills: [
-      { name: 'Test Planning', proficiency: 4 },
-      { name: 'Bug Reporting', proficiency: 4 },
-      { name: 'Automation', proficiency: 3 },
-      { name: 'API Testing', proficiency: 3 },
-      { name: 'Performance Testing', proficiency: 2 },
+      { name: 'Test Planning', proficiency: 4, category: 'Testing' },
+      { name: 'Bug Reporting', proficiency: 4, category: 'Testing' },
+      { name: 'Automation', proficiency: 3, category: 'Testing' },
+      { name: 'API Testing', proficiency: 3, category: 'Testing' },
+      { name: 'Performance Testing', proficiency: 2, category: 'Testing' },
     ],
   },
 ]
@@ -95,6 +96,7 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
   const [workTypes, setWorkTypes] = useState<WorkType[]>(initial?.workTypes ?? [])
   const [newSkill, setNewSkill] = useState('')
   const [newSkillLevel, setNewSkillLevel] = useState<ProficiencyLevel>(3)
+  const [newSkillCategory, setNewSkillCategory] = useState('')
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [timezone, setTimezone] = useState(initial?.timezone ?? '')
   const [hoursStart, setHoursStart] = useState(initial?.workingHours?.start ?? '')
@@ -113,13 +115,18 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
     setSelectedTemplate(tpl.role)
     setRole(tpl.role)
     setWorkTypes(tpl.workTypes)
-    setSkills(tpl.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency })))
+    setSkills(tpl.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency, category: s.category })))
   }
 
   const addSkill = () => {
     if (!newSkill.trim()) return
-    setSkills(s => [...s, { id: crypto.randomUUID(), name: newSkill.trim(), proficiency: newSkillLevel, history: [] }])
+    setSkills(s => [...s, { id: crypto.randomUUID(), name: newSkill.trim(), proficiency: newSkillLevel, category: newSkillCategory || undefined, history: [] }])
     setNewSkill('')
+    setNewSkillCategory('')
+  }
+
+  const changeSkillCategory = (skillId: string, category: string) => {
+    setSkills(sk => sk.map(s => s.id === skillId ? { ...s, category: category || undefined } : s))
   }
 
   const recordSkillChange = (skillId: string, newLevel: ProficiencyLevel) => {
@@ -201,9 +208,9 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
           {/* Skills */}
           <div>
             <label className="label">{t('profile_form.skills_label')}</label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex gap-2 mb-2 flex-wrap">
               <input
-                className="input flex-1"
+                className="input flex-1 min-w-[120px]"
                 placeholder={t('profile_form.skill_name_placeholder')}
                 value={newSkill}
                 onChange={e => setNewSkill(e.target.value)}
@@ -218,12 +225,35 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
                   <option key={l} value={l}>{l} – {t(`profile_form.proficiency.${l}`)}</option>
                 ))}
               </select>
+              <select
+                className="input w-auto text-xs"
+                value={newSkillCategory}
+                onChange={e => setNewSkillCategory(e.target.value)}
+                title={t('profile_form.category_label')}
+              >
+                <option value="">{t('profile_form.category_none')}</option>
+                {SKILL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
               <button onClick={addSkill} disabled={!newSkill.trim()} className="btn-primary text-sm px-3">+</button>
             </div>
             <div className="flex flex-col gap-1.5">
               {skills.map(s => (
                 <div key={s.id} className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 py-1 text-xs">
                   <span className="flex-1 font-medium text-gray-800 dark:text-gray-200">{s.name}</span>
+                  {s.category && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-brand-100 dark:bg-brand-900 text-brand-700 dark:text-brand-300 font-medium shrink-0">
+                      {s.category}
+                    </span>
+                  )}
+                  <select
+                    className="input !py-0 !px-1 text-[10px] w-auto"
+                    value={s.category ?? ''}
+                    onChange={e => changeSkillCategory(s.id, e.target.value)}
+                    title={t('profile_form.category_label')}
+                  >
+                    <option value="">{t('profile_form.category_none')}</option>
+                    {SKILL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                   {initial ? (
                     <select
                       className="input !py-0.5 !px-1 text-xs w-auto"
