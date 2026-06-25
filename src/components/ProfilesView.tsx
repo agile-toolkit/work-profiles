@@ -3,6 +3,14 @@ import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
 
+interface IbItem {
+  id: string
+  title: string
+  status: string
+  owner: string
+  copilot: string
+}
+
 interface CsvProfile {
   name: string
   role: string
@@ -127,6 +135,17 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
   const [printingProfile, setPrintingProfile] = useState<WorkProfile | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const importModalRef = useRef<HTMLDivElement>(null)
+  const [ibItems, setIbItems] = useState<IbItem[]>([])
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('improvement-board-items')
+      if (raw) {
+        const parsed = JSON.parse(raw) as IbItem[]
+        setIbItems(parsed.filter(item => item.status !== 'done'))
+      }
+    } catch {}
+  }, [])
 
   function makeEmpty(): WorkProfile {
     return {
@@ -638,6 +657,26 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                 ))}
               </div>
             )}
+            {(() => {
+              const openItems = ibItems.filter(item => item.owner === p.name || item.copilot === p.name)
+              if (openItems.length === 0) return null
+              return (
+                <details className="mt-2 group">
+                  <summary className="cursor-pointer text-xs text-amber-700 dark:text-amber-400 select-none list-none flex items-center gap-1">
+                    <svg className="w-3 h-3 transition-transform group-open:rotate-90" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+                    {t('profiles.ib_items', { count: openItems.length })}
+                  </summary>
+                  <ul className="mt-1 ml-4 space-y-0.5">
+                    {openItems.map(item => (
+                      <li key={item.id} className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" aria-hidden="true" />
+                        <span className="truncate">{item.title}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )
+            })()}
           </div>
         )
         })}

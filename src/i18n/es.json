@@ -59,7 +59,8 @@
     "announce_updated": "Perfil actualizado: {{name}}",
     "announce_archived": "Perfil archivado: {{name}}",
     "announce_restored": "Perfil restaurado: {{name}}",
-    "announce_deleted": "Perfil eliminado: {{name}}"
+    "announce_deleted": "Perfil eliminado: {{name}}",
+    "ib_items": "Mejoras abiertas ({{count}})"
   },
   "compare": {
     "title": "Comparación de perfiles",

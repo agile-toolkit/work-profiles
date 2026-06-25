@@ -46,7 +46,7 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#28] Feature: skill progression history — implemented (issue #28, In Review)
 - [x] [#29] Feature: availability windows and timezone per profile — IANA tz, working hours, OOO date; surfaced in card + SkillMatrix + wp-profiles-export (implemented, In Review)
 - [x] [#30] Research: keyboard accessibility and ARIA audit — `scope` on SkillMatrix headers, `aria-label` on action buttons, focus trap on import modal, `focus-visible:ring-2`, `aria-live` announcement region in App.tsx (implemented)
-- [ ] [#31] Integration: Improvement Board — read `improvement-board-items`/`improvement-board-members` at startup; show open items on matching profile cards in collapsible `🔧` section (default collapsed); no writes needed (approved 2026-06-25 — spec+plan in issue comment)
+- [x] [#31] Integration: Improvement Board — `IbItem` interface + `ibItems` state in `ProfilesView.tsx`; `useEffect` reads `improvement-board-items` localStorage at startup; collapsible `<details>` section per profile card listing open (non-done) items where `owner === name` or `copilot === name`; `profiles.ib_items` i18n key in EN/ES/BE/RU
 - [x] [#35] Feature: skill category tagging — implemented (issue #35, In Review)
 - [ ] [#36] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key; no work-profiles code changes needed; implementation in salary-formula repo (approved 2026-06-25)
 - [x] [#37] Feature: print-optimized individual profile card — printer icon button in `ProfilesView.tsx`; `createPortal` renders `#print-target` to `document.body`; `@media print` CSS hides `#root`, shows `#print-target`; A4-compatible layout with name/role, capacity bar, skill pills + Dreyfus labels + endorsement counts, work-type badges; `profile_card.print_button` i18n key in EN/ES/BE/RU (implemented)
@@ -67,6 +67,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-25 — feat: Improvement Board integration (issue #31)
+- Done: `IbItem` minimal interface added in `ProfilesView.tsx`; `ibItems` state + startup `useEffect` reads `improvement-board-items` localStorage and filters to non-done items; collapsible `<details>` section added to each active profile card showing open items where profile name matches `owner` or `copilot`; amber chevron rotates on open; `profiles.ib_items` key ("Open improvements ({{count}})") added to EN/ES/BE/RU; patch → 0.1.2
+- Remaining: #4 (gap analysis), #5 (CSV export) awaiting human approval; #36 (Salary Formula) in salary-formula repo
+- Next task: check issues for human feedback; if #4 (gap analysis) or #5 (CSV export) approved, implement first; else research cycle
 
 ### 2026-06-25 — feat: keyboard accessibility ARIA audit (issue #30)
 - Done: `scope="col"` on all SkillMatrix `<th>` cells; `scope="colgroup"` on category group headers; `scope="row"` + `<th>` on profile name cells in tbody; `aria-label` with profile name on Edit, Archive, Restore, Delete permanently, Print buttons; `aria-label` + `aria-expanded` on `+1` endorsement button; CSV import modal gets `role="dialog"`, `aria-modal`, `aria-labelledby`, focus trap with Tab/Escape, click-outside-to-close; `focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2` on `.btn-primary`, `.btn-secondary`, `.btn-ghost` in `index.css`; `aria-live="polite"` announcement region in `App.tsx` announces save/update/archive/restore/delete; 5 new `profiles.announce_*` i18n keys in EN/ES/BE/RU; `onAnnounce` prop added to `ProfilesView`

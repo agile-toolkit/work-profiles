@@ -59,7 +59,8 @@
     "announce_updated": "Профіль абноўлены: {{name}}",
     "announce_archived": "Профіль заархіваваны: {{name}}",
     "announce_restored": "Профіль адноўлены: {{name}}",
-    "announce_deleted": "Профіль выдалены: {{name}}"
+    "announce_deleted": "Профіль выдалены: {{name}}",
+    "ib_items": "Адкрытыя паляпшэнні ({{count}})"
   },
   "compare": {
     "title": "Параўнанне прафіляў",
