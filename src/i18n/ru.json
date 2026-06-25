@@ -72,6 +72,8 @@
     "cancel": "Отмена",
     "record_change": "Изменить уровень (записывает историю)",
     "history_entries": "изменений",
+    "category_label": "Категория",
+    "category_none": "Без категории",
     "availability_section": "Доступность",
     "timezone_label": "Часовой пояс",
     "timezone_search": "Поиск часовых поясов…",
@@ -103,7 +105,8 @@
     "filter_skill": "Фильтр по навыку...",
     "delta_tooltip": "Изменилось на {{delta}} с последней записи",
     "timezone_col": "ЧП",
-    "endorsed_tooltip": "{{count}} подтверждение(й): {{names}}"
+    "endorsed_tooltip": "{{count}} подтверждение(й): {{names}}",
+    "group_by_category": "Группировать по категориям"
   },
   "credits": {
     "title": "Кредиты проектов",

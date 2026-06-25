@@ -72,6 +72,8 @@
     "cancel": "Cancelar",
     "record_change": "Cambiar nivel (guarda historial)",
     "history_entries": "cambios",
+    "category_label": "Categoría",
+    "category_none": "Sin categoría",
     "availability_section": "Disponibilidad",
     "timezone_label": "Zona horaria",
     "timezone_search": "Buscar zonas horarias…",
@@ -103,7 +105,8 @@
     "filter_skill": "Filtrar por habilidad...",
     "delta_tooltip": "Cambió {{delta}} desde el último registro",
     "timezone_col": "ZH",
-    "endorsed_tooltip": "{{count}} aval(es): {{names}}"
+    "endorsed_tooltip": "{{count}} aval(es): {{names}}",
+    "group_by_category": "Agrupar por categoría"
   },
   "credits": {
     "title": "Créditos de proyecto",
