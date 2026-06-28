@@ -50,6 +50,9 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [x] [#35] Feature: skill category tagging — implemented (issue #35, In Review)
 - [ ] [#36] Integration: Salary Formula — "Import from Work Profiles" button in salary-formula reads `wp-profiles-export` localStorage key; no work-profiles code changes needed; implementation in salary-formula repo (approved 2026-06-25)
 - [x] [#37] Feature: print-optimized individual profile card — printer icon button in `ProfilesView.tsx`; `createPortal` renders `#print-target` to `document.body`; `@media print` CSS hides `#root`, shows `#print-target`; A4-compatible layout with name/role, capacity bar, skill pills + Dreyfus labels + endorsement counts, work-type badges; `profile_card.print_button` i18n key in EN/ES/BE/RU (implemented)
+- [ ] [#48] UX: skill name autocomplete from team vocabulary — datalist or dropdown in ProfileForm reading existing skill names from localStorage; prevents "React" / "ReactJS" naming drift; no library, pure React state (needs-review)
+- [ ] [#49] Feature: team overview tab — stat cards (member count, avg capacity, total skills, endorsements), role distribution bars, capacity histogram, SVG skill-category radar chart, most-endorsed skills list; pure SVG + Tailwind, no library (needs-review)
+- [ ] [#50] Integration: Scrum Facilitator — write `wp-sprint-capacity` localStorage key with `{totalCapacity, memberCount, availableCount, oooCount, oooMembers, timezones, lastUpdated}`; Scrum Facilitator reads this for sprint capacity hints (needs-review)
 
 ## localStorage keys
 
@@ -67,6 +70,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-28 — research: skill autocomplete, team overview tab, Scrum Facilitator capacity integration
+- Done: checked issues — #4 and #5 (`changes-requested`) specs already revised and ready for human approval; no new `approved` items in work-profiles; created 3 new research issues: #48 (skill name autocomplete from team vocabulary in ProfileForm), #49 (team overview tab with role distribution, capacity histogram, SVG category radar chart, most-endorsed skills), #50 (expose `wp-sprint-capacity` key for Scrum Facilitator sprint planning); added all three to BRIEF backlog
+- Remaining: #4 (gap analysis) and #5 (CSV export) awaiting human approval; #48/#49/#50 awaiting review
+- Next task: check issues for human feedback; if #4 or #5 approved implement first; if #48, #49, or #50 approved implement first approved; else research cycle
 
 ### 2026-06-25 — feat: Improvement Board integration (issue #31)
 - Done: `IbItem` minimal interface added in `ProfilesView.tsx`; `ibItems` state + startup `useEffect` reads `improvement-board-items` localStorage and filters to non-done items; collapsible `<details>` section added to each active profile card showing open items where profile name matches `owner` or `copilot`; amber chevron rotates on open; `profiles.ib_items` key ("Open improvements ({{count}})") added to EN/ES/BE/RU; patch → 0.1.2
