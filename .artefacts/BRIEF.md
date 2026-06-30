@@ -53,6 +53,9 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#48] UX: skill name autocomplete from team vocabulary — datalist or dropdown in ProfileForm reading existing skill names from localStorage; prevents "React" / "ReactJS" naming drift; no library, pure React state (needs-review)
 - [ ] [#49] Feature: team overview tab — stat cards (member count, avg capacity, total skills, endorsements), role distribution bars, capacity histogram, SVG skill-category radar chart, most-endorsed skills list; pure SVG + Tailwind, no library (needs-review)
 - [ ] [#50] Integration: Scrum Facilitator — write `wp-sprint-capacity` localStorage key with `{totalCapacity, memberCount, availableCount, oooCount, oooMembers, timezones, lastUpdated}`; Scrum Facilitator reads this for sprint capacity hints (needs-review)
+- [ ] [#51] Feature: skill learning targets — `targetProficiency?: number` on `Skill` interface; profile form shows Target select alongside current; ProfileCard shows `→N` growth badge (amber) or `✓` (met); SkillMatrix "Show targets" toggle renders gap sub-row; 3 new i18n keys; no new localStorage key (needs-review)
+- [ ] [#52] Feature: mentor pairing suggestions — SkillMatrix "Mentoring pairs" collapsible panel; match profiles with proficiency ≥ 4 (mentors) to profiles with ≤ 2 (learners) on same skill; no new localStorage key, pure in-component computation; 4 new i18n keys (needs-review)
+- [ ] [#53] Integration: Planning Poker — show Team Skills panel during estimation reading `wp-profiles-export`; no work-profiles code changes needed; implementation in planning-poker repo (needs-review)
 
 ## localStorage keys
 
@@ -70,6 +73,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-06-30 — research: skill learning targets, mentor pairing, Planning Poker integration
+- Done: checked issues — all approved items in work-profiles already implemented; #48/#49/#50 only 2 days old (7-day auto-approve threshold 2026-07-05); #4 and #5 still `changes-requested` awaiting human label change; created 3 new research issues: #51 (skill learning targets — `targetProficiency` field, progress gap in SkillMatrix, `→N` badge in ProfileCard), #52 (mentor pairing suggestions — SkillMatrix panel matching Expert/learner pairs per skill), #53 (Planning Poker integration — Team Skills panel reading existing `wp-profiles-export` key; no WP code changes needed)
+- Remaining: #4 (gap analysis) and #5 (CSV export) awaiting human `approved` label; #48/#49/#50 auto-approve threshold 2026-07-05
+- Next task: check issues for human feedback; if #4 or #5 approved implement first; if any of #48–#53 approved implement first approved; auto-approve #48/#49/#50 on or after 2026-07-05 if still needs-review; else research cycle
 
 ### 2026-06-28 — research: skill autocomplete, team overview tab, Scrum Facilitator capacity integration
 - Done: checked issues — #4 and #5 (`changes-requested`) specs already revised and ready for human approval; no new `approved` items in work-profiles; created 3 new research issues: #48 (skill name autocomplete from team vocabulary in ProfileForm), #49 (team overview tab with role distribution, capacity histogram, SVG category radar chart, most-endorsed skills), #50 (expose `wp-sprint-capacity` key for Scrum Facilitator sprint planning); added all three to BRIEF backlog
