@@ -56,6 +56,9 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - [ ] [#51] Feature: skill learning targets — `targetProficiency?: number` on `Skill` interface; profile form shows Target select alongside current; ProfileCard shows `→N` growth badge (amber) or `✓` (met); SkillMatrix "Show targets" toggle renders gap sub-row; 3 new i18n keys; no new localStorage key (needs-review)
 - [ ] [#52] Feature: mentor pairing suggestions — SkillMatrix "Mentoring pairs" collapsible panel; match profiles with proficiency ≥ 4 (mentors) to profiles with ≤ 2 (learners) on same skill; no new localStorage key, pure in-component computation; 4 new i18n keys (needs-review)
 - [ ] [#53] Integration: Planning Poker — show Team Skills panel during estimation reading `wp-profiles-export`; no work-profiles code changes needed; implementation in planning-poker repo (needs-review)
+- [ ] [#54] Technical: add automated test suite (Vitest + RTL) — unit tests for CSV parse/merge, publishExport/publishLastSession payload shape, skill history delta sign, endorsement eligibility; wire `npm test` into deploy workflow (needs-review)
+- [ ] [#55] Integration: Kanban Designer — read `kanban-designer:currentBoard`, show active card count/list badge on profile cards matching `assignee` to profile name; mirrors Improvement Board pattern (#31); read-only (needs-review)
+- [ ] [#56] Feature: full JSON backup and restore of all app data (`work-profiles-data` + `work-profiles-credits`) — versioned export/import, replace semantics, complements lossy CSV export (#5) (needs-review)
 
 ## localStorage keys
 
@@ -73,6 +76,11 @@ Skills and capacity profiles, skill matrix, and project credits. React 18, Vite,
 - `work-profiles:lastSession` contract: `{ profileCount: number, avgCapacity: number, topSkills: string[], lastUpdated: string }`. Written by `publishLastSession()` on every `updateProfiles` call and at app startup. Dashboard reads this key to show "N members · X% avg capacity · Top skills: …". `topSkills` is sorted by frequency (how many profiles have that skill) — top 5.
 
 ## Agent Log
+
+### 2026-07-02 — research: test suite, Kanban Designer integration, JSON backup/restore
+- Done: checked issues for human feedback — #4 and #5 (`changes-requested`) have no new comments since the 2026-06-25 spec revision, still awaiting human `approved`/further feedback; no items carry the `approved` label pending implementation (all previously-approved issues are already implemented per Features list above); #48/#49/#50 auto-approve threshold is 2026-07-05 (not yet reached, 4 days old); #51/#52/#53 only 2 days old. No pending actionable feedback this run. Created 3 new research issues: #54 (Vitest + RTL test suite — no automated tests exist despite 20+ features), #55 (Kanban Designer integration — active card count on profile cards via `kanban-designer:currentBoard`, mirrors #31's Improvement Board pattern), #56 (full JSON backup/restore of both localStorage keys, complementing the lossy CSV-only export in #5); added all three to BRIEF backlog. `gh project`/GraphQL access unavailable in this session (same limitation noted in salary-formula #38-#40) — relying on `needs-review` label as source of truth.
+- Remaining: #4/#5 awaiting human approval; #48/#49/#50 auto-approve 2026-07-05; #51/#52/#53 awaiting review; #54/#55/#56 awaiting review
+- Next task: check issues for human feedback; if #4 or #5 approved implement first; if any of #48–#56 approved implement first approved; auto-approve #48/#49/#50 on or after 2026-07-05 if still needs-review; else research cycle
 
 ### 2026-06-30 — research: skill learning targets, mentor pairing, Planning Poker integration
 - Done: checked issues — all approved items in work-profiles already implemented; #48/#49/#50 only 2 days old (7-day auto-approve threshold 2026-07-05); #4 and #5 still `changes-requested` awaiting human label change; created 3 new research issues: #51 (skill learning targets — `targetProficiency` field, progress gap in SkillMatrix, `→N` badge in ProfileCard), #52 (mentor pairing suggestions — SkillMatrix panel matching Expert/learner pairs per skill), #53 (Planning Poker integration — Team Skills panel reading existing `wp-profiles-export` key; no WP code changes needed)
