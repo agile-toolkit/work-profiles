@@ -6,6 +6,7 @@ import SkillMatrix from './components/SkillMatrix'
 import CreditsView from './components/CreditsView'
 import LearnView from './components/LearnView'
 import CompareView from './components/CompareView'
+import OverviewView from './components/OverviewView'
 import UpdateToast from './components/UpdateToast'
 import AppHeader from './components/AppHeader'
 import ThemeToggle from './components/ThemeToggle'
@@ -87,6 +88,7 @@ export default function App() {
     { key: 'matrix', label: t('nav.matrix') },
     { key: 'credits', label: t('nav.credits') },
     { key: 'learn', label: t('nav.learn') },
+    { key: 'overview', label: t('nav.overview') },
   ]
 
   return (
@@ -130,6 +132,7 @@ export default function App() {
           />
         )}
         {screen === 'learn' && <LearnView />}
+        {screen === 'overview' && <OverviewView profiles={profiles} />}
       </main>
       <UpdateToast />
     </div>
