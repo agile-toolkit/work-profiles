@@ -6,7 +6,8 @@
     "profiles": "Perfiles",
     "matrix": "Matriz de habilidades",
     "credits": "Créditos",
-    "learn": "Aprender"
+    "learn": "Aprender",
+    "overview": "Resumen"
   },
   "profiles": {
     "title": "Perfiles del equipo",
@@ -162,5 +163,23 @@
   },
   "profile_card": {
     "print_button": "Imprimir perfil"
+  },
+  "overview": {
+    "title": "Resumen del equipo",
+    "empty": "Añade al menos un perfil activo para ver el resumen del equipo.",
+    "stat_members": "Miembros activos",
+    "stat_avg_capacity": "Capacidad media",
+    "stat_skills": "Habilidades únicas",
+    "stat_endorsements": "Avales otorgados",
+    "stat_ooo": "Ausentes actualmente",
+    "stat_timezones": "Zonas horarias representadas",
+    "section_roles": "Distribución de roles",
+    "section_capacity": "Distribución de capacidad",
+    "section_radar": "Cobertura por categoría de habilidad",
+    "section_endorsed": "Habilidades más avaladas",
+    "other_roles": "Otros ({{count}})",
+    "no_role": "Sin rol definido",
+    "radar_empty": "Añade habilidades a los perfiles del equipo para ver la cobertura por categoría.",
+    "endorsed_empty": "Aún no se han otorgado avales."
   }
 }

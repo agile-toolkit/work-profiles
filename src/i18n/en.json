@@ -6,7 +6,8 @@
     "profiles": "Profiles",
     "matrix": "Skill Matrix",
     "credits": "Credits",
-    "learn": "Learn"
+    "learn": "Learn",
+    "overview": "Overview"
   },
   "profiles": {
     "title": "Team Work Profiles",
@@ -162,5 +163,23 @@
   },
   "profile_card": {
     "print_button": "Print profile"
+  },
+  "overview": {
+    "title": "Team Overview",
+    "empty": "Add at least one active profile to see the team overview.",
+    "stat_members": "Active members",
+    "stat_avg_capacity": "Avg capacity",
+    "stat_skills": "Unique skills",
+    "stat_endorsements": "Endorsements given",
+    "stat_ooo": "Currently OOO",
+    "stat_timezones": "Timezones represented",
+    "section_roles": "Role distribution",
+    "section_capacity": "Capacity distribution",
+    "section_radar": "Skill category coverage",
+    "section_endorsed": "Most endorsed skills",
+    "other_roles": "Other ({{count}})",
+    "no_role": "No role set",
+    "radar_empty": "Add skills to team profiles to see category coverage.",
+    "endorsed_empty": "No endorsements given yet."
   }
 }
