@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
@@ -161,6 +161,18 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
   }
 
   const [draft, setDraft] = useState<WorkProfile>(makeEmpty)
+
+  const skillVocabulary = useMemo(() => {
+    const seen = new Map<string, string>()
+    for (const p of profiles) {
+      if (p.archived) continue
+      for (const s of p.skills) {
+        const key = s.name.trim().toLowerCase()
+        if (key && !seen.has(key)) seen.set(key, s.name.trim())
+      }
+    }
+    return Array.from(seen.values()).sort((a, b) => a.localeCompare(b))
+  }, [profiles])
 
   function openAdd() {
     setDraft(makeEmpty())
@@ -731,6 +743,9 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                 + {t('profile_form.add_skill')}
               </button>
             </div>
+            <datalist id="skill-name-vocabulary">
+              {skillVocabulary.map(name => <option key={name} value={name} />)}
+            </datalist>
             {draft.skills.map(s => (
               <div key={s.id} className="flex gap-2 mb-2 items-center flex-wrap">
                 <input
@@ -738,6 +753,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                   value={s.name}
                   placeholder={t('profile_form.skill_name_placeholder')}
                   onChange={e => updateSkill(s.id, { name: e.target.value })}
+                  list="skill-name-vocabulary"
                 />
                 <select
                   className="input w-36"
