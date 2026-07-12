@@ -118,15 +118,30 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
     setSkills(tpl.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency, category: s.category })))
   }
 
+  const [newSkillTarget, setNewSkillTarget] = useState<number | ''>('')
+
   const addSkill = () => {
     if (!newSkill.trim()) return
-    setSkills(s => [...s, { id: crypto.randomUUID(), name: newSkill.trim(), proficiency: newSkillLevel, category: newSkillCategory || undefined, history: [] }])
+    setSkills(s => [...s, {
+      id: crypto.randomUUID(),
+      name: newSkill.trim(),
+      proficiency: newSkillLevel,
+      category: newSkillCategory || undefined,
+      history: [],
+      targetProficiency: newSkillTarget !== '' ? newSkillTarget : undefined,
+    }])
     setNewSkill('')
     setNewSkillCategory('')
+    setNewSkillTarget('')
   }
 
   const changeSkillCategory = (skillId: string, category: string) => {
     setSkills(sk => sk.map(s => s.id === skillId ? { ...s, category: category || undefined } : s))
+  }
+
+  const changeSkillTarget = (skillId: string, value: string) => {
+    const target = value === '' ? undefined : Number(value)
+    setSkills(sk => sk.map(s => s.id === skillId ? { ...s, targetProficiency: target } : s))
   }
 
   const recordSkillChange = (skillId: string, newLevel: ProficiencyLevel) => {
@@ -234,6 +249,15 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
                 <option value="">{t('profile_form.category_none')}</option>
                 {SKILL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
+              <select
+                className="input w-auto text-xs"
+                value={newSkillTarget}
+                onChange={e => setNewSkillTarget(e.target.value === '' ? '' : Number(e.target.value))}
+                title={t('profile_form.target_label')}
+              >
+                <option value="">–</option>
+                {PROFICIENCY_LEVELS.map(l => <option key={l} value={l}>{l}</option>)}
+              </select>
               <button onClick={addSkill} disabled={!newSkill.trim()} className="btn-primary text-sm px-3">+</button>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -268,6 +292,15 @@ export default function ProfileForm({ initial, onSave, onCancel }: Props) {
                   ) : (
                     <span className="text-gray-500">({s.proficiency})</span>
                   )}
+                  <select
+                    className="input !py-0 !px-1 text-[10px] w-auto"
+                    value={s.targetProficiency ?? ''}
+                    onChange={e => changeSkillTarget(s.id, e.target.value)}
+                    title={t('profile_form.target_label')}
+                  >
+                    <option value="">–</option>
+                    {PROFICIENCY_LEVELS.map(l => <option key={l} value={l}>→{l}</option>)}
+                  </select>
                   {(s.history?.length ?? 0) > 0 && (
                     <span
                       className="text-brand-600 dark:text-brand-400 cursor-default"

@@ -110,7 +110,8 @@
       "writing": "Writing",
       "mentoring": "Mentoring",
       "ops": "Operations"
-    }
+    },
+    "target_label": "Target"
   },
   "matrix": {
     "title": "Skill Matrix",
@@ -120,7 +121,8 @@
     "delta_tooltip": "Changed by {{delta}} since last record",
     "timezone_col": "TZ",
     "endorsed_tooltip": "{{count}} endorsement(s): {{names}}",
-    "group_by_category": "Group by category"
+    "group_by_category": "Group by category",
+    "show_targets": "Show targets"
   },
   "credits": {
     "title": "Project Credits",
@@ -162,7 +164,8 @@
     "p4": "Leaderboards are opt-in — not every team wants public rankings."
   },
   "profile_card": {
-    "print_button": "Print profile"
+    "print_button": "Print profile",
+    "target_met": "Target met"
   },
   "overview": {
     "title": "Team Overview",

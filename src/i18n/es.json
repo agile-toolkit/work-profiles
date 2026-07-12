@@ -110,7 +110,8 @@
       "writing": "Redacción",
       "mentoring": "Mentoría",
       "ops": "Operaciones"
-    }
+    },
+    "target_label": "Objetivo"
   },
   "matrix": {
     "title": "Matriz de habilidades",
@@ -120,7 +121,8 @@
     "delta_tooltip": "Cambió {{delta}} desde el último registro",
     "timezone_col": "ZH",
     "endorsed_tooltip": "{{count}} aval(es): {{names}}",
-    "group_by_category": "Agrupar por categoría"
+    "group_by_category": "Agrupar por categoría",
+    "show_targets": "Mostrar objetivos"
   },
   "credits": {
     "title": "Créditos de proyecto",
@@ -162,7 +164,8 @@
     "p4": "Las clasificaciones son opcionales — no todos los equipos quieren rankings públicos."
   },
   "profile_card": {
-    "print_button": "Imprimir perfil"
+    "print_button": "Imprimir perfil",
+    "target_met": "Objetivo alcanzado"
   },
   "overview": {
     "title": "Resumen del equipo",
