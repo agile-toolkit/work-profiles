@@ -66,6 +66,11 @@ export default function ProfileCard({ profile, credits, onEdit, onDelete }: Prop
             <div key={skill.id} className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 py-0.5">
               <div className={`w-2 h-2 rounded-full ${PROFICIENCY_COLORS[skill.proficiency]}`} />
               <span className="text-xs text-gray-700 dark:text-gray-300">{skill.name}</span>
+              {skill.targetProficiency != null && (
+                skill.targetProficiency <= skill.proficiency
+                  ? <span className="text-[10px] font-semibold text-green-600 dark:text-green-400 leading-none" title={t('profile_card.target_met')}>✓</span>
+                  : <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 leading-none">→{skill.targetProficiency}</span>
+              )}
             </div>
           ))}
           {profile.skills.length > 6 && (

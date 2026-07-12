@@ -17,6 +17,7 @@ export interface Skill {
   category?: string
   history?: SkillHistoryEntry[]
   endorsedBy?: string[]
+  targetProficiency?: number
 }
 
 export interface WorkingHours {
