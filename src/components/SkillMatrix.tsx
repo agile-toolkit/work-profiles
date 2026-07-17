@@ -31,6 +31,7 @@ export default function SkillMatrix({ profiles }: Props) {
   const [groupByCategory, setGroupByCategory] = useState(false)
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [showTargets, setShowTargets] = useState(false)
+  const [showMentoring, setShowMentoring] = useState(false)
 
   if (profiles.length < 1) {
     return (
@@ -86,6 +87,29 @@ export default function SkillMatrix({ profiles }: Props) {
         .map(cat => ({ category: cat, skills: sortedSkills.filter(s => getCategory(s) === cat) }))
         .filter(g => g.skills.length > 0)
     : [{ category: '', skills: sortedSkills }]
+
+  // Compute mentor pairings across all skills (not filtered)
+  const allUniqueSkills = Array.from(new Set(profiles.flatMap(p => p.skills.map(s => s.name)))).sort()
+  const pairsBySkill = new Map<string, { mentor: string; learner: string }[]>()
+  for (const skill of allUniqueSkills) {
+    const mentors = profiles.filter(p => {
+      const s = p.skills.find(sk => sk.name === skill)
+      return s && s.proficiency >= 4
+    })
+    const learners = profiles.filter(p => {
+      const s = p.skills.find(sk => sk.name === skill)
+      return s && s.proficiency <= 2
+    })
+    if (mentors.length > 0 && learners.length > 0) {
+      const pairs: { mentor: string; learner: string }[] = []
+      for (const m of mentors) {
+        for (const l of learners) {
+          if (m.id !== l.id) pairs.push({ mentor: m.name, learner: l.name })
+        }
+      }
+      if (pairs.length > 0) pairsBySkill.set(skill, pairs)
+    }
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -292,6 +316,50 @@ export default function SkillMatrix({ profiles }: Props) {
             <span>{t(`profile_form.proficiency.${l}`)}</span>
           </div>
         ))}
+      </div>
+
+      {/* Mentoring pairs panel */}
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={() => setShowMentoring(s => !s)}
+          className={`text-sm px-4 py-2 rounded-lg border font-medium transition-colors ${
+            showMentoring
+              ? 'bg-brand-600 text-white border-brand-600'
+              : 'border-gray-200 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800'
+          }`}
+        >
+          {t('matrix.mentoring_title')} {showMentoring ? '▲' : '▼'}
+        </button>
+
+        {showMentoring && (
+          <div className="mt-3 card p-4">
+            <h2 className="text-base font-semibold text-gray-900 dark:text-gray-50 mb-3">{t('matrix.mentoring_title')}</h2>
+            {pairsBySkill.size === 0 ? (
+              <p className="text-sm text-gray-400 dark:text-gray-500">{t('matrix.mentoring_empty')}</p>
+            ) : (
+              <div className="space-y-3">
+                {Array.from(pairsBySkill.entries()).map(([skill, pairs]) => (
+                  <div key={skill}>
+                    <div className="text-xs font-semibold text-brand-700 dark:text-brand-300 mb-1.5">{skill}</div>
+                    <div className="flex flex-wrap gap-2">
+                      {pairs.map((pair, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center gap-1.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2.5 py-1.5"
+                        >
+                          <span className="text-green-700 dark:text-green-400 font-medium">{t('matrix.mentor_label')}: {pair.mentor}</span>
+                          <span className="text-gray-300 dark:text-gray-600">→</span>
+                          <span className="text-amber-700 dark:text-amber-400 font-medium">{t('matrix.learner_label')}: {pair.learner}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

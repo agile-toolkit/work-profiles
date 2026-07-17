@@ -122,7 +122,11 @@
     "timezone_col": "TZ",
     "endorsed_tooltip": "{{count}} endorsement(s): {{names}}",
     "group_by_category": "Group by category",
-    "show_targets": "Show targets"
+    "show_targets": "Show targets",
+    "mentoring_title": "Mentoring Pairs",
+    "mentoring_empty": "No mentoring pairs found. Add profiles with Proficient/Expert (4–5) and Beginner/Novice (1–2) skills on the same skill.",
+    "mentor_label": "Expert",
+    "learner_label": "Learner"
   },
   "credits": {
     "title": "Project Credits",
