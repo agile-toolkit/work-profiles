@@ -122,7 +122,11 @@
     "timezone_col": "ZH",
     "endorsed_tooltip": "{{count}} aval(es): {{names}}",
     "group_by_category": "Agrupar por categoría",
-    "show_targets": "Mostrar objetivos"
+    "show_targets": "Mostrar objetivos",
+    "mentoring_title": "Pares de mentoría",
+    "mentoring_empty": "No se encontraron pares de mentoría. Agrega perfiles con habilidades Competente/Experto (4–5) y Principiante/Novato (1–2) en la misma habilidad.",
+    "mentor_label": "Experto",
+    "learner_label": "Aprendiz"
   },
   "credits": {
     "title": "Créditos de proyecto",
