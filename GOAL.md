@@ -25,3 +25,11 @@ which is the only property that matters for this kind of data.
 - Not an evaluation or ranking tool.
 
 *Repo: `agile-toolkit/work-profiles`*
+
+---
+
+## Latitude
+
+Every goal above names an outcome, not a mechanism. Any roadmap that moves a
+signal without crossing a boundary is fair game — including approaches nobody
+in this category has tried. Invention is expected, not merely permitted.
