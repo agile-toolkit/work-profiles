@@ -6,11 +6,14 @@ Derived from GOAL.md. Rebuilt when GOAL changes or an epic ships.
 None — idle. See `## Next epics` below.
 
 ## Next epics
-1. **E1: Automated test suite** — serves #1. Vitest + RTL coverage for CSV parse/merge, `publishExport`/`publishLastSession` payload shape, skill-history delta sign, and endorsement eligibility, wired into the deploy workflow so regressions in core data flows are caught before Pages deploy. [#54](https://github.com/agile-toolkit/work-profiles/issues/54) (needs-review, stale since 2026-07-02).
-2. **E2: More sibling-app integrations** — serves #4. Group of read-side integrations following the established `wp-profiles-export`/localStorage-contract pattern: Scrum Facilitator sprint-capacity key (approved, next in queue — [#50](https://github.com/agile-toolkit/work-profiles/issues/50)), Kanban Designer active-card-count badge on profile cards ([#55](https://github.com/agile-toolkit/work-profiles/issues/55), needs-review, stale), and consuming the already-written-but-unread Moving Motivators snapshot key ([#57](https://github.com/agile-toolkit/work-profiles/issues/57), needs-review, stale).
+1. **E1: Automated test suite** — serves #1. Vitest + RTL coverage for CSV parse/merge, `publishExport`/`publishLastSession`/`publishSprintCapacity` payload shape, skill-history delta sign, and endorsement eligibility, wired into the deploy workflow so regressions in core data flows are caught before Pages deploy. [#54](https://github.com/agile-toolkit/work-profiles/issues/54) (needs-review, stale since 2026-07-02).
+2. **E2 remainder: More sibling-app integrations** — serves #4. Kanban Designer active-card-count badge on profile cards ([#55](https://github.com/agile-toolkit/work-profiles/issues/55), needs-review, stale), and consuming the already-written-but-unread Moving Motivators snapshot key ([#57](https://github.com/agile-toolkit/work-profiles/issues/57), needs-review, stale).
 3. **E3: Full data portability** — serves #1. Versioned JSON export/import of both `work-profiles-data` and `work-profiles-credits` with replace semantics, complementing the existing lossy CSV-only export. [#56](https://github.com/agile-toolkit/work-profiles/issues/56) (needs-review, stale since 2026-07-02).
 4. **E4: Skill search & directory export** — serves #2. Profile search + skill gap analysis screen ([#4](https://github.com/agile-toolkit/work-profiles/issues/4)) and CSV/printable-HTML directory export ([#5](https://github.com/agile-toolkit/work-profiles/issues/5)) — both spec-revised and blocked on human `approved` label, not implementation-ready yet.
 5. **E5: Credits trend view** — serves #3. Monthly-bucketed sparkline/bar view per person in CreditsView, complementing the existing all-time leaderboard total. [#59](https://github.com/agile-toolkit/work-profiles/issues/59) (needs-review, stale since 2026-07-04).
+
+## Recently shipped
+**E2 (partial): Scrum Facilitator sprint-capacity integration** (2026-09-02) — see `## Shipped`. [#50](https://github.com/agile-toolkit/work-profiles/issues/50) shipped; #55/#57 remain queued above as the rest of E2.
 
 ## Polish backlog
 - Guard the 3 unguarded `localStorage.setItem` call sites in `App.tsx` (`save()`, `publishLastSession()`, `publishExport()`) with a `safeSetItem`-style try/catch — only `ThemeToggle.tsx` currently guards its write. [#58](https://github.com/agile-toolkit/work-profiles/issues/58) (needs-review, stale since 2026-07-04).
@@ -28,3 +31,6 @@ None — idle. See `## Next epics` below.
 - ~~Skill name autocomplete from team vocabulary~~
 - ~~`wp-profiles-export` and `work-profiles:lastSession` localStorage contracts for Planning Poker, Sprint Metrics, and Dashboard~~
 - ~~Improvement Board integration (open items shown on profile cards)~~
+
+**v0.2.0 — [E2 (partial): Scrum Facilitator sprint-capacity integration](https://github.com/agile-toolkit/work-profiles/issues/50)** (2026-09-02):
+- ~~`wp-sprint-capacity` localStorage contract — total capacity, member/OOO counts, OOO member names, and active timezones, recomputed on every profile mutation~~

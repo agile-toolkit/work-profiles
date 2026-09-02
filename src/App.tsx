@@ -15,6 +15,7 @@ const PROFILES_KEY = 'work-profiles-data'
 const CREDITS_KEY = 'work-profiles-credits'
 const WP_EXPORT_KEY = 'wp-profiles-export'
 const LAST_SESSION_KEY = 'work-profiles:lastSession'
+const SPRINT_CAPACITY_KEY = 'wp-sprint-capacity'
 
 function load<T>(key: string): T[] {
   try {
@@ -47,6 +48,28 @@ function publishLastSession(profiles: WorkProfile[]) {
   localStorage.setItem(LAST_SESSION_KEY, JSON.stringify({ profileCount, avgCapacity, topSkills, lastUpdated: new Date().toISOString() }))
 }
 
+// A profile counts as OOO when oooUntil is set and is today or later — the
+// same "active, non-OOO" split publishExport's teamCapacity already implies,
+// just distilled into the sprint-focused shape Scrum Facilitator needs.
+function publishSprintCapacity(profiles: WorkProfile[]) {
+  const active = profiles.filter(p => !p.archived)
+  const today = new Date().toISOString().slice(0, 10)
+  const isOoo = (p: WorkProfile) => !!p.oooUntil && p.oooUntil >= today
+  const oooMembers = active.filter(isOoo)
+  const available = active.filter(p => !isOoo(p))
+  const timezones = [...new Set(active.map(p => p.timezone).filter((tz): tz is string => !!tz))]
+  const payload = {
+    totalCapacity: available.reduce((sum, p) => sum + (p.capacity ?? 0), 0),
+    memberCount: active.length,
+    availableCount: available.length,
+    oooCount: oooMembers.length,
+    oooMembers: oooMembers.map(p => p.name),
+    timezones,
+    lastUpdated: new Date().toISOString(),
+  }
+  localStorage.setItem(SPRINT_CAPACITY_KEY, JSON.stringify(payload))
+}
+
 function publishExport(profiles: WorkProfile[]) {
   const active = profiles.filter(p => !p.archived)
   const payload = {
@@ -67,6 +90,7 @@ export default function App() {
     const data = load<WorkProfile>(PROFILES_KEY)
     publishExport(data)
     publishLastSession(data)
+    publishSprintCapacity(data)
     return data
   })
   const [credits, setCredits] = useState<ProjectCredit[]>(() => load(CREDITS_KEY))
@@ -76,6 +100,7 @@ export default function App() {
     save(PROFILES_KEY, next)
     publishExport(next)
     publishLastSession(next)
+    publishSprintCapacity(next)
   }
 
   const updateCredits = (next: ProjectCredit[]) => {
