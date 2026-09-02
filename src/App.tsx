@@ -24,7 +24,11 @@ function load<T>(key: string): T[] {
 }
 
 function save<T>(key: string, data: T[]) {
-  localStorage.setItem(key, JSON.stringify(data))
+  try {
+    localStorage.setItem(key, JSON.stringify(data))
+  } catch {
+    // Storage full or unavailable (e.g. private browsing) — in-memory state still reflects the change.
+  }
 }
 
 export default function App() {

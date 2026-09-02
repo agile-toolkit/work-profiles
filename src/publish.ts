@@ -4,6 +4,14 @@ const WP_EXPORT_KEY = 'wp-profiles-export'
 const LAST_SESSION_KEY = 'work-profiles:lastSession'
 const SPRINT_CAPACITY_KEY = 'wp-sprint-capacity'
 
+function safeSetItem(key: string, value: string) {
+  try {
+    localStorage.setItem(key, value)
+  } catch {
+    // Storage full or unavailable (e.g. private browsing) — publish is best-effort.
+  }
+}
+
 export function publishLastSession(profiles: WorkProfile[]) {
   const active = profiles.filter(p => !p.archived)
   const profileCount = active.length
@@ -20,7 +28,7 @@ export function publishLastSession(profiles: WorkProfile[]) {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
     .map(([name]) => name)
-  localStorage.setItem(LAST_SESSION_KEY, JSON.stringify({ profileCount, avgCapacity, topSkills, lastUpdated: new Date().toISOString() }))
+  safeSetItem(LAST_SESSION_KEY, JSON.stringify({ profileCount, avgCapacity, topSkills, lastUpdated: new Date().toISOString() }))
 }
 
 // A profile counts as OOO when oooUntil is set and is today or later — the
@@ -42,7 +50,7 @@ export function publishSprintCapacity(profiles: WorkProfile[]) {
     timezones,
     lastUpdated: new Date().toISOString(),
   }
-  localStorage.setItem(SPRINT_CAPACITY_KEY, JSON.stringify(payload))
+  safeSetItem(SPRINT_CAPACITY_KEY, JSON.stringify(payload))
 }
 
 export function publishExport(profiles: WorkProfile[]) {
@@ -53,5 +61,5 @@ export function publishExport(profiles: WorkProfile[]) {
       id, name, role, skills, capacity, workTypes, timezone, workingHours, oooUntil,
     })),
   }
-  localStorage.setItem(WP_EXPORT_KEY, JSON.stringify(payload))
+  safeSetItem(WP_EXPORT_KEY, JSON.stringify(payload))
 }

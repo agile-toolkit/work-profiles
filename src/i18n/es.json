@@ -79,6 +79,7 @@
     "skills_label": "Habilidades",
     "skill_name_placeholder": "Nombre de la habilidad (p. ej. TypeScript)",
     "add_skill": "Añadir habilidad",
+    "remove_skill": "Eliminar habilidad",
     "interests_label": "Intereses / Temas",
     "interests_placeholder": "p. ej. sistemas distribuidos, coaching de equipo",
     "work_types_label": "Tipos de trabajo preferidos",
@@ -132,8 +133,8 @@
     "title": "Créditos de proyecto",
     "add": "Registrar crédito",
     "empty": "Aún no hay créditos de proyecto.",
-    "leaderboard": "Clasificación",
-    "leaderboard_off": "Ocultar clasificación",
+    "leaderboard": "Totales de contribución",
+    "leaderboard_off": "Ocultar totales",
     "project_label": "Proyecto / Tarea",
     "project_placeholder": "Nombre del proyecto",
     "contribution_label": "Contribución",
@@ -165,7 +166,7 @@
     "p1": "Los perfiles son mantenidos por los propios empleados — cada persona es dueña de sus datos.",
     "p2": "La matriz de habilidades es visible para el equipo pero no se usa para evaluaciones.",
     "p3": "Los créditos reconocen el esfuerzo, no solo los resultados.",
-    "p4": "Las clasificaciones son opcionales — no todos los equipos quieren rankings públicos."
+    "p4": "Los totales de contribución son opcionales y están ocultos por defecto — es un registro de quién hizo qué, no una clasificación pública."
   },
   "profile_card": {
     "print_button": "Imprimir perfil",

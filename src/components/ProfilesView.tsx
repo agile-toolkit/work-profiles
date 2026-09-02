@@ -771,7 +771,8 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                 <button
                   type="button"
                   onClick={() => removeSkill(s.id)}
-                  className="text-gray-300 dark:text-gray-600 hover:text-red-400"
+                  aria-label={t('profile_form.remove_skill')}
+                  className="text-gray-400 dark:text-gray-500 hover:text-red-400"
                 >
                   ×
                 </button>

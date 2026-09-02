@@ -4,6 +4,33 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.2.2 — Soften the credit leaderboard; guard localStorage writes (2026-09-02)
+
+- **fix (scope)**: `GOAL.md` explicitly says this app is "not an
+  evaluation or ranking tool" and "no instrument for tracking
+  individuals," but Project Credits shipped a numbered, sorted leaderboard
+  contradicting that. Removed the `1/2/3...` rank badge from
+  `CreditsView.tsx` so it reads as a contribution-totals summary rather
+  than a competitive ranking, and renamed the "Leaderboard" toggle/copy to
+  "Contribution Totals" across all 4 locales (it was already opt-in and
+  hidden by default — the framing was the problem, not the visibility
+  default).
+- **fix**: guarded the 3 unguarded `localStorage.setItem` call sites
+  (`App.tsx`'s `save()`, and `publish.ts`'s `publishLastSession`/
+  `publishSprintCapacity`/`publishExport`) with try/catch, so a full or
+  unavailable storage quota (e.g. private browsing) degrades to in-memory
+  state instead of throwing uncaught and silently breaking the
+  Planning-Poker/Sprint-Metrics/Scrum-Facilitator publish path. Closes
+  [#58](https://github.com/agile-toolkit/work-profiles/issues/58).
+- **fix**: two icon-only delete buttons (`CreditsView.tsx`,
+  `ProfilesView.tsx`) used `text-gray-200`/`gray-300` — well below WCAG AA
+  contrast, nearly invisible until hover. Bumped to `gray-400`/`gray-500`
+  and added a missing `aria-label` on `ProfilesView.tsx`'s skill-remove
+  button.
+- **chore**: deleted `src/components/ProfileForm.tsx` — a second,
+  unused profile-editing component with no imports anywhere in the repo.
+- Found via a suite-wide UX/scope audit.
+
 ## 0.2.1 — Remove Management 3.0 references; test coverage (2026-09-02)
 
 - **content**: removed "Management 3.0" text from the Learn page intro,

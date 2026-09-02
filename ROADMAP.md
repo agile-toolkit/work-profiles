@@ -13,12 +13,14 @@ None — idle. See `## Next epics` below.
 5. **E5: Credits trend view** — serves #3. Monthly-bucketed sparkline/bar view per person in CreditsView, complementing the existing all-time leaderboard total. [#59](https://github.com/agile-toolkit/work-profiles/issues/59) (needs-review, stale since 2026-07-04).
 
 ## Recently shipped
+**Soften the credit leaderboard; guard localStorage writes** (2026-09-02) — see `## Shipped`. A suite-wide UX/scope audit flagged Project Credits' numbered leaderboard as contradicting `GOAL.md`'s own "not a ranking/individual-tracking tool" boundary; removed the rank badge and reframed it as "Contribution Totals." Also closed [#58](https://github.com/agile-toolkit/work-profiles/issues/58) (unguarded localStorage writes), fixed two low-contrast delete icons, and removed the unused `ProfileForm.tsx`.
+
 **Remove Management 3.0 references; E1 (partial): publish-function tests** (2026-09-02) — see `## Shipped`. Extracted `publishExport`/`publishLastSession`/`publishSprintCapacity` out of `App.tsx` into `src/publish.ts` so they're testable without pulling in the PWA-registration component tree, and added `publish.test.ts` (7 tests). CSV parse/merge and skill-history/endorsement coverage remain open as the rest of E1.
 
 **E2 (partial): Scrum Facilitator sprint-capacity integration** (2026-09-02) — see `## Shipped`. [#50](https://github.com/agile-toolkit/work-profiles/issues/50) shipped; #55/#57 remain queued above as the rest of E2.
 
 ## Polish backlog
-- Guard the 3 unguarded `localStorage.setItem` call sites in `App.tsx` (`save()`, `publishLastSession()`, `publishExport()`) with a `safeSetItem`-style try/catch — only `ThemeToggle.tsx` currently guards its write. [#58](https://github.com/agile-toolkit/work-profiles/issues/58) (needs-review, stale since 2026-07-04).
+- No open polish items.
 
 ## Shipped
 - ~~Profile directory (create/edit/archive) with Dreyfus proficiency skills, capacity, work types~~
@@ -44,3 +46,11 @@ None — idle. See `## Next epics` below.
   added `vitest` + `jsdom` and 7 tests~~
 - ~~Fixed invisible `brand-200`/`300`/`800`/`900` borders/backgrounds/text
   (undefined in `tailwind.config.js`)~~
+
+**v0.2.2 — Soften the credit leaderboard; guard localStorage writes** (2026-09-02):
+- ~~Removed the numbered rank badge from Project Credits' totals view and
+  reframed "Leaderboard" as "Contribution Totals" across all 4 locales~~
+- ~~Guarded the 3 unguarded `localStorage.setItem` call sites with
+  try/catch (#58)~~
+- ~~Fixed two low-contrast delete icons; added a missing aria-label~~
+- ~~Removed the unused `ProfileForm.tsx`~~

@@ -61,9 +61,8 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
         <div className="card mb-6">
           <h2 className="font-semibold text-gray-900 dark:text-gray-50 mb-3">{t('credits.leaderboard')}</h2>
           <div className="space-y-2">
-            {totals.filter(t => t.total > 0).map((entry, i) => (
+            {totals.filter(t => t.total > 0).map(entry => (
               <div key={entry.profile.id} className="flex items-center gap-3">
-                <span className="text-sm font-bold text-gray-400 dark:text-gray-500 w-5">{i + 1}</span>
                 <div className="flex-1">
                   <div className="flex justify-between text-sm mb-0.5">
                     <span className="font-medium">{entry.profile.name}</span>
@@ -137,7 +136,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
                   <div className="text-sm text-gray-700 dark:text-gray-300 font-medium">{credit.project}</div>
                   {credit.contribution && <div className="text-xs text-gray-500 dark:text-gray-400">{credit.contribution}</div>}
                 </div>
-                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-200 dark:text-gray-700 hover:text-red-400 text-xs">✕</button>
+                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-400 dark:text-gray-500 hover:text-red-400 text-xs">✕</button>
               </div>
             )
           })}

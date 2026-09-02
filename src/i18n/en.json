@@ -79,6 +79,7 @@
     "skills_label": "Skills",
     "skill_name_placeholder": "Skill name (e.g. TypeScript)",
     "add_skill": "Add Skill",
+    "remove_skill": "Remove skill",
     "interests_label": "Interests / Topics",
     "interests_placeholder": "e.g. distributed systems, team coaching",
     "work_types_label": "Preferred Work Types",
@@ -132,8 +133,8 @@
     "title": "Project Credits",
     "add": "Log Credit",
     "empty": "No project credits yet.",
-    "leaderboard": "Leaderboard",
-    "leaderboard_off": "Hide Leaderboard",
+    "leaderboard": "Contribution Totals",
+    "leaderboard_off": "Hide Totals",
     "project_label": "Project / Task",
     "project_placeholder": "Project name",
     "contribution_label": "Contribution",
@@ -165,7 +166,7 @@
     "p1": "Profiles are self-maintained — people own their own data.",
     "p2": "Skill matrix is team-visible but not used for evaluation.",
     "p3": "Credits recognize effort, not just outcomes.",
-    "p4": "Leaderboards are opt-in — not every team wants public rankings."
+    "p4": "Contribution totals are opt-in and hidden by default — this is a log of who did what, not a public ranking."
   },
   "profile_card": {
     "print_button": "Print profile",
