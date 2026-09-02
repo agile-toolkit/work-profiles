@@ -1,8 +1,8 @@
 # Work Profiles
 
-A team skill mapping and project credit tool based on Management 3.0's Work Profiles and Project Credits practices — transparent skills, better task matching, recognized contributions.
+A team skill mapping and project credit tool built around Work Profiles and Project Credits — transparent skills, better task matching, recognized contributions.
 
-Part of the [Agile Tools](https://github.com/bthos) suite built on Management 3.0 and ICAgile source materials.
+Part of the [Agile Tools](https://github.com/bthos) suite built on ICAgile source materials.
 
 See `GOAL.md` for why this exists and `ROADMAP.md` for what's next. `.artefacts/BRIEF.md` has the full run-by-run build history.
 
@@ -17,6 +17,7 @@ npm install
 npm run dev       # start Vite dev server
 npm run build     # tsc typecheck + production build
 npm run preview   # serve the production build locally
+npm test          # vitest run — src/publish.ts
 ```
 
 ## Deploy
@@ -37,8 +38,8 @@ Work Profiles also *reads* (but does not write) `improvement-board-items` from l
 
 ## Tech notes
 - **State**: no external state library — a single `profiles`/`credits` array lives in `App.tsx`, passed down as props; `save()` writes straight to `localStorage` on every mutation.
-- **Persistence pattern**: `publishExport()`, `publishLastSession()`, and `publishSprintCapacity()` in `App.tsx` re-derive their payload from `profiles` and write it on every `updateProfiles()` call and at app startup — there is no separate "sync" step. All three use `profiles.filter(p => !p.archived)` — archived profiles never leak into exports or summaries.
-- **Unguarded writes**: `save()`, `publishLastSession()`, `publishExport()`, and `publishSprintCapacity()` call `localStorage.setItem` directly with no try/catch (quota/private-mode errors will throw uncaught). Only `ThemeToggle.tsx` guards its write. Tracked as [issue #58](https://github.com/agile-toolkit/work-profiles/issues/58).
+- **Persistence pattern**: `publishExport()`, `publishLastSession()`, and `publishSprintCapacity()` live in `src/publish.ts` (split out from `App.tsx` so they're testable without pulling in the PWA-registration component tree) and re-derive their payload from `profiles`, written on every `updateProfiles()` call and at app startup — there is no separate "sync" step. All three use `profiles.filter(p => !p.archived)` — archived profiles never leak into exports or summaries. `src/publish.test.ts` covers all three, including the OOO-date boundary and timezone deduplication.
+- **Unguarded writes**: `save()` and the three `publish*()` functions call `localStorage.setItem` directly with no try/catch (quota/private-mode errors will throw uncaught). Only `ThemeToggle.tsx` guards its write. Tracked as [issue #58](https://github.com/agile-toolkit/work-profiles/issues/58).
 - **i18n**: `react-i18next`, one JSON file per locale in `src/i18n/` (`en`, `es`, `be`, `ru`); `LanguagePicker.tsx` is a 4-language `<select>` inside `AppHeader`.
 - **Theme**: Tailwind `darkMode: 'class'`; an anti-flash inline script in `index.html` applies the stored theme before React mounts; `ThemeToggle.tsx` toggles a `data-theme` attribute and persists to the `theme` localStorage key, falling back to `prefers-color-scheme`.
 - **PWA**: configured via `vite-plugin-pwa` in `vite.config.ts` (`registerType: autoUpdate`); `UpdateToast.tsx` uses the `useRegisterSW` hook to show an "Update available / Reload" prompt.

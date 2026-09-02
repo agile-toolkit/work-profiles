@@ -4,6 +4,24 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.2.1 — Remove Management 3.0 references; test coverage (2026-09-02)
+
+- **content**: removed "Management 3.0" text from the Learn page intro,
+  `index.html`'s meta description, and `README.md` across all 4 locales
+  — reworded to reference Work Profiles/Project Credits directly.
+- **refactor**: extracted `publishExport`/`publishLastSession`/
+  `publishSprintCapacity` out of `App.tsx` into `src/publish.ts` so
+  they're testable without pulling in the PWA-registration component
+  tree.
+- **test**: added `vitest` + `jsdom` (this repo's first automated test
+  coverage — partial E1/#54). `src/publish.test.ts` covers all three
+  publish functions, including the OOO-date boundary and timezone
+  deduplication. `npm test` now passes cleanly: 1 file, 7 tests.
+- **fix**: `brand-200`/`brand-300`/`brand-800`/`brand-900` were
+  referenced but never defined in `tailwind.config.js` — invisible
+  borders/backgrounds/text in both light and dark mode. Same class of
+  bug found and fixed across several repos this session.
+
 ## 0.2.0 — E2 (partial): Scrum Facilitator sprint-capacity integration (2026-09-02)
 
 - **feat**: publish a `wp-sprint-capacity` localStorage key alongside the
