@@ -13,6 +13,8 @@ None — idle. See `## Next epics` below.
 5. **E5: Credits trend view** — serves #3. Monthly-bucketed sparkline/bar view per person in CreditsView, complementing the existing all-time leaderboard total. [#59](https://github.com/agile-toolkit/work-profiles/issues/59) (needs-review, stale since 2026-07-04).
 
 ## Recently shipped
+**Facilitator Mode persists across suite apps** (2026-09-03) — see `## Shipped`. `useFacilitatorMode`'s storage key changed to the shared `agile-toolkit:facilitatorMode` so the mode survives switching to another suite app in the same tab, per direct user request.
+
 **Replace decorative ✕/× emoji with SVG icons** (2026-09-03) — see `## Shipped`. Part of a suite-wide emoji→SVG sweep the user asked for.
 
 **Facilitator Mode** (2026-09-03) — see `## Shipped`. A user asked for the presentation/projector mode already built for Team Identity to be adopted suite-wide; this is repo 7 of an 11-repo rollout, adopting the pattern now shared in `design-system/`.
@@ -31,6 +33,7 @@ None — idle. See `## Next epics` below.
 - No open polish items.
 
 ## Shipped
+- ~~Unify Facilitator Mode's storage key to the shared `agile-toolkit:facilitatorMode` so it persists across suite apps~~
 - ~~Replace decorative ✕/× text-glyph buttons with shared SVG icons~~
 - ~~Facilitator Mode — bigger UI + hidden nav/language picker for in-room presentation, adopted from the shared design-system pattern~~
 - ~~Receive Moving Motivators' `?motivators=`/`work-profiles:motivatorSnapshot` handoff as a dismissible "new profile with these motivators" banner~~

@@ -35,7 +35,7 @@ function save<T>(key: string, data: T[]) {
 
 export default function App() {
   const { t } = useTranslation()
-  const [facilitatorMode, toggleFacilitatorMode] = useFacilitatorMode('work-profiles:facilitatorMode')
+  const [facilitatorMode, toggleFacilitatorMode] = useFacilitatorMode('agile-toolkit:facilitatorMode')
   const [screen, setScreen] = useState<Screen>('profiles')
   const [compareIds, setCompareIds] = useState<string[]>([])
   const [announcement, setAnnouncement] = useState('')
