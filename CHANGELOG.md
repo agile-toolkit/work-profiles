@@ -4,6 +4,18 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.3.0 — Error boundary and test-gated deploys (2026-09-03)
+
+- **feat**: `ErrorBoundary` at the root of the app. Every app in the suite reads
+  payloads written by *other* apps, historically through `JSON.parse(raw) as T`
+  with no runtime check; an unexpected shape threw during render, unmounted the
+  tree and left a blank page that a reload could not fix, because the offending
+  data was still in localStorage. The fallback offers "clear this app's saved
+  data", scoped to this app's own key prefixes so recovery cannot destroy a
+  neighbouring app's data on the shared origin.
+- **ci**: `npm test` now runs before `npm run build` in `deploy.yml`. The suite
+  had 301 passing tests and CI ran them in exactly one repo of eleven.
+
 ## 0.2.6 — Replace decorative ✕/× emoji with SVG icons (2026-09-03)
 
 - **feat**: replaced 3 decorative close-button text glyphs (project
