@@ -4,6 +4,20 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.2.4 — Receive Moving Motivators' motivator snapshot (2026-09-03)
+
+- **fix (broken integration)**: Moving Motivators has sent a top-3-motivators
+  snapshot to Work Profiles since it shipped, both as a `?motivators=` URL
+  param and a `work-profiles:motivatorSnapshot` localStorage write — nothing
+  here ever read either. Tracked in [#57](https://github.com/agile-toolkit/work-profiles/issues/57)
+  (needs-review, stale since 2026-07-04) and found independently by a
+  suite-wide cross-app link audit. Added `src/utils/motivatorHandoff.ts`
+  (tested) and a dismissible banner in `ProfilesView.tsx` offering to open
+  the Add Profile form pre-filled with the top 3 motivators in `interests`.
+  Simpler than #57's original proposal (no "which person is this?" picker
+  or persistent per-profile field) — see the issue comment for what's still
+  open if the fuller design is wanted.
+
 ## 0.2.3 — Fix LanguagePicker dark mode (2026-09-02)
 
 - **fix**: `LanguagePicker.tsx` had zero `dark:` classes — the

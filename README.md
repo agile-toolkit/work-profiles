@@ -34,7 +34,7 @@ GitHub Pages via GitHub Actions on push to `main`.
 | `wp-sprint-capacity` | `{ totalCapacity: number, memberCount: number, availableCount: number, oooCount: number, oooMembers: string[], timezones: string[], lastUpdated: string }` | Published alongside the export. Sprint-focused view for Scrum Facilitator: `totalCapacity` sums only non-OOO active profiles (a profile is OOO when `oooUntil` is set and is today or later); `timezones` is the deduplicated non-empty set across all active profiles. Key name and shape are a public contract, do not rename. |
 | `theme` | `'light' \| 'dark'` | Written by `ThemeToggle.tsx`. Per-origin, not a cross-app contract. |
 
-Work Profiles also *reads* (but does not write) `improvement-board-items` from localStorage to surface each profile's open Improvement Board items — a one-way integration, see `ProfilesView.tsx`.
+Work Profiles also *reads* (but does not write) `improvement-board-items` from localStorage to surface each profile's open Improvement Board items — a one-way integration, see `ProfilesView.tsx`. It also reads Moving Motivators' motivator snapshot, either as a one-shot `?motivators=` query param or the `work-profiles:motivatorSnapshot` localStorage key, and offers it as a dismissible "new profile with these motivators" banner — see `src/utils/motivatorHandoff.ts`.
 
 ## Tech notes
 - **State**: no external state library — a single `profiles`/`credits` array lives in `App.tsx`, passed down as props; `save()` writes straight to `localStorage` on every mutation.

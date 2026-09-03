@@ -2,6 +2,13 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
+import {
+  parseMotivatorsParam,
+  readMotivatorSnapshot,
+  clearMotivatorSnapshot,
+  topMotivatorLabels,
+  type MotivatorSnapshot,
+} from '../utils/motivatorHandoff'
 
 interface IbItem {
   id: string
@@ -147,6 +154,18 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
     } catch {}
   }, [])
 
+  // Moving Motivators' "Export to Work Profiles" sends both a one-shot URL
+  // param (consumed and stripped here) and a localStorage snapshot (offered
+  // as a dismissible banner so it isn't silently re-applied on every visit).
+  const [motivatorSnapshot, setMotivatorSnapshot] = useState<MotivatorSnapshot | null>(() => {
+    const fromParam = parseMotivatorsParam(window.location.search)
+    if (fromParam) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.hash)
+      return fromParam
+    }
+    return readMotivatorSnapshot()
+  })
+
   function makeEmpty(): WorkProfile {
     return {
       id: crypto.randomUUID(),
@@ -195,6 +214,23 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
     setDraft({ ...p })
     setEditId(p.id)
     setAdding(false)
+  }
+
+  function openAddWithMotivators() {
+    if (!motivatorSnapshot) return
+    setDraft({
+      ...makeEmpty(),
+      interests: topMotivatorLabels(motivatorSnapshot),
+    })
+    setAdding(true)
+    setEditId(null)
+    clearMotivatorSnapshot()
+    setMotivatorSnapshot(null)
+  }
+
+  function dismissMotivatorSnapshot() {
+    clearMotivatorSnapshot()
+    setMotivatorSnapshot(null)
   }
 
   function saveDraft() {
@@ -438,6 +474,24 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
       {csvError && (
         <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {csvError}
+        </div>
+      )}
+
+      {motivatorSnapshot && (
+        <div className="flex items-center justify-between gap-3 flex-wrap bg-brand-50 dark:bg-brand-950 border border-brand-200 dark:border-brand-800 rounded-lg px-4 py-3 text-sm text-brand-900 dark:text-brand-200">
+          <span>{t('profiles.motivators_pending', { motivators: topMotivatorLabels(motivatorSnapshot).join(', ') })}</span>
+          <div className="flex items-center gap-2 shrink-0">
+            <button type="button" onClick={openAddWithMotivators} className="btn-primary text-sm py-1.5">
+              {t('profiles.motivators_use')}
+            </button>
+            <button
+              type="button"
+              onClick={dismissMotivatorSnapshot}
+              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-2"
+            >
+              {t('profiles.motivators_dismiss')}
+            </button>
+          </div>
         </div>
       )}
 
