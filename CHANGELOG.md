@@ -3,6 +3,11 @@
 All notable changes to this project are documented here. See `.artefacts/BRIEF.md` for the detailed run-by-run build history that preceded this file.
 
 ## Unreleased
+- **ci**: CI Node bumped 20 → 22 and `engines` declared. `jsdom@30` requires
+  Node `^22.22.2 || ^24.15.0 || >=26`, so the test step could never have passed
+  on the pinned Node 20 — invisible until this release started running the
+  tests in CI at all. Builds were unaffected (vite and tsc do not load jsdom).
+
 
 ## 0.3.0 — Error boundary and test-gated deploys (2026-09-03)
 
