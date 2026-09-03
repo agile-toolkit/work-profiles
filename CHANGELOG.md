@@ -4,6 +4,13 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.2.3 — Fix LanguagePicker dark mode (2026-09-02)
+
+- **fix**: `LanguagePicker.tsx` had zero `dark:` classes — the
+  design-system's canonical copy never got dark-mode classes, and this
+  app's copy inherited the gap. Synced with the now-fixed design-system
+  source.
+
 ## 0.2.2 — Soften the credit leaderboard; guard localStorage writes (2026-09-02)
 
 - **fix (scope)**: `GOAL.md` explicitly says this app is "not an

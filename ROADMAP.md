@@ -13,6 +13,8 @@ None — idle. See `## Next epics` below.
 5. **E5: Credits trend view** — serves #3. Monthly-bucketed sparkline/bar view per person in CreditsView, complementing the existing all-time leaderboard total. [#59](https://github.com/agile-toolkit/work-profiles/issues/59) (needs-review, stale since 2026-07-04).
 
 ## Recently shipped
+**Fix LanguagePicker dark mode** (2026-09-02) — see `## Shipped`. The design-system's canonical `LanguagePicker.tsx` never got dark-mode classes; this app's copy inherited the gap. Synced with the now-fixed design-system source.
+
 **Soften the credit leaderboard; guard localStorage writes** (2026-09-02) — see `## Shipped`. A suite-wide UX/scope audit flagged Project Credits' numbered leaderboard as contradicting `GOAL.md`'s own "not a ranking/individual-tracking tool" boundary; removed the rank badge and reframed it as "Contribution Totals." Also closed [#58](https://github.com/agile-toolkit/work-profiles/issues/58) (unguarded localStorage writes), fixed two low-contrast delete icons, and removed the unused `ProfileForm.tsx`.
 
 **Remove Management 3.0 references; E1 (partial): publish-function tests** (2026-09-02) — see `## Shipped`. Extracted `publishExport`/`publishLastSession`/`publishSprintCapacity` out of `App.tsx` into `src/publish.ts` so they're testable without pulling in the PWA-registration component tree, and added `publish.test.ts` (7 tests). CSV parse/merge and skill-history/endorsement coverage remain open as the rest of E1.
@@ -54,3 +56,7 @@ None — idle. See `## Next epics` below.
   try/catch (#58)~~
 - ~~Fixed two low-contrast delete icons; added a missing aria-label~~
 - ~~Removed the unused `ProfileForm.tsx`~~
+
+**v0.2.3 — Fix LanguagePicker dark mode** (2026-09-02):
+- ~~Synced `LanguagePicker.tsx` with the design-system's now-fixed
+  canonical copy — full `dark:` coverage~~
