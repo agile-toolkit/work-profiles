@@ -13,6 +13,8 @@ None — idle. See `## Next epics` below.
 5. **E5: Credits trend view** — serves #3. Monthly-bucketed sparkline/bar view per person in CreditsView, complementing the existing all-time leaderboard total. [#59](https://github.com/agile-toolkit/work-profiles/issues/59) (needs-review, stale since 2026-07-04).
 
 ## Recently shipped
+**Facilitator Mode** (2026-09-03) — see `## Shipped`. A user asked for the presentation/projector mode already built for Team Identity to be adopted suite-wide; this is repo 7 of an 11-repo rollout, adopting the pattern now shared in `design-system/`.
+
 **Receive Moving Motivators' motivator snapshot** (2026-09-03) — see `## Shipped`. [#57](https://github.com/agile-toolkit/work-profiles/issues/57)'s core gap: the snapshot key existed since Moving Motivators shipped its export button, unread here. A suite-wide cross-app link audit found it independently. Now surfaced as a dismissible "new profile with these motivators" banner.
 
 **Fix LanguagePicker dark mode** (2026-09-02) — see `## Shipped`. The design-system's canonical `LanguagePicker.tsx` never got dark-mode classes; this app's copy inherited the gap. Synced with the now-fixed design-system source.
@@ -27,6 +29,7 @@ None — idle. See `## Next epics` below.
 - No open polish items.
 
 ## Shipped
+- ~~Facilitator Mode — bigger UI + hidden nav/language picker for in-room presentation, adopted from the shared design-system pattern~~
 - ~~Receive Moving Motivators' `?motivators=`/`work-profiles:motivatorSnapshot` handoff as a dismissible "new profile with these motivators" banner~~
 - ~~Profile directory (create/edit/archive) with Dreyfus proficiency skills, capacity, work types~~
 - ~~Skill Matrix and Team Overview tab (role/capacity charts, skill-category radar, mentoring pairs)~~

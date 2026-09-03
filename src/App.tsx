@@ -10,6 +10,8 @@ import OverviewView from './components/OverviewView'
 import UpdateToast from './components/UpdateToast'
 import AppHeader from './components/AppHeader'
 import ThemeToggle from './components/ThemeToggle'
+import FacilitatorToggle from './components/FacilitatorToggle'
+import { useFacilitatorMode } from './components/useFacilitatorMode'
 import { publishLastSession, publishSprintCapacity, publishExport } from './publish'
 
 const PROFILES_KEY = 'work-profiles-data'
@@ -33,6 +35,7 @@ function save<T>(key: string, data: T[]) {
 
 export default function App() {
   const { t } = useTranslation()
+  const [facilitatorMode, toggleFacilitatorMode] = useFacilitatorMode('work-profiles:facilitatorMode')
   const [screen, setScreen] = useState<Screen>('profiles')
   const [compareIds, setCompareIds] = useState<string[]>([])
   const [announcement, setAnnouncement] = useState('')
@@ -71,7 +74,8 @@ export default function App() {
       <AppHeader
         title={t('app.title')}
         onTitleClick={() => setScreen('profiles')}
-        navItems={navItems.map(item => ({
+        hideLanguagePicker={facilitatorMode}
+        navItems={facilitatorMode ? [] : navItems.map(item => ({
           key: item.key,
           label: item.label,
           active: screen === item.key,
@@ -79,6 +83,12 @@ export default function App() {
         }))}
       >
         <ThemeToggle />
+        <FacilitatorToggle
+          active={facilitatorMode}
+          onToggle={toggleFacilitatorMode}
+          labelOn={t('facilitator.toggle_on')}
+          labelOff={t('facilitator.toggle_off')}
+        />
       </AppHeader>
 
       <div aria-live="polite" aria-atomic="true" className="sr-only">{announcement}</div>

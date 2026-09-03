@@ -192,5 +192,9 @@
     "no_role": "No role set",
     "radar_empty": "Add skills to team profiles to see category coverage.",
     "endorsed_empty": "No endorsements given yet."
+  },
+  "facilitator": {
+    "toggle_on": "Facilitator Mode",
+    "toggle_off": "Exit Facilitator Mode"
   }
 }

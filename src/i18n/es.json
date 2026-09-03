@@ -192,5 +192,9 @@
     "no_role": "Sin rol definido",
     "radar_empty": "Añade habilidades a los perfiles del equipo para ver la cobertura por categoría.",
     "endorsed_empty": "Aún no se han otorgado avales."
+  },
+  "facilitator": {
+    "toggle_on": "Modo Facilitador",
+    "toggle_off": "Salir del Modo Facilitador"
   }
 }
