@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ProjectCredit, WorkProfile } from '../types'
+import { CloseIcon } from './icons'
 
 interface Props {
   credits: ProjectCredit[]
@@ -136,7 +137,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
                   <div className="text-sm text-gray-700 dark:text-gray-300 font-medium">{credit.project}</div>
                   {credit.contribution && <div className="text-xs text-gray-500 dark:text-gray-400">{credit.contribution}</div>}
                 </div>
-                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-400 dark:text-gray-500 hover:text-red-400 text-xs">✕</button>
+                <button onClick={() => onDelete(credit.id)} aria-label={t('credits.delete')} className="text-gray-400 dark:text-gray-500 hover:text-red-400 text-xs"><CloseIcon className="w-3 h-3" /></button>
               </div>
             )
           })}

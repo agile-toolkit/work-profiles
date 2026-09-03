@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, ProficiencyLevel } from '../types'
 import { SKILL_CATEGORIES } from '../types'
+import { CloseIcon } from './icons'
 
 const LEVEL_COLORS = ['', 'bg-red-200', 'bg-orange-200', 'bg-yellow-200', 'bg-lime-300', 'bg-green-400']
 const LEVEL_TEXT = ['', '1', '2', '3', '4', '5']
@@ -179,7 +180,7 @@ export default function SkillMatrix({ profiles }: Props) {
               onClick={() => setCategoryFilter(null)}
               className="text-xs text-brand-600 hover:text-brand-800 dark:text-brand-400 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
             >
-              ✕
+              <CloseIcon className="w-3 h-3" />
             </button>
           )}
         </div>

@@ -4,6 +4,16 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.2.6 — Replace decorative ✕/× emoji with SVG icons (2026-09-03)
+
+- **feat**: replaced 3 decorative close-button text glyphs (project
+  credit delete, skill-remove in the profile form, skill-matrix category
+  filter clear) with `CloseIcon` from the new shared `icons.tsx`,
+  `currentColor` throughout — one of the three used `×` (multiplication
+  sign) rather than `✕`, a variant the original suite-wide sweep's grep
+  needed extending to catch. Part of a suite-wide emoji→SVG sweep the
+  user asked for.
+
 ## 0.2.5 — Facilitator Mode (2026-09-03)
 
 - **feat**: added Facilitator (projector) Mode — a presentation toggle for

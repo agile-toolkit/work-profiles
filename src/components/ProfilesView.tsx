@@ -9,6 +9,7 @@ import {
   topMotivatorLabels,
   type MotivatorSnapshot,
 } from '../utils/motivatorHandoff'
+import { CloseIcon } from './icons'
 
 interface IbItem {
   id: string
@@ -828,7 +829,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                   aria-label={t('profile_form.remove_skill')}
                   className="text-gray-400 dark:text-gray-500 hover:text-red-400"
                 >
-                  ×
+                  <CloseIcon className="w-3.5 h-3.5" />
                 </button>
               </div>
             ))}
