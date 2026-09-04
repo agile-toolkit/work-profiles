@@ -3,6 +3,15 @@
 All notable changes to this project are documented here. See `.artefacts/BRIEF.md` for the detailed run-by-run build history that preceded this file.
 
 ## Unreleased
+
+## 0.3.2 — Add glass effect to the header (2026-09-04)
+
+- **fix**: `AppHeader.tsx`'s background changed from opaque
+  `bg-white`/`dark:bg-gray-900` to `bg-[var(--glass)] backdrop-blur-sm` —
+  the Dashboard's own nav has always had this translucent blur effect,
+  but the shared header every app copies did not. User-reported
+  inconsistency. Verified in both themes.
+
 - **feat**: synced the shared `icons.tsx` (now 64 icons) and replaced the
   remaining decorative emoji with SVG icons: the timezone clock and
   target-met checkmark on `ProfileCard`, the principles-list checkmark on
