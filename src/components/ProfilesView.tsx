@@ -9,6 +9,7 @@ import {
   topMotivatorLabels,
   type MotivatorSnapshot,
 } from '../utils/motivatorHandoff'
+import { ROLE_TEMPLATES, type RoleTemplate } from '../roleTemplates'
 import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon, ArrowRightIcon } from './icons'
 
 interface IbItem {
@@ -102,18 +103,6 @@ function parseCsv(text: string): CsvProfile[] {
   })
 }
 
-const FE_TEMPLATE = {
-  role: 'Frontend Dev',
-  workTypes: ['development', 'design'] as WorkType[],
-  skills: [
-    { name: 'TypeScript', proficiency: 4 as ProficiencyLevel },
-    { name: 'React', proficiency: 4 as ProficiencyLevel },
-    { name: 'CSS / Tailwind', proficiency: 3 as ProficiencyLevel },
-    { name: 'Testing', proficiency: 3 as ProficiencyLevel },
-    { name: 'Accessibility', proficiency: 2 as ProficiencyLevel },
-  ],
-}
-
 const WORK_TYPES: WorkType[] = VALID_WORK_TYPES
 
 const LEVEL_COLORS: Record<number, string> = {
@@ -181,6 +170,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
   }
 
   const [draft, setDraft] = useState<WorkProfile>(makeEmpty)
+  const [selectedTemplateRole, setSelectedTemplateRole] = useState<string | null>(null)
 
   const skillVocabulary = useMemo(() => {
     const seen = new Map<string, string>()
@@ -196,23 +186,14 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
 
   function openAdd() {
     setDraft(makeEmpty())
-    setAdding(true)
-    setEditId(null)
-  }
-
-  function openAddWithTemplate() {
-    setDraft({
-      ...makeEmpty(),
-      role: FE_TEMPLATE.role,
-      workTypes: FE_TEMPLATE.workTypes,
-      skills: FE_TEMPLATE.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency })),
-    })
+    setSelectedTemplateRole(null)
     setAdding(true)
     setEditId(null)
   }
 
   function openEdit(p: WorkProfile) {
     setDraft({ ...p })
+    setSelectedTemplateRole(null)
     setEditId(p.id)
     setAdding(false)
   }
@@ -223,10 +204,25 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
       ...makeEmpty(),
       interests: topMotivatorLabels(motivatorSnapshot),
     })
+    setSelectedTemplateRole(null)
     setAdding(true)
     setEditId(null)
     clearMotivatorSnapshot()
     setMotivatorSnapshot(null)
+  }
+
+  // "Start from a template" row at the top of the profile form (issue #6).
+  // Pre-fills role, preferred work types, and skills; the user can still
+  // add, remove, or adjust any pre-filled skill before saving. Selecting no
+  // template keeps today's blank-start behaviour.
+  function applyTemplate(template: RoleTemplate) {
+    setSelectedTemplateRole(template.role)
+    setDraft(d => ({
+      ...d,
+      role: template.role,
+      workTypes: template.workTypes,
+      skills: template.skills.map(s => ({ id: crypto.randomUUID(), name: s.name, proficiency: s.proficiency })),
+    }))
   }
 
   function dismissMotivatorSnapshot() {
@@ -250,6 +246,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
     }
     setAdding(false)
     setEditId(null)
+    setSelectedTemplateRole(null)
   }
 
   function deleteProfile(id: string) {
@@ -520,7 +517,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
 
             <button
               type="button"
-              onClick={openAddWithTemplate}
+              onClick={openAdd}
               className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer border-brand-200 bg-brand-50 dark:bg-gray-800 dark:border-gray-600"
             >
               <BoltIcon className="w-6 h-6 mb-2 text-brand-600 dark:text-brand-400" />
@@ -754,6 +751,29 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
           <h3 className="font-semibold text-gray-900 dark:text-gray-50">
             {editId ? t('profile_form.title_edit') : t('profile_form.title_new')}
           </h3>
+
+          {!editId && (
+            <div>
+              <label className="label">{t('profile_form.template_label')}</label>
+              <div className="flex flex-wrap gap-2">
+                {ROLE_TEMPLATES.map(template => (
+                  <button
+                    key={template.role}
+                    type="button"
+                    onClick={() => applyTemplate(template)}
+                    aria-pressed={selectedTemplateRole === template.role}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                      selectedTemplateRole === template.role
+                        ? 'bg-brand-600 text-white border-brand-600'
+                        : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    }`}
+                  >
+                    {template.role}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2 sm:col-span-1">

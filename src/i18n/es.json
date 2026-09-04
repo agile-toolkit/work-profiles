@@ -29,7 +29,7 @@
     "onboarding_add": "Añadir primer perfil",
     "onboarding_add_sub": "Comenzar con un perfil en blanco",
     "onboarding_template": "Comenzar desde una plantilla",
-    "onboarding_template_sub": "Prellenado con habilidades de Frontend Dev",
+    "onboarding_template_sub": "Elige un rol en el formulario para prellenar habilidades habituales",
     "onboarding_import": "Importar desde CSV",
     "onboarding_import_sub": "Sube una hoja de cálculo para añadir tu equipo",
     "onboarding_step1": "Añadir perfiles",

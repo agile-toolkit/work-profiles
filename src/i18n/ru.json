@@ -29,7 +29,7 @@
     "onboarding_add": "Добавить первый профиль",
     "onboarding_add_sub": "Начать с чистого профиля",
     "onboarding_template": "Начать с шаблона",
-    "onboarding_template_sub": "Заполнено навыками Frontend Dev",
+    "onboarding_template_sub": "Выберите роль в форме, чтобы предзаполнить типичные навыки",
     "onboarding_import": "Импорт из CSV",
     "onboarding_import_sub": "Загрузите таблицу, чтобы добавить команду",
     "onboarding_step1": "Добавить профили",
