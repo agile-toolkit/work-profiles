@@ -9,7 +9,7 @@ import {
   topMotivatorLabels,
   type MotivatorSnapshot,
 } from '../utils/motivatorHandoff'
-import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon } from './icons'
+import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon, ArrowRightIcon } from './icons'
 
 interface IbItem {
   id: string
@@ -544,12 +544,12 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
               <span className="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">1</span>
               {t('profiles.onboarding_step1')}
             </span>
-            <span className="text-gray-300 dark:text-gray-600">→</span>
+            <ArrowRightIcon className="w-3 h-3 text-gray-300 dark:text-gray-600" />
             <span className="flex items-center gap-1.5">
               <span className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">2</span>
               {t('profiles.onboarding_step2')}
             </span>
-            <span className="text-gray-300 dark:text-gray-600">→</span>
+            <ArrowRightIcon className="w-3 h-3 text-gray-300 dark:text-gray-600" />
             <span className="flex items-center gap-1.5">
               <span className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">3</span>
               {t('profiles.onboarding_step3')}

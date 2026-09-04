@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, ProficiencyLevel } from '../types'
 import { SKILL_CATEGORIES } from '../types'
-import { CloseIcon, CheckIcon } from './icons'
+import { CloseIcon, CheckIcon, ArrowLeftIcon, ArrowRightIcon } from './icons'
 
 const LEVEL_COLORS = ['', 'bg-red-200', 'bg-orange-200', 'bg-yellow-200', 'bg-lime-300', 'bg-green-400']
 const LEVEL_TEXT = ['', '1', '2', '3', '4', '5']
@@ -128,9 +128,9 @@ export default function SkillMatrix({ profiles }: Props) {
           <button
             type="button"
             onClick={() => setFilter('')}
-            className="text-xs text-brand-600 hover:text-brand-800 dark:text-brand-400 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
+            className="inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-800 dark:text-brand-400 px-2 py-1 rounded hover:bg-brand-50 dark:hover:bg-gray-800"
           >
-            ← {t('matrix.all_skills')}
+            <ArrowLeftIcon className="w-3 h-3" />{t('matrix.all_skills')}
           </button>
         )}
         <button
@@ -350,7 +350,7 @@ export default function SkillMatrix({ profiles }: Props) {
                           className="flex items-center gap-1.5 text-xs bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-2.5 py-1.5"
                         >
                           <span className="text-green-700 dark:text-green-400 font-medium">{t('matrix.mentor_label')}: {pair.mentor}</span>
-                          <span className="text-gray-300 dark:text-gray-600">→</span>
+                          <ArrowRightIcon className="w-3 h-3 text-gray-300 dark:text-gray-600" />
                           <span className="text-amber-700 dark:text-amber-400 font-medium">{t('matrix.learner_label')}: {pair.learner}</span>
                         </div>
                       ))}
