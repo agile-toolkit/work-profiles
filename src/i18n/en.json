@@ -29,7 +29,7 @@
     "onboarding_add": "Add first profile",
     "onboarding_add_sub": "Start with a blank profile",
     "onboarding_template": "Start from a template",
-    "onboarding_template_sub": "Pre-filled with Frontend Dev skills",
+    "onboarding_template_sub": "Pick a role in the form to pre-fill common skills",
     "onboarding_import": "Import from CSV",
     "onboarding_import_sub": "Upload a spreadsheet to add your team",
     "onboarding_step1": "Add profiles",
