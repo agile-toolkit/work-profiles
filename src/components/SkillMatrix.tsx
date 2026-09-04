@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, ProficiencyLevel } from '../types'
 import { SKILL_CATEGORIES } from '../types'
-import { CloseIcon } from './icons'
+import { CloseIcon, CheckIcon } from './icons'
 
 const LEVEL_COLORS = ['', 'bg-red-200', 'bg-orange-200', 'bg-yellow-200', 'bg-lime-300', 'bg-green-400']
 const LEVEL_TEXT = ['', '1', '2', '3', '4', '5']
@@ -269,8 +269,8 @@ export default function SkillMatrix({ profiles }: Props) {
                               </span>
                             )}
                             {s.endorsedBy && s.endorsedBy.length > 0 && (
-                              <span className="text-[10px] leading-none text-green-600 dark:text-green-400 font-medium">
-                                ✓{s.endorsedBy.length}
+                              <span className="inline-flex items-center gap-0.5 text-[10px] leading-none text-green-600 dark:text-green-400 font-medium">
+                                <CheckIcon className="w-3 h-3" />{s.endorsedBy.length}
                               </span>
                             )}
                           </div>
@@ -296,7 +296,7 @@ export default function SkillMatrix({ profiles }: Props) {
                       return (
                         <td key={skill} className="px-2 py-1 border border-gray-200 dark:border-gray-700 text-center">
                           {met
-                            ? <span className="text-[11px] font-semibold text-green-600 dark:text-green-400" title={t('profile_card.target_met')}>✓</span>
+                            ? <span title={t('profile_card.target_met')}><CheckIcon className="w-3 h-3 text-green-600 dark:text-green-400" /></span>
                             : <span className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">→{s.targetProficiency}</span>
                           }
                         </td>
