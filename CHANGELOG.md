@@ -3,6 +3,28 @@
 All notable changes to this project are documented here. See `.artefacts/BRIEF.md` for the detailed run-by-run build history that preceded this file.
 
 ## Unreleased
+- **feat**: synced the shared `icons.tsx` (now 64 icons) and replaced the
+  remaining decorative emoji with SVG icons: the timezone clock and
+  target-met checkmark on `ProfileCard`, the principles-list checkmark on
+  `LearnView`, the endorsement-count and target-met checkmarks on
+  `SkillMatrix`, the top-endorsed-skill checkmark on `OverviewView`, and on
+  `ProfilesView` the three onboarding tile icons (add/template/import),
+  the endorsement-count checkmark, the interest-topic spark marker, and the
+  endorsement checkmark inside the printable profile portal — all six
+  `✓{count}` spots became `inline-flex items-center gap-0.5` pairs so the
+  icon and number can't wrap apart. Icons inherit `currentColor` so the
+  green target-met and endorsement badges keep their color; every existing
+  `title` survived by wrapping the icon rather than passing `title` to the
+  icon component (which doesn't accept one). Also converted the four
+  decorative arrow glyphs that were left over from that pass: the
+  `SkillMatrix` and `CompareView` "back" links (`←`) became `ArrowLeftIcon`,
+  and the standalone `→` step/flow separators in `SkillMatrix`'s
+  mentor-pairing rows and `ProfilesView`'s onboarding steps became
+  `ArrowRightIcon`, keeping the same muted gray. Left as text, deliberately:
+  `ProfileCard`/`SkillMatrix`'s `→{targetProficiency}` (the arrow is bound
+  to the value, "heading toward level N"), `SkillMatrix`'s `↑N`/`↓N`/`=`
+  delta triple (swapping two of three for icons would leave the set
+  mismatched), and the `skill→category` code comment.
 - **ci**: CI Node bumped 20 → 22 and `engines` declared. `jsdom@30` requires
   Node `^22.22.2 || ^24.15.0 || >=26`, so the test step could never have passed
   on the pinned Node 20 — invisible until this release started running the

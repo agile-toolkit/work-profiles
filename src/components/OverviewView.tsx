@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile } from '../types'
 import { SKILL_CATEGORIES } from '../types'
+import { CheckIcon } from './icons'
 
 interface Props {
   profiles: WorkProfile[]
@@ -259,7 +260,9 @@ export default function OverviewView({ profiles }: Props) {
                   >
                     {skill.name}
                   </span>
-                  <span className="text-brand-600 dark:text-brand-400 font-semibold">✓{skill.count}</span>
+                  <span className="inline-flex items-center gap-0.5 text-brand-600 dark:text-brand-400 font-semibold">
+                    <CheckIcon className="w-3.5 h-3.5" />{skill.count}
+                  </span>
                 </li>
               ))}
             </ol>

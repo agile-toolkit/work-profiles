@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { CheckIcon } from './icons'
 
 export default function LearnView() {
   const { t } = useTranslation()
@@ -37,7 +38,7 @@ export default function LearnView() {
         <ul className="space-y-2">
           {principles.map(p => (
             <li key={p} className="flex gap-2 text-sm text-brand-800 dark:text-brand-300">
-              <span className="text-brand-500 dark:text-brand-400">✓</span>
+              <CheckIcon className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-brand-500 dark:text-brand-400" />
               {t(`learn.${p}`)}
             </li>
           ))}

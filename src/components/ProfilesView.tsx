@@ -9,7 +9,7 @@ import {
   topMotivatorLabels,
   type MotivatorSnapshot,
 } from '../utils/motivatorHandoff'
-import { CloseIcon } from './icons'
+import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon, ArrowRightIcon } from './icons'
 
 interface IbItem {
   id: string
@@ -513,7 +513,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
               onClick={openAdd}
               className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer"
             >
-              <div className="text-2xl mb-2">👤</div>
+              <PersonIcon className="w-6 h-6 mb-2 text-gray-700 dark:text-gray-300" />
               <h4 className="font-medium text-gray-900 dark:text-gray-50 mb-1">{t('profiles.onboarding_add')}</h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">{t('profiles.onboarding_add_sub')}</p>
             </button>
@@ -523,7 +523,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
               onClick={openAddWithTemplate}
               className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer border-brand-200 bg-brand-50 dark:bg-gray-800 dark:border-gray-600"
             >
-              <div className="text-2xl mb-2">⚡</div>
+              <BoltIcon className="w-6 h-6 mb-2 text-brand-600 dark:text-brand-400" />
               <h4 className="font-medium text-brand-700 dark:text-brand-400 mb-1">{t('profiles.onboarding_template')}</h4>
               <p className="text-sm text-brand-600 dark:text-brand-400">{t('profiles.onboarding_template_sub')}</p>
             </button>
@@ -533,7 +533,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
               onClick={openImport}
               className="card text-left hover:border-brand-300 hover:shadow transition-all cursor-pointer"
             >
-              <div className="text-2xl mb-2">📥</div>
+              <InboxIcon className="w-6 h-6 mb-2 text-gray-700 dark:text-gray-300" />
               <h4 className="font-medium text-gray-900 dark:text-gray-50 mb-1">{t('profiles.onboarding_import')}</h4>
               <p className="text-sm text-gray-500 dark:text-gray-400">{t('profiles.onboarding_import_sub')}</p>
             </button>
@@ -544,12 +544,12 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
               <span className="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">1</span>
               {t('profiles.onboarding_step1')}
             </span>
-            <span className="text-gray-300 dark:text-gray-600">→</span>
+            <ArrowRightIcon className="w-3 h-3 text-gray-300 dark:text-gray-600" />
             <span className="flex items-center gap-1.5">
               <span className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">2</span>
               {t('profiles.onboarding_step2')}
             </span>
-            <span className="text-gray-300 dark:text-gray-600">→</span>
+            <ArrowRightIcon className="w-3 h-3 text-gray-300 dark:text-gray-600" />
             <span className="flex items-center gap-1.5">
               <span className="w-5 h-5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center text-xs font-bold">3</span>
               {t('profiles.onboarding_step3')}
@@ -680,9 +680,9 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                         {endorsements.length > 0 && (
                           <span
                             title={endorsements.join(', ')}
-                            className="text-[10px] leading-none text-green-600 dark:text-green-400 font-medium"
+                            className="inline-flex items-center gap-0.5 text-[10px] leading-none text-green-600 dark:text-green-400 font-medium"
                           >
-                            ✓{endorsements.length}
+                            <CheckIcon className="w-3 h-3" />{endorsements.length}
                           </span>
                         )}
                       </div>
@@ -708,8 +708,8 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
             {p.interests.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {p.interests.map((topic, i) => (
-                  <span key={i} className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
-                    ✦ {topic}
+                  <span key={i} className="inline-flex items-center gap-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
+                    <SparkIcon className="w-3 h-3" />{topic}
                   </span>
                 ))}
               </div>
@@ -970,7 +970,9 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                         · {t(`profile_form.proficiency.${s.proficiency}`)}
                       </span>
                       {(s.endorsedBy ?? []).length > 0 && (
-                        <span style={{ color: '#16a34a', marginLeft: '4px' }}>✓{s.endorsedBy!.length}</span>
+                        <span style={{ color: '#16a34a', marginLeft: '4px', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                          <CheckIcon className="w-3 h-3" />{s.endorsedBy!.length}
+                        </span>
                       )}
                     </span>
                   ))}

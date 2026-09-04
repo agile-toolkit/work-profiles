@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile } from '../types'
+import { ClockIcon, CheckIcon } from './icons'
 
 function getTzAbbr(tz: string): string {
   try {
@@ -47,8 +48,9 @@ export default function ProfileCard({ profile, credits, onEdit, onDelete }: Prop
         <span>{t('profiles.capacity')}: {profile.capacity}%</span>
         {credits > 0 && <span className="text-brand-600 font-medium">{credits} pts</span>}
         {profile.timezone && (
-          <span title={profile.timezone}>
-            🕐 {getTzAbbr(profile.timezone)}
+          <span title={profile.timezone} className="inline-flex items-center gap-1">
+            <ClockIcon className="w-3.5 h-3.5" />
+            {getTzAbbr(profile.timezone)}
             {profile.workingHours && ` ${profile.workingHours.start}–${profile.workingHours.end}`}
           </span>
         )}
@@ -68,7 +70,7 @@ export default function ProfileCard({ profile, credits, onEdit, onDelete }: Prop
               <span className="text-xs text-gray-700 dark:text-gray-300">{skill.name}</span>
               {skill.targetProficiency != null && (
                 skill.targetProficiency <= skill.proficiency
-                  ? <span className="text-[10px] font-semibold text-green-600 dark:text-green-400 leading-none" title={t('profile_card.target_met')}>✓</span>
+                  ? <span title={t('profile_card.target_met')}><CheckIcon className="w-3 h-3 text-green-600 dark:text-green-400" /></span>
                   : <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400 leading-none">→{skill.targetProficiency}</span>
               )}
             </div>

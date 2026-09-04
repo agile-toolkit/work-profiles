@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import type { WorkProfile, ProficiencyLevel } from '../types'
+import { ArrowLeftIcon } from './icons'
 
 interface Props {
   profiles: WorkProfile[]
@@ -36,9 +37,9 @@ export default function CompareView({ profiles, onBack }: Props) {
         <button
           type="button"
           onClick={onBack}
-          className="btn-secondary text-sm"
+          className="btn-secondary text-sm inline-flex items-center gap-1"
         >
-          ← {t('nav.profiles')}
+          <ArrowLeftIcon className="w-3 h-3" />{t('nav.profiles')}
         </button>
         <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50">{t('compare.title')}</h2>
       </div>
