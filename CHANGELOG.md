@@ -4,6 +4,30 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.3.6 — Monthly credits trend chart (2026-09-05)
+
+- **feat** (issue #59): adds a "Trend" toggle in `CreditsView.tsx`'s
+  header, alongside the existing Leaderboard toggle, showing a per-person
+  SVG bar chart of `points` summed by calendar month for the last 6
+  months (pure inline SVG + Tailwind, no charting library — consistent
+  with the suite's existing convention). People with credits in fewer
+  than 2 distinct months show an explanatory empty state instead of a
+  1-bar chart with no trend to show. The leaderboard's existing total-
+  points rows also gained a small inline sparkline next to the total, so
+  the trend is visible without switching views.
+  - New `src/utils/creditsTrend.ts` (`monthKey`, `lastMonthKeys`,
+    `monthlyTrendForProfile`, `formatMonthLabel`,
+    `hasEnoughDataForTrend`) with 13 unit tests — pure grouping/formatting
+    logic, no component rendering required.
+  - New i18n keys `credits.trend_toggle`/`trend_off`/`trend_title`/
+    `trend_empty` in all four locales.
+  - Answers to the issue's open questions: (1) fixed 6-month window, not
+    configurable, per the issue's own default suggestion; (2) simple
+    monthly point sums, no outlier flagging; (3) bar chart per month,
+    matching the precedent set by Improvement Board's sprint history
+    chart rather than a continuous line, since discrete calendar months
+    read more clearly as bars.
+
 ## 0.3.5 — Full JSON backup and restore (2026-09-05)
 
 - **feat** (issue #56): "Export backup" downloads a single JSON file with

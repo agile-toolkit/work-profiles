@@ -153,7 +153,11 @@
     "save": "Log Credit",
     "cancel": "Cancel",
     "total_points": "pts total",
-    "delete": "Delete"
+    "delete": "Delete",
+    "trend_toggle": "Show Trend",
+    "trend_off": "Hide Trend",
+    "trend_title": "Monthly Trend (last 6 months)",
+    "trend_empty": "Not enough history yet — needs contributions in at least 2 different months."
   },
   "learn": {
     "title": "About Work Profiles",
