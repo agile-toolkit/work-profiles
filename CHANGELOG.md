@@ -4,6 +4,25 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.3.4 — Show active Kanban Designer cards on profile cards (2026-09-05)
+
+- **feat** (issue #55): mirrors the existing "Open improvements" collapsible
+  pattern (issue #31) to surface a person's active Kanban Designer cards.
+  Reads `kanban-designer:currentBoard` from localStorage, matches cards by
+  `assignee` against the profile's name (case-insensitive), and excludes
+  cards in a column whose name looks terminal (`done`, `complete(d)`,
+  `finished`, `closed`, `shipped` — best-effort word match, since the
+  schema doesn't mark column type). Read-only; no Kanban Designer changes
+  needed on this side. New `src/utils/kanbanDesignerImport.ts` module with
+  9 unit tests, plus new `profiles.kanban_cards` i18n key in all four
+  locales.
+
+  **Correction to the issue's premise:** the issue assumed
+  `kanban-designer:currentBoard` already included each card's `assignee`
+  (added in kanban-designer#38) — it didn't. `writeCurrentBoard()` there
+  only serialized `title`/`description`. Filed and fixed as
+  `kanban-designer` PR #58 before building this feature.
+
 ## 0.3.3 — Extract testable pure logic from ProfilesView and SkillMatrix (2026-09-05)
 
 - **test** (issue #54): extracted the CSV import parsing (`parseCsvRow`,

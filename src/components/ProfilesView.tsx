@@ -13,6 +13,7 @@ import { ROLE_TEMPLATES, type RoleTemplate } from '../roleTemplates'
 import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon, ArrowRightIcon } from './icons'
 import { parseCsv, VALID_WORK_TYPES, type CsvProfile } from '../utils/csvParse'
 import { eligibleEndorsers } from '../utils/skillLogic'
+import { readKanbanDesignerCards, type KanbanDesignerCard } from '../utils/kanbanDesignerImport'
 
 interface IbItem {
   id: string
@@ -101,6 +102,18 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
       }
     }
     return Array.from(seen.values()).sort((a, b) => a.localeCompare(b))
+  }, [profiles])
+
+  // Kanban Designer's board snapshot (kanban-designer:currentBoard) is
+  // read fresh per profile since it's cheap and can change between
+  // renders while this screen is open (issue #55).
+  const kanbanDesignerCards = useMemo(() => {
+    const map = new Map<string, KanbanDesignerCard[]>()
+    for (const p of profiles) {
+      if (p.archived) continue
+      map.set(p.name, readKanbanDesignerCards(p.name))
+    }
+    return map
   }, [profiles])
 
   function openAdd() {
@@ -652,6 +665,27 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                       <li key={item.id} className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" aria-hidden="true" />
                         <span className="truncate">{item.title}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )
+            })()}
+            {(() => {
+              const kdCards = kanbanDesignerCards.get(p.name) ?? []
+              if (kdCards.length === 0) return null
+              return (
+                <details className="mt-2 group">
+                  <summary className="cursor-pointer text-xs text-indigo-700 dark:text-indigo-400 select-none list-none flex items-center gap-1">
+                    <svg className="w-3 h-3 transition-transform group-open:rotate-90" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+                    {t('profiles.kanban_cards', { count: kdCards.length })}
+                  </summary>
+                  <ul className="mt-1 ml-4 space-y-0.5">
+                    {kdCards.map((card, i) => (
+                      <li key={i} className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" aria-hidden="true" />
+                        <span className="truncate">{card.title}</span>
+                        <span className="text-gray-400 dark:text-gray-600 shrink-0">· {card.column}</span>
                       </li>
                     ))}
                   </ul>

@@ -64,7 +64,8 @@
     "announce_archived": "Профиль архивирован: {{name}}",
     "announce_restored": "Профиль восстановлен: {{name}}",
     "announce_deleted": "Профиль удалён: {{name}}",
-    "ib_items": "Открытые улучшения ({{count}})"
+    "ib_items": "Открытые улучшения ({{count}})",
+    "kanban_cards": "Активные карточки в Kanban Designer ({{count}})"
   },
   "compare": {
     "title": "Сравнение профилей",

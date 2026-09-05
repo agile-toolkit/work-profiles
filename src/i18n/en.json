@@ -64,7 +64,8 @@
     "announce_archived": "Profile archived: {{name}}",
     "announce_restored": "Profile restored: {{name}}",
     "announce_deleted": "Profile deleted: {{name}}",
-    "ib_items": "Open improvements ({{count}})"
+    "ib_items": "Open improvements ({{count}})",
+    "kanban_cards": "Active cards in Kanban Designer ({{count}})"
   },
   "compare": {
     "title": "Profile Comparison",
