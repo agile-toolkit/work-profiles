@@ -25,6 +25,11 @@ export interface WorkingHours {
   end: string
 }
 
+export interface AttachedMotivatorSnapshot {
+  date: string
+  topMotivators: string[]
+}
+
 export interface WorkProfile {
   id: string
   name: string
@@ -38,6 +43,7 @@ export interface WorkProfile {
   timezone?: string
   workingHours?: WorkingHours
   oooUntil?: string
+  motivatorSnapshot?: AttachedMotivatorSnapshot
 }
 
 export interface ProjectCredit {

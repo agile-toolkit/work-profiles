@@ -69,7 +69,12 @@
     "backup_export": "Экспарт рэзервнай копіі",
     "backup_import": "Імпарт рэзервнай копіі",
     "backup_confirm_replace": "Гэта заменіць усе {{count}} профіляў і ўсе балы, якія цяпер захаваныя, зместам гэтага файла рэзервнай копіі. Гэта дзеянне нельга адрабіць. Працягнуць?",
-    "backup_import_error": "Не ўдалося прачытаць файл рэзервнай копіі. Пераканайцеся, што гэта сапраўдная рэзервная копія Work Profiles (JSON з масівамі profiles і credits)."
+    "backup_import_error": "Не ўдалося прачытаць файл рэзервнай копіі. Пераканайцеся, што гэта сапраўдная рэзервная копія Work Profiles (JSON з масівамі profiles і credits).",
+    "motivators_stale": "Гэты вынік ад {{date}} — яму больш за 30 дзён. Разгледзьце магчымасць спачатку правесці новую сесію Moving Motivators.",
+    "motivators_attach_label": "Прымацаваць да:",
+    "motivators_attach_placeholder": "Выберыце чалавека…",
+    "motivators_attach": "Прымацаваць",
+    "motivators_label": "Галоўныя матываторы"
   },
   "compare": {
     "title": "Параўнанне прафіляў",
