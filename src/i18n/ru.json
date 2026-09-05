@@ -69,7 +69,12 @@
     "backup_export": "Экспорт резервной копии",
     "backup_import": "Импорт резервной копии",
     "backup_confirm_replace": "Это заменит все {{count}} профилей и все баллы, сохранённые сейчас, содержимым этого файла резервной копии. Это действие нельзя отменить. Продолжить?",
-    "backup_import_error": "Не удалось прочитать файл резервной копии. Убедитесь, что это действительная резервная копия Work Profiles (JSON с массивами profiles и credits)."
+    "backup_import_error": "Не удалось прочитать файл резервной копии. Убедитесь, что это действительная резервная копия Work Profiles (JSON с массивами profiles и credits).",
+    "motivators_stale": "Этот результат от {{date}} — ему больше 30 дней. Рассмотрите возможность сначала провести новую сессию Moving Motivators.",
+    "motivators_attach_label": "Прикрепить к:",
+    "motivators_attach_placeholder": "Выберите человека…",
+    "motivators_attach": "Прикрепить",
+    "motivators_label": "Главные мотиваторы"
   },
   "compare": {
     "title": "Сравнение профилей",

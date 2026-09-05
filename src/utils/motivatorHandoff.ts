@@ -45,3 +45,15 @@ export function clearMotivatorSnapshot(): void {
 export function topMotivatorLabels(snapshot: MotivatorSnapshot): string[] {
   return snapshot.topMotivators.map(capitalize)
 }
+
+const STALE_THRESHOLD_DAYS = 30
+
+// The shared handoff key holds one snapshot at a time (last export wins),
+// with no expiry of its own — warn rather than silently offering data
+// from a session run a long time ago.
+export function isSnapshotStale(snapshot: MotivatorSnapshot, reference: Date = new Date()): boolean {
+  const snapshotDate = new Date(snapshot.date)
+  if (isNaN(snapshotDate.getTime())) return false
+  const ageDays = (reference.getTime() - snapshotDate.getTime()) / (1000 * 60 * 60 * 24)
+  return ageDays > STALE_THRESHOLD_DAYS
+}

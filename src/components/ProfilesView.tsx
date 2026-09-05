@@ -7,6 +7,7 @@ import {
   readMotivatorSnapshot,
   clearMotivatorSnapshot,
   topMotivatorLabels,
+  isSnapshotStale,
   type MotivatorSnapshot,
 } from '../utils/motivatorHandoff'
 import { ROLE_TEMPLATES, type RoleTemplate } from '../roleTemplates'
@@ -15,6 +16,7 @@ import { parseCsv, VALID_WORK_TYPES, type CsvProfile } from '../utils/csvParse'
 import { eligibleEndorsers } from '../utils/skillLogic'
 import { readKanbanDesignerCards, type KanbanDesignerCard } from '../utils/kanbanDesignerImport'
 import { downloadBackup, parseBackup } from '../utils/backup'
+import { motivatorEmoji } from '../utils/motivatorMeta'
 
 interface IbItem {
   id: string
@@ -80,6 +82,7 @@ export default function ProfilesView({ profiles, onProfiles, credits, onRestoreB
     }
     return readMotivatorSnapshot()
   })
+  const [attachTargetId, setAttachTargetId] = useState('')
 
   function makeEmpty(): WorkProfile {
     return {
@@ -146,6 +149,24 @@ export default function ProfilesView({ profiles, onProfiles, credits, onRestoreB
     setEditId(null)
     clearMotivatorSnapshot()
     setMotivatorSnapshot(null)
+  }
+
+  // Moving Motivators has no concept of which Work Profiles person ran a
+  // session, so attaching a snapshot to an existing profile is a manual
+  // pick (issue #57 question 3) rather than an automatic name match.
+  // Overwrites any previously attached snapshot rather than keeping a
+  // history (question 2) — simpler to reason about for a single "what
+  // motivates this person right now" fact.
+  function attachMotivatorSnapshot(profileId: string) {
+    if (!motivatorSnapshot || !profileId) return
+    onProfiles(profiles.map(p =>
+      p.id !== profileId
+        ? p
+        : { ...p, motivatorSnapshot: { date: motivatorSnapshot.date, topMotivators: motivatorSnapshot.topMotivators } }
+    ))
+    clearMotivatorSnapshot()
+    setMotivatorSnapshot(null)
+    setAttachTargetId('')
   }
 
   // "Start from a template" row at the top of the profile form (issue #6).
@@ -461,20 +482,46 @@ export default function ProfilesView({ profiles, onProfiles, credits, onRestoreB
       )}
 
       {motivatorSnapshot && (
-        <div className="flex items-center justify-between gap-3 flex-wrap bg-brand-50 dark:bg-brand-950 border border-brand-200 dark:border-brand-800 rounded-lg px-4 py-3 text-sm text-brand-900 dark:text-brand-200">
-          <span>{t('profiles.motivators_pending', { motivators: topMotivatorLabels(motivatorSnapshot).join(', ') })}</span>
-          <div className="flex items-center gap-2 shrink-0">
-            <button type="button" onClick={openAddWithMotivators} className="btn-primary text-sm py-1.5">
-              {t('profiles.motivators_use')}
-            </button>
-            <button
-              type="button"
-              onClick={dismissMotivatorSnapshot}
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-2"
-            >
-              {t('profiles.motivators_dismiss')}
-            </button>
+        <div className="flex flex-col gap-2 bg-brand-50 dark:bg-brand-950 border border-brand-200 dark:border-brand-800 rounded-lg px-4 py-3 text-sm text-brand-900 dark:text-brand-200">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <span>{t('profiles.motivators_pending', { motivators: topMotivatorLabels(motivatorSnapshot).join(', ') })}</span>
+            <div className="flex items-center gap-2 shrink-0">
+              <button type="button" onClick={openAddWithMotivators} className="btn-primary text-sm py-1.5">
+                {t('profiles.motivators_use')}
+              </button>
+              <button
+                type="button"
+                onClick={dismissMotivatorSnapshot}
+                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-2"
+              >
+                {t('profiles.motivators_dismiss')}
+              </button>
+            </div>
           </div>
+          {isSnapshotStale(motivatorSnapshot) && (
+            <p className="text-xs text-amber-700 dark:text-amber-400">{t('profiles.motivators_stale', { date: motivatorSnapshot.date })}</p>
+          )}
+          {activeProfiles.length > 0 && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <label className="text-xs text-brand-800 dark:text-brand-300">{t('profiles.motivators_attach_label')}</label>
+              <select
+                className="input py-1 text-sm max-w-[180px]"
+                value={attachTargetId}
+                onChange={e => setAttachTargetId(e.target.value)}
+              >
+                <option value="">{t('profiles.motivators_attach_placeholder')}</option>
+                {activeProfiles.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+              </select>
+              <button
+                type="button"
+                onClick={() => attachMotivatorSnapshot(attachTargetId)}
+                disabled={!attachTargetId}
+                className="btn-secondary text-sm py-1.5"
+              >
+                {t('profiles.motivators_attach')}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -690,6 +737,20 @@ export default function ProfilesView({ profiles, onProfiles, credits, onRestoreB
                 {p.interests.map((topic, i) => (
                   <span key={i} className="inline-flex items-center gap-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
                     <SparkIcon className="w-3 h-3" />{topic}
+                  </span>
+                ))}
+              </div>
+            )}
+            {p.motivatorSnapshot && p.motivatorSnapshot.topMotivators.length > 0 && (
+              <div className="mt-2 flex flex-wrap items-center gap-1">
+                <span className="text-xs text-gray-400 dark:text-gray-500">{t('profiles.motivators_label')}:</span>
+                {p.motivatorSnapshot.topMotivators.map((id, i) => (
+                  <span
+                    key={i}
+                    title={id.charAt(0).toUpperCase() + id.slice(1)}
+                    className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 text-sm"
+                  >
+                    {motivatorEmoji(id)}
                   </span>
                 ))}
               </div>

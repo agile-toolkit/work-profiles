@@ -4,6 +4,33 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.3.7 — Attach Moving Motivators snapshots to existing profiles (2026-09-05)
+
+- **feat** (issue #57): Work Profiles already read the
+  `work-profiles:motivatorSnapshot` handoff key to pre-fill a *new*
+  profile's interests, but the issue's core ask — attaching a snapshot to
+  an *existing* profile, storing it as structured data, and showing it on
+  the profile card — wasn't built yet. This completes it:
+  - `WorkProfile` gains an optional `motivatorSnapshot: { date, topMotivators }`
+    field (`types.ts`).
+  - The pending-snapshot banner now also offers "Attach to: [person picker]"
+    alongside the existing "New profile with these" button, since Moving
+    Motivators has no concept of which Work Profiles person ran the
+    session (issue's question 3 — a manual pick is acceptable for now).
+    Attaching **overwrites** any previously attached snapshot rather than
+    keeping a history (question 2 — simpler to reason about for a single
+    "what motivates this person right now" fact).
+  - The banner also warns when the snapshot's `date` is more than 30 days
+    old (question 1), via new `isSnapshotStale()` in `motivatorHandoff.ts`.
+  - Profile cards show the attached top-3 motivators as small emoji chips
+    with a tooltip, via a new `src/utils/motivatorMeta.ts` mapping
+    duplicated locally from `moving-motivators/src/data/motivators.ts`
+    (Work Profiles has no dependency on that package).
+  - New i18n keys (`profiles.motivators_stale`, `motivators_attach_label`,
+    `motivators_attach_placeholder`, `motivators_attach`,
+    `motivators_label`) in all four locales. 12 new unit tests
+    (`isSnapshotStale`, `motivatorEmoji`).
+
 ## 0.3.6 — Monthly credits trend chart (2026-09-05)
 
 - **feat** (issue #59): adds a "Trend" toggle in `CreditsView.tsx`'s

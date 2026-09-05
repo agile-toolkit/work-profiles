@@ -69,7 +69,12 @@
     "backup_export": "Export backup",
     "backup_import": "Import backup",
     "backup_confirm_replace": "This will replace all {{count}} profile(s) and all credits currently stored with the contents of this backup file. This cannot be undone. Continue?",
-    "backup_import_error": "Could not read backup file. Ensure it is a valid Work Profiles backup (JSON with profiles and credits arrays)."
+    "backup_import_error": "Could not read backup file. Ensure it is a valid Work Profiles backup (JSON with profiles and credits arrays).",
+    "motivators_stale": "This snapshot is from {{date}} — more than 30 days old. Consider running a fresh Moving Motivators session first.",
+    "motivators_attach_label": "Attach to:",
+    "motivators_attach_placeholder": "Choose a person…",
+    "motivators_attach": "Attach",
+    "motivators_label": "Top motivators"
   },
   "compare": {
     "title": "Profile Comparison",
