@@ -11,6 +11,8 @@ import {
 } from '../utils/motivatorHandoff'
 import { ROLE_TEMPLATES, type RoleTemplate } from '../roleTemplates'
 import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon, ArrowRightIcon } from './icons'
+import { parseCsv, VALID_WORK_TYPES, type CsvProfile } from '../utils/csvParse'
+import { eligibleEndorsers } from '../utils/skillLogic'
 
 interface IbItem {
   id: string
@@ -18,89 +20,6 @@ interface IbItem {
   status: string
   owner: string
   copilot: string
-}
-
-interface CsvProfile {
-  name: string
-  role: string
-  capacity: number
-  workTypes: WorkType[]
-  skills: Skill[]
-}
-
-function parseCsvRow(row: string): string[] {
-  const result: string[] = []
-  let field = ''
-  let inQuotes = false
-  for (let i = 0; i < row.length; i++) {
-    if (row[i] === '"') {
-      inQuotes = !inQuotes
-    } else if (row[i] === ',' && !inQuotes) {
-      result.push(field.trim())
-      field = ''
-    } else {
-      field += row[i]
-    }
-  }
-  result.push(field.trim())
-  return result
-}
-
-const VALID_WORK_TYPES: WorkType[] = [
-  'design', 'development', 'testing', 'analysis',
-  'facilitation', 'writing', 'mentoring', 'ops',
-]
-
-function parseSkills(raw: string): Skill[] {
-  if (!raw.trim()) return []
-  return raw.split(';').flatMap(part => {
-    const trimmed = part.trim()
-    if (!trimmed) return []
-    const colonIdx = trimmed.indexOf(':')
-    if (colonIdx === -1) return []
-    const name = trimmed.slice(0, colonIdx).trim()
-    if (!name) return []
-    const rest = trimmed.slice(colonIdx + 1).trim()
-    const dashIdx = rest.search(/[–-]/)
-    const levelStr = dashIdx !== -1 ? rest.slice(0, dashIdx).trim() : rest.trim()
-    const level = parseInt(levelStr, 10)
-    if (isNaN(level) || level < 1 || level > 5) return []
-    return [{ id: crypto.randomUUID(), name, proficiency: level as ProficiencyLevel }]
-  })
-}
-
-function parseWorkTypes(raw: string): WorkType[] {
-  if (!raw.trim()) return []
-  return raw.split(';').flatMap(part => {
-    const wt = part.trim().toLowerCase() as WorkType
-    return VALID_WORK_TYPES.includes(wt) ? [wt] : []
-  })
-}
-
-function parseCsv(text: string): CsvProfile[] {
-  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
-  if (lines.length < 2) return []
-  const headers = parseCsvRow(lines[0]).map(h => h.toLowerCase().replace(/\s+/g, ' '))
-  const nameIdx = headers.indexOf('name')
-  if (nameIdx === -1) return []
-  const roleIdx = headers.indexOf('role')
-  const capacityIdx = headers.indexOf('capacity')
-  const workTypesIdx = headers.indexOf('work types')
-  const skillsIdx = headers.indexOf('skills')
-  return lines.slice(1).flatMap(line => {
-    const fields = parseCsvRow(line)
-    const name = (fields[nameIdx] ?? '').trim()
-    if (!name) return []
-    const rawCapacity = parseInt(fields[capacityIdx] ?? '100', 10)
-    const capacity = isNaN(rawCapacity) ? 100 : Math.min(100, Math.max(10, rawCapacity))
-    return [{
-      name,
-      role: roleIdx !== -1 ? (fields[roleIdx] ?? '').trim() : '',
-      capacity,
-      workTypes: workTypesIdx !== -1 ? parseWorkTypes(fields[workTypesIdx] ?? '') : [],
-      skills: skillsIdx !== -1 ? parseSkills(fields[skillsIdx] ?? '') : [],
-    }]
-  })
 }
 
 const WORK_TYPES: WorkType[] = VALID_WORK_TYPES
@@ -653,16 +572,14 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                 {p.skills.map(s => {
                   const endorsements = s.endorsedBy ?? []
                   const isOpen = endorsingSkill?.profileId === p.id && endorsingSkill?.skillId === s.id
-                  const eligibleEndorsers = activeProfiles.filter(q =>
-                    q.id !== p.id && !endorsements.includes(q.name)
-                  )
+                  const skillEndorsers = eligibleEndorsers(activeProfiles, p.id, endorsements)
                   return (
                     <div key={s.id} className="flex flex-col gap-0.5">
                       <div className="flex items-center gap-1">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.archived ? 'bg-gray-100 text-gray-400' : LEVEL_COLORS[s.proficiency]}`}>
                           {s.name || '…'} L{s.proficiency}
                         </span>
-                        {!p.archived && eligibleEndorsers.length > 0 && (
+                        {!p.archived && skillEndorsers.length > 0 && (
                           <button
                             type="button"
                             aria-label={`${t('profiles.endorse_button')}: ${s.name}`}
@@ -692,7 +609,7 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
                           }}
                         >
                           <option value="">{t('profiles.endorse_as')}</option>
-                          {eligibleEndorsers.map(q => (
+                          {skillEndorsers.map(q => (
                             <option key={q.id} value={q.name}>{q.name}</option>
                           ))}
                         </select>

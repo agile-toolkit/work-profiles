@@ -4,6 +4,25 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.3.3 — Extract testable pure logic from ProfilesView and SkillMatrix (2026-09-05)
+
+- **test** (issue #54): extracted the CSV import parsing (`parseCsvRow`,
+  `parseSkills`, `parseWorkTypes`, `parseCsv`) out of `ProfilesView.tsx`
+  into a standalone `src/utils/csvParse.ts` module, and the skill-history
+  delta calculation (`getSkillDelta`, moved out of `SkillMatrix.tsx`) plus
+  the endorsement-eligibility rule (self-exclusion, no double-endorse,
+  extracted from `ProfilesView.tsx`'s render logic) into a new
+  `src/utils/skillLogic.ts` module. Both components now import from these
+  modules instead of defining the logic locally — no behavior change.
+  Added `csvParse.test.ts` (26 cases: quoted-field parsing, skill
+  string/level parsing incl. invalid levels and missing colons, work-type
+  whitelist filtering, and full CSV-to-profile parsing incl. malformed
+  rows, capacity clamping, and CRLF line endings) and `skillLogic.test.ts`
+  (7 cases covering delta sign/magnitude and endorser eligibility). This
+  completes the pure-logic test coverage issue #54 asked for — Vitest,
+  `publishExport`/`publishLastSession` tests, and the CI `npm test` gate
+  were already in place from a prior pass.
+
 ## 0.3.2 — Add glass effect to the header (2026-09-04)
 
 - **fix**: `AppHeader.tsx`'s background changed from opaque

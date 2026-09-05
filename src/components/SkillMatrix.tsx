@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { WorkProfile, ProficiencyLevel } from '../types'
+import type { WorkProfile } from '../types'
 import { SKILL_CATEGORIES } from '../types'
 import { CloseIcon, CheckIcon, ArrowLeftIcon, ArrowRightIcon } from './icons'
+import { getSkillDelta } from '../utils/skillLogic'
 
 const LEVEL_COLORS = ['', 'bg-red-200', 'bg-orange-200', 'bg-yellow-200', 'bg-lime-300', 'bg-green-400']
 const LEVEL_TEXT = ['', '1', '2', '3', '4', '5']
@@ -15,11 +16,6 @@ function getTzAbbr(tz: string): string {
   } catch {
     return tz
   }
-}
-
-function getSkillDelta(proficiency: ProficiencyLevel, history?: { date: string; proficiency: ProficiencyLevel }[]): number | null {
-  if (!history || history.length === 0) return null
-  return proficiency - history[history.length - 1].proficiency
 }
 
 interface Props {
