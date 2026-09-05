@@ -61,6 +61,11 @@ export default function App() {
     save(CREDITS_KEY, next)
   }
 
+  const restoreBackup = (nextProfiles: WorkProfile[], nextCredits: ProjectCredit[]) => {
+    updateProfiles(nextProfiles)
+    updateCredits(nextCredits)
+  }
+
   const navItems: { key: Screen; label: string }[] = [
     { key: 'profiles', label: t('nav.profiles') },
     { key: 'matrix', label: t('nav.matrix') },
@@ -97,6 +102,8 @@ export default function App() {
           <ProfilesView
             profiles={profiles}
             onProfiles={updateProfiles}
+            credits={credits}
+            onRestoreBackup={restoreBackup}
             onCompare={ids => { setCompareIds(ids); setScreen('compare') }}
             onAnnounce={msg => { setAnnouncement(''); requestAnimationFrame(() => setAnnouncement(msg)) }}
           />

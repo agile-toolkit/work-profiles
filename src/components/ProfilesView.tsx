@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
-import type { WorkProfile, Skill, ProficiencyLevel, WorkType } from '../types'
+import type { WorkProfile, Skill, ProficiencyLevel, WorkType, ProjectCredit } from '../types'
 import {
   parseMotivatorsParam,
   readMotivatorSnapshot,
@@ -14,6 +14,7 @@ import { CloseIcon, PersonIcon, BoltIcon, InboxIcon, CheckIcon, SparkIcon, Arrow
 import { parseCsv, VALID_WORK_TYPES, type CsvProfile } from '../utils/csvParse'
 import { eligibleEndorsers } from '../utils/skillLogic'
 import { readKanbanDesignerCards, type KanbanDesignerCard } from '../utils/kanbanDesignerImport'
+import { downloadBackup, parseBackup } from '../utils/backup'
 
 interface IbItem {
   id: string
@@ -36,11 +37,13 @@ const LEVEL_COLORS: Record<number, string> = {
 interface Props {
   profiles: WorkProfile[]
   onProfiles: (p: WorkProfile[]) => void
+  credits: ProjectCredit[]
+  onRestoreBackup: (profiles: WorkProfile[], credits: ProjectCredit[]) => void
   onCompare: (ids: string[]) => void
   onAnnounce?: (msg: string) => void
 }
 
-export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnounce }: Props) {
+export default function ProfilesView({ profiles, onProfiles, credits, onRestoreBackup, onCompare, onAnnounce }: Props) {
   const { t } = useTranslation()
   const [editId, setEditId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
@@ -52,6 +55,8 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
   const [printingProfile, setPrintingProfile] = useState<WorkProfile | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const importModalRef = useRef<HTMLDivElement>(null)
+  const backupInputRef = useRef<HTMLInputElement>(null)
+  const [backupError, setBackupError] = useState<string | null>(null)
   const [ibItems, setIbItems] = useState<IbItem[]>([])
 
   useEffect(() => {
@@ -274,6 +279,36 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
     fileInputRef.current?.click()
   }
 
+  function handleExportBackup() {
+    downloadBackup(profiles, credits)
+  }
+
+  function openBackupImport() {
+    setBackupError(null)
+    backupInputRef.current?.click()
+  }
+
+  function handleBackupFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!backupInputRef.current) return
+    backupInputRef.current.value = ''
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => {
+      const text = ev.target?.result as string
+      const backup = parseBackup(text)
+      if (!backup) {
+        setBackupError(t('profiles.backup_import_error'))
+        return
+      }
+      if (!confirm(t('profiles.backup_confirm_replace', { count: backup.profiles.length }))) return
+      setBackupError(null)
+      onRestoreBackup(backup.profiles, backup.credits)
+    }
+    reader.onerror = () => setBackupError(t('profiles.backup_import_error'))
+    reader.readAsText(file)
+  }
+
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!fileInputRef.current) return
@@ -389,6 +424,12 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
           <button type="button" onClick={openImport} className="btn-secondary text-sm">
             {t('profiles.import')}
           </button>
+          <button type="button" onClick={handleExportBackup} className="btn-secondary text-sm">
+            {t('profiles.backup_export')}
+          </button>
+          <button type="button" onClick={openBackupImport} className="btn-secondary text-sm">
+            {t('profiles.backup_import')}
+          </button>
           <button type="button" onClick={openAdd} className="btn-primary">
             + {t('profiles.add')}
           </button>
@@ -401,9 +442,21 @@ export default function ProfilesView({ profiles, onProfiles, onCompare, onAnnoun
         className="hidden"
         onChange={handleFileChange}
       />
+      <input
+        ref={backupInputRef}
+        type="file"
+        accept=".json,application/json"
+        className="hidden"
+        onChange={handleBackupFileChange}
+      />
       {csvError && (
         <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {csvError}
+        </div>
+      )}
+      {backupError && (
+        <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg px-4 py-3 text-sm text-red-700 dark:text-red-400">
+          {backupError}
         </div>
       )}
 

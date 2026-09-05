@@ -4,6 +4,27 @@ All notable changes to this project are documented here. See `.artefacts/BRIEF.m
 
 ## Unreleased
 
+## 0.3.5 — Full JSON backup and restore (2026-09-05)
+
+- **feat** (issue #56): "Export backup" downloads a single JSON file with
+  `{ version, exportedAt, profiles, credits }` — a full, round-trippable
+  snapshot of both localStorage keys (`work-profiles-data`,
+  `work-profiles-credits`), unlike the CSV export (#5) which only covers
+  profile fields and can't represent nested `history`/`endorsedBy`
+  arrays. "Import backup" reads a file, validates its shape, warns via a
+  confirmation dialog that it **replaces** all current profiles and
+  credits (not merge — unlike CSV import's merge-by-name), then writes
+  both. New `src/utils/backup.ts` (`buildBackup`, `parseBackup`,
+  `downloadBackup`) with 9 unit tests. New i18n keys
+  `profiles.backup_export`/`backup_import`/`backup_confirm_replace`/
+  `backup_import_error` in all four locales. Browser-verified: exported a
+  backup, cleared localStorage, re-imported it, and the profile
+  reappeared.
+  - Per the issue's resolved questions: replace-only import (no merge
+    ambiguity to reason about), and credits are always included in the
+    backup by default (no opt-out checkbox — a team that only wants
+    skills data can already get that from the CSV export).
+
 ## 0.3.4 — Show active Kanban Designer cards on profile cards (2026-09-05)
 
 - **feat** (issue #55): mirrors the existing "Open improvements" collapsible
