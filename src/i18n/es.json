@@ -65,7 +65,11 @@
     "announce_restored": "Perfil restaurado: {{name}}",
     "announce_deleted": "Perfil eliminado: {{name}}",
     "ib_items": "Mejoras abiertas ({{count}})",
-    "kanban_cards": "Tarjetas activas en Kanban Designer ({{count}})"
+    "kanban_cards": "Tarjetas activas en Kanban Designer ({{count}})",
+    "backup_export": "Exportar copia de seguridad",
+    "backup_import": "Importar copia de seguridad",
+    "backup_confirm_replace": "Esto reemplazará los {{count}} perfil(es) y todos los créditos actualmente guardados con el contenido de este archivo de copia de seguridad. Esta acción no se puede deshacer. ¿Continuar?",
+    "backup_import_error": "No se pudo leer el archivo de copia de seguridad. Asegúrate de que sea una copia de seguridad válida de Work Profiles (JSON con arreglos profiles y credits)."
   },
   "compare": {
     "title": "Comparación de perfiles",

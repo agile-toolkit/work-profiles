@@ -65,7 +65,11 @@
     "announce_restored": "Profile restored: {{name}}",
     "announce_deleted": "Profile deleted: {{name}}",
     "ib_items": "Open improvements ({{count}})",
-    "kanban_cards": "Active cards in Kanban Designer ({{count}})"
+    "kanban_cards": "Active cards in Kanban Designer ({{count}})",
+    "backup_export": "Export backup",
+    "backup_import": "Import backup",
+    "backup_confirm_replace": "This will replace all {{count}} profile(s) and all credits currently stored with the contents of this backup file. This cannot be undone. Continue?",
+    "backup_import_error": "Could not read backup file. Ensure it is a valid Work Profiles backup (JSON with profiles and credits arrays)."
   },
   "compare": {
     "title": "Profile Comparison",

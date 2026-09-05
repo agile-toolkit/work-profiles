@@ -65,7 +65,11 @@
     "announce_restored": "Профіль адноўлены: {{name}}",
     "announce_deleted": "Профіль выдалены: {{name}}",
     "ib_items": "Адкрытыя паляпшэнні ({{count}})",
-    "kanban_cards": "Актыўныя карткі ў Kanban Designer ({{count}})"
+    "kanban_cards": "Актыўныя карткі ў Kanban Designer ({{count}})",
+    "backup_export": "Экспарт рэзервнай копіі",
+    "backup_import": "Імпарт рэзервнай копіі",
+    "backup_confirm_replace": "Гэта заменіць усе {{count}} профіляў і ўсе балы, якія цяпер захаваныя, зместам гэтага файла рэзервнай копіі. Гэта дзеянне нельга адрабіць. Працягнуць?",
+    "backup_import_error": "Не ўдалося прачытаць файл рэзервнай копіі. Пераканайцеся, што гэта сапраўдная рэзервная копія Work Profiles (JSON з масівамі profiles і credits)."
   },
   "compare": {
     "title": "Параўнанне прафіляў",
