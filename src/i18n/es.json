@@ -153,7 +153,11 @@
     "save": "Registrar crédito",
     "cancel": "Cancelar",
     "total_points": "pts en total",
-    "delete": "Eliminar"
+    "delete": "Eliminar",
+    "trend_toggle": "Mostrar tendencia",
+    "trend_off": "Ocultar tendencia",
+    "trend_title": "Tendencia mensual (últimos 6 meses)",
+    "trend_empty": "Aún no hay suficiente historial — se necesitan contribuciones en al menos 2 meses distintos."
   },
   "learn": {
     "title": "Acerca de los perfiles de trabajo",

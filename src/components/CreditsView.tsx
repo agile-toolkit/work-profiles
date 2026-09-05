@@ -2,6 +2,70 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ProjectCredit, WorkProfile } from '../types'
 import { CloseIcon } from './icons'
+import { monthlyTrendForProfile, formatMonthLabel, hasEnoughDataForTrend } from '../utils/creditsTrend'
+
+const SPARK_WIDTH = 60
+const SPARK_HEIGHT = 20
+const TREND_MONTHS = 6
+const TREND_CHART_HEIGHT = 100
+const TREND_BAR_WIDTH = 28
+const TREND_BAR_GAP = 12
+const TREND_TOP_PADDING = 16
+
+function Sparkline({ values }: { values: number[] }) {
+  const max = Math.max(...values, 1)
+  const barWidth = SPARK_WIDTH / values.length
+  return (
+    <svg width={SPARK_WIDTH} height={SPARK_HEIGHT} viewBox={`0 0 ${SPARK_WIDTH} ${SPARK_HEIGHT}`} className="shrink-0" aria-hidden="true">
+      {values.map((v, i) => {
+        const h = (v / max) * SPARK_HEIGHT
+        return (
+          <rect
+            key={i}
+            x={i * barWidth + 1}
+            y={SPARK_HEIGHT - h}
+            width={Math.max(barWidth - 2, 1)}
+            height={h}
+            className="fill-brand-400 dark:fill-brand-500"
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
+function TrendChart({ monthKeys, values }: { monthKeys: string[]; values: number[] }) {
+  const max = Math.max(...values, 1)
+  const chartWidth = monthKeys.length * (TREND_BAR_WIDTH + TREND_BAR_GAP) + TREND_BAR_GAP
+  return (
+    <svg
+      viewBox={`0 0 ${chartWidth} ${TREND_TOP_PADDING + TREND_CHART_HEIGHT + 24}`}
+      width={chartWidth}
+      height={TREND_TOP_PADDING + TREND_CHART_HEIGHT + 24}
+    >
+      {monthKeys.map((key, i) => {
+        const value = values[i]
+        const barHeight = (value / max) * TREND_CHART_HEIGHT
+        const x = TREND_BAR_GAP + i * (TREND_BAR_WIDTH + TREND_BAR_GAP)
+        const y = TREND_TOP_PADDING + TREND_CHART_HEIGHT - barHeight
+        return (
+          <g key={key}>
+            <title>{`${formatMonthLabel(key)}: ${value}`}</title>
+            <rect x={x} y={y} width={TREND_BAR_WIDTH} height={Math.max(barHeight, value > 0 ? 2 : 0)} rx={3} className="fill-brand-600" />
+            {value > 0 && (
+              <text x={x + TREND_BAR_WIDTH / 2} y={y - 4} textAnchor="middle" className="fill-gray-600 dark:fill-gray-300 text-[10px] font-medium">
+                {value}
+              </text>
+            )}
+            <text x={x + TREND_BAR_WIDTH / 2} y={TREND_TOP_PADDING + TREND_CHART_HEIGHT + 16} textAnchor="middle" className="fill-gray-400 dark:fill-gray-500 text-[10px]">
+              {formatMonthLabel(key)}
+            </text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
 
 interface Props {
   credits: ProjectCredit[]
@@ -14,6 +78,7 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
   const { t } = useTranslation()
   const [showForm, setShowForm] = useState(false)
   const [showLeaderboard, setShowLeaderboard] = useState(false)
+  const [showTrend, setShowTrend] = useState(false)
   const activeProfiles = profiles.filter(p => !p.archived)
   const [profileId, setProfileId] = useState(activeProfiles[0]?.id ?? '')
   const [project, setProject] = useState('')
@@ -51,6 +116,9 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
           <button onClick={() => setShowLeaderboard(v => !v)} className="btn-secondary text-sm">
             {showLeaderboard ? t('credits.leaderboard_off') : t('credits.leaderboard')}
           </button>
+          <button onClick={() => setShowTrend(v => !v)} className="btn-secondary text-sm">
+            {showTrend ? t('credits.trend_off') : t('credits.trend_toggle')}
+          </button>
           <button onClick={() => setShowForm(v => !v)} className="btn-primary text-sm">
             + {t('credits.add')}
           </button>
@@ -67,7 +135,10 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
                 <div className="flex-1">
                   <div className="flex justify-between text-sm mb-0.5">
                     <span className="font-medium">{entry.profile.name}</span>
-                    <span className="text-brand-600 font-bold">{entry.total} {t('credits.total_points')}</span>
+                    <span className="flex items-center gap-2">
+                      <Sparkline values={monthlyTrendForProfile(credits, entry.profile.id, TREND_MONTHS).values} />
+                      <span className="text-brand-600 font-bold">{entry.total} {t('credits.total_points')}</span>
+                    </span>
                   </div>
                   <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full">
                     <div
@@ -79,6 +150,32 @@ export default function CreditsView({ credits, profiles, onAdd, onDelete }: Prop
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Trend */}
+      {showTrend && (
+        <div className="card mb-6 space-y-6">
+          <h2 className="font-semibold text-gray-900 dark:text-gray-50">{t('credits.trend_title')}</h2>
+          {totals.filter(t => t.total > 0).length === 0 ? (
+            <p className="text-sm text-gray-400 dark:text-gray-500">{t('credits.empty')}</p>
+          ) : (
+            totals.filter(t => t.total > 0).map(entry => {
+              const trend = monthlyTrendForProfile(credits, entry.profile.id, TREND_MONTHS)
+              return (
+                <div key={entry.profile.id}>
+                  <div className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">{entry.profile.name}</div>
+                  {hasEnoughDataForTrend(credits, entry.profile.id) ? (
+                    <div className="overflow-x-auto">
+                      <TrendChart monthKeys={trend.monthKeys} values={trend.values} />
+                    </div>
+                  ) : (
+                    <p className="text-xs text-gray-400 dark:text-gray-500">{t('credits.trend_empty')}</p>
+                  )}
+                </div>
+              )
+            })
+          )}
         </div>
       )}
 
