@@ -64,7 +64,8 @@
     "announce_archived": "Perfil archivado: {{name}}",
     "announce_restored": "Perfil restaurado: {{name}}",
     "announce_deleted": "Perfil eliminado: {{name}}",
-    "ib_items": "Mejoras abiertas ({{count}})"
+    "ib_items": "Mejoras abiertas ({{count}})",
+    "kanban_cards": "Tarjetas activas en Kanban Designer ({{count}})"
   },
   "compare": {
     "title": "Comparación de perfiles",
