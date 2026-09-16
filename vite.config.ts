@@ -35,6 +35,6 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/work-profiles/',
+  base: './',
   build: { outDir: 'dist', sourcemap: true },
 })
