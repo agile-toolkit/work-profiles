@@ -2,7 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig({
+// `npm run build` is the production build and ships no sourcemaps;
+// `npm run build:debug` produces the same bundle with .map files.
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     VitePWA({
@@ -36,5 +38,5 @@ export default defineConfig({
     }),
   ],
   base: '/work-profiles/',
-  build: { outDir: 'dist', sourcemap: true },
-})
+  build: { outDir: 'dist', sourcemap: mode === 'debug' },
+}))
