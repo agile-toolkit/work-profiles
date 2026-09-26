@@ -37,6 +37,6 @@ export default defineConfig(({ mode }) => ({
       },
     }),
   ],
-  base: '/work-profiles/',
+  base: './',
   build: { outDir: 'dist', sourcemap: mode === 'debug' },
 }))
